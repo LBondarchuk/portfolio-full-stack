@@ -1,9 +1,12 @@
-import Pagination from "../../../../components/Pagination/Pagination";
+
 import { useTodo } from "../../store/todo.store";
 import TodoItem from "../TodoItem/TodoItem";
 
+
 const TodoList = () => {
   const todos = useTodo((state) => state.todos);
+
+
 
   if (todos.length === 0) {
     return (
@@ -26,7 +29,7 @@ const TodoList = () => {
         ))}
       </div>
 
-      <div className="grid ju"><Pagination/></div>
+   
     </div>
   );
 };
