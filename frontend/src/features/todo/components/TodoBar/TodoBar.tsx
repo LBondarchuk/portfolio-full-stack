@@ -4,9 +4,12 @@ import TodoSort from "./TodoSort/TodoSort";
 
 const TodoBar = () => {
   return (
-    <div className="grid grid-cols-[1fr_auto_auto] items-end">
-      <TodoSearch />
-      <div className="grid grid-cols-[auto_auto] gap-10 ">
+    <div className="flex flex-col gap-4 xl:flex-row xl:items-end">
+      <div className=" flex-1">
+        <TodoSearch />
+      </div>
+
+      <div className="flex gap-4 flex-wrap items-end">
         <TodoFilter />
         <TodoSort />
       </div>

@@ -2,19 +2,21 @@ import { useState } from "react";
 import Button from "../buttons/Button/Button";
 import Modal from "../../../../components/Modal/Modal";
 import TodoForm from "../TodoForm/TodoForm";
-import { useTodo } from "../../store/todo.store";
 
-
+// import { useTodo } from "../../store/todo.store";
 
 const TodoHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const getTestTodos= useTodo(state => state.getTestTodos)
-  const togleModal= () => {
-    setIsModalOpen(prev => !prev)
-  }
-return (
+
+  // const getTestTodos = useTodo((state) => state.getTestTodos);
+
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev);
+  };
+
+  return (
     <div>
-      <div className="grid grid-cols-[1fr_auto_auto] items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-text">Todo</h1>
 
@@ -23,13 +25,20 @@ return (
           </p>
         </div>
 
-        <Button onClick={getTestTodos}>Add Test Todos</Button>
+        <div className="flex flex-wrap gap-3 sm:justify-end">
+          {/* <Button onClick={getTestTodos}>
+            Add Test Todos
+          </Button> */}
 
-        <Button onClick={togleModal}>Add Todo</Button>
+          <Button onClick={toggleModal}>
+            Add Todo
+          
+          </Button>
+        </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={togleModal}>
-        <TodoForm closeModal={togleModal} />
+      <Modal isOpen={isModalOpen} onClose={toggleModal}>
+        <TodoForm closeModal={toggleModal} />
       </Modal>
     </div>
   );

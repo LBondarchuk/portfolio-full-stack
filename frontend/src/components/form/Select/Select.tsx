@@ -31,7 +31,7 @@ const Select = ({
   };
 
   return (
-    <div className={`relative ${className ?? ""}`}>
+    <div className={`relative  ${className ?? ""}`}>
       {isOpen && <div className="fixed inset-0" onClick={onClose} />}
 
       <button

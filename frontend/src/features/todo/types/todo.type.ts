@@ -23,5 +23,5 @@ export type Todo = {
 
 export type CreateTodo = Omit<Todo, "id" | "dueDate" | "createdAt">;
 
-export type EditTodo = Omit<Todo, "dueDate" | "createdAt">;
+export type EditTodo = Partial<Omit<Todo, "dueDate" | "createdAt"|"id">> & {id: string}
 

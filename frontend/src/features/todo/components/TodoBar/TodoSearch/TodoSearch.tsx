@@ -8,12 +8,12 @@ const TodoSearch = () => {
   const search = searchParams.get("search") || "";
 
   return (
-    <div>
-      <div className="relative">
+    <div className="w-full">
+      <div className="relative w-full">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 " />
         <Input
           placeholder="Search tasks..."
-          className="pl-10 lg:min-w-xl"
+          className="pl-10 w-full"
           value={search}
           onChange={(e) =>
             setSearchParams((prev) => {

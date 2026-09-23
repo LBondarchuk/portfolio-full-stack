@@ -18,11 +18,12 @@ import type {
 } from "../../../types/todo.type";
 
 import { MetaStyles } from "../../TodoItem/TodoContent/TodoMeta/todoMeta.styles";
+import FilterIcon from "../../../../../components/Icons/Filter";
 
 const getFilterValue = <T extends string>(
   params: URLSearchParams,
   key: string,
-  values: readonly T[]
+  values: readonly T[],
 ): T => {
   const value = params.get(key);
 
@@ -36,6 +37,8 @@ const getFilterValue = <T extends string>(
 const TodoFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [isFilterOpen, setFilterOpen] = useState(false);
+
   const [openSelect, setOpenSelect] = useState<
     "category" | "status" | "priority" | null
   >(null);
@@ -43,29 +46,42 @@ const TodoFilter = () => {
   const category: CategoryFilter = getFilterValue(
     searchParams,
     "category",
-    categoryFilters
+    categoryFilters,
   );
 
   const status: StatusFilter = getFilterValue(
     searchParams,
     "status",
-    statusFilters
+    statusFilters,
   );
 
   const priority: PriorityFilter = getFilterValue(
     searchParams,
     "priority",
-    priorityFilters
+    priorityFilters,
   );
 
   return (
-    <div className="grid grid-cols-[auto_auto] items-end gap-4">
-      <span className="text-md font-medium text-text">
-        Filter by:
-      </span>
+    <div className="flex flex-col gap-3">
+      <button
+        type="button"
+        onClick={() => setFilterOpen((prev) => !prev)}
+        className="flex w-fit items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2 md:hidden"
+        aria-expanded={isFilterOpen}
+      >
+        <FilterIcon />
+        <span>Filter</span>
+      </button>
 
-      <div className="grid grid-cols-3 gap-3">
-        <FormField title="Category" name="category">
+      <div
+        className={`
+          flex flex-wrap gap-3 items-end
+          ${isFilterOpen ? "flex" : "hidden"}
+          md:flex
+        `}
+      >
+        <FilterIcon className="-translate-y-2 hidden md:block" />
+        <FormField title="Category" name="category" className="w-full md:w-fit">
           <Select
             value={category === "all" ? "All" : category}
             isOpen={openSelect === "category"}
@@ -73,18 +89,14 @@ const TodoFilter = () => {
             onClose={() => setOpenSelect(null)}
             buttonClassName={
               category !== "all"
-                ? `${MetaStyles.category[category]} min-w-30`
-                : "min-w-30"
+                ? `${MetaStyles.category[category]} min-w-30 w-full`
+                : "min-w-30 w-full"
             }
           >
             {categoryFilters.map((item) => (
               <SelectItem
                 key={item}
-                className={
-                  item !== "all"
-                    ? MetaStyles.category[item]
-                    : ""
-                }
+                className={item !== "all" ? MetaStyles.category[item] : ""}
                 onClick={() => {
                   setSearchParams((prev) => {
                     if (item === "all") {
@@ -92,7 +104,7 @@ const TodoFilter = () => {
                     } else {
                       prev.set("category", item);
                     }
-
+                    prev.delete("page");
                     return prev;
                   });
 
@@ -105,7 +117,7 @@ const TodoFilter = () => {
           </Select>
         </FormField>
 
-        <FormField title="Status" name="status">
+        <FormField title="Status" name="status" className="w-full md:w-fit">
           <Select
             value={status === "all" ? "All" : status}
             isOpen={openSelect === "status"}
@@ -120,11 +132,7 @@ const TodoFilter = () => {
             {statusFilters.map((item) => (
               <SelectItem
                 key={item}
-                className={
-                  item !== "all"
-                    ? MetaStyles.status[item]
-                    : ""
-                }
+                className={item !== "all" ? MetaStyles.status[item] : ""}
                 onClick={() => {
                   setSearchParams((prev) => {
                     if (item === "all") {
@@ -132,7 +140,7 @@ const TodoFilter = () => {
                     } else {
                       prev.set("status", item);
                     }
-
+                    prev.delete("page");
                     return prev;
                   });
 
@@ -145,7 +153,7 @@ const TodoFilter = () => {
           </Select>
         </FormField>
 
-        <FormField title="Priority" name="priority">
+        <FormField title="Priority" name="priority" className="w-full md:w-fit">
           <Select
             value={priority === "all" ? "All" : priority}
             isOpen={openSelect === "priority"}
@@ -160,11 +168,7 @@ const TodoFilter = () => {
             {priorityFilters.map((item) => (
               <SelectItem
                 key={item}
-                className={
-                  item !== "all"
-                    ? MetaStyles.priority[item]
-                    : ""
-                }
+                className={item !== "all" ? MetaStyles.priority[item] : ""}
                 onClick={() => {
                   setSearchParams((prev) => {
                     if (item === "all") {
@@ -172,7 +176,7 @@ const TodoFilter = () => {
                     } else {
                       prev.set("priority", item);
                     }
-
+                    prev.delete("page");
                     return prev;
                   });
 

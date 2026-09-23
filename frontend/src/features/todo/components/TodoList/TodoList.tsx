@@ -1,12 +1,11 @@
-
+import Loader from "../../../../components/Loader/Loader";
 import { useTodo } from "../../store/todo.store";
 import TodoItem from "../TodoItem/TodoItem";
 
-
 const TodoList = () => {
-  const todos = useTodo((state) => state.todos);
+  const { todos, loading } = useTodo();
 
-
+  if (loading) return <Loader size="lg" />;
 
   if (todos.length === 0) {
     return (
@@ -28,8 +27,6 @@ const TodoList = () => {
           <TodoItem key={todo.id} todo={todo} />
         ))}
       </div>
-
-   
     </div>
   );
 };
