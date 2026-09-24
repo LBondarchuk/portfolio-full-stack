@@ -7,6 +7,8 @@ const TodoList = () => {
 
   if (loading) return <Loader size="lg" />;
 
+  console.log(todos,'td')
+
   if (todos.length === 0) {
     return (
       <div className="grid  h-full place-items-center py-4 ">

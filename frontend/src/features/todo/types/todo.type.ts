@@ -19,9 +19,10 @@ export type Todo = {
   priority: Priority;
   dueDate?: string;
   createdAt: string;
+  completedAt: string | null
 };
 
-export type CreateTodo = Omit<Todo, "id" | "dueDate" | "createdAt">;
+export type CreateTodo = Omit<Todo, "id" | "dueDate" | "createdAt"|"completedAt">;
 
 export type EditTodo = Partial<Omit<Todo, "dueDate" | "createdAt"|"id">> & {id: string}
 

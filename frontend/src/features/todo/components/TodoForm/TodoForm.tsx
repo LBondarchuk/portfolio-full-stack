@@ -90,6 +90,7 @@ const TodoForm = ({
         {
           ...form,
           ...formSelects,
+     
         },
         closeModal,
       );

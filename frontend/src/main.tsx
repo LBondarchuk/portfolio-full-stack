@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage.tsx";
 import TodoPage from "./pages/dashboard/todo/TodoPage.tsx";
 import DashboardLayout from "./layouts/DashboardLayout.tsx";
 import DashboardPage from "./pages/dashboard/DashboardPage/DashboardPage.tsx";
+import TodoAnalyticsPage from "./pages/dashboard/todo/analytics/AnalyticsPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage/>} />
           <Route path="/dashboard/todo" element={<TodoPage />} />
+          <Route path="/dashboard/todo/analytics" element={<TodoAnalyticsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

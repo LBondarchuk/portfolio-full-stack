@@ -22,8 +22,6 @@ const TodoActions = ({ todo }: Props) => {
   const { createdAt, dueDate, ...itemToEdit } = todo;
 
   const isDeleting = loadingIds.includes(todo.id);
-  // const isDone = todo.status === "done";
-
   if (isDeleting) {
     return (
       <div className="grid min-h-10 place-items-center">

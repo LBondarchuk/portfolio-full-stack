@@ -8,7 +8,7 @@ import TodoForm from "../TodoForm/TodoForm";
 const TodoHeader = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // const getTestTodos = useTodo((state) => state.getTestTodos);
+  // const getTestTodos = useTodo((state) => state.createTestTodos);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);

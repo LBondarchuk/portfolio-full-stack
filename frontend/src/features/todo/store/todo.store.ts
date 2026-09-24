@@ -1,27 +1,21 @@
 import { create } from "zustand";
-import type {
-  CreateTodo,
-  EditTodo,
-  Todo,
-} from "../types/todo.type";
+import type { CreateTodo, EditTodo, Todo } from "../types/todo.type";
+import type { TodoAnalytics } from "../types/todoAnalytics.type";
+import { api } from "../../../api/axios";
 
 type TodoStore = {
   todos: Todo[];
+  analytics: TodoAnalytics | null;
   loading: boolean;
   loadingIds: string[];
   totalPages: number;
 
   getTodos: (params: URLSearchParams) => Promise<void>;
-  createTodo: (
-    data: CreateTodo,
-    onClose: () => void
-  ) => Promise<void>;
+  createTodo: (data: CreateTodo, onClose: () => void) => Promise<void>;
   deleteTodo: (id: string) => Promise<void>;
-  editTodo: (
-    data: EditTodo,
-    onClose: () => void
-  ) => Promise<void>;
+  editTodo: (data: EditTodo, onClose: () => void) => Promise<void>;
   createTestTodos: () => Promise<void>;
+  getTodoAnalytics: () => Promise<void>;
 };
 
 export type GetTodosResponse = {
@@ -35,6 +29,7 @@ const todoUrl = "http://localhost:8800/api/todos";
 
 export const useTodo = create<TodoStore>((set) => ({
   todos: [],
+  analytics: null,
   loading: false,
   loadingIds: [],
   totalPages: 1,
@@ -43,22 +38,13 @@ export const useTodo = create<TodoStore>((set) => ({
     set({ loading: true });
 
     try {
-      const response = await fetch(
-        `${todoUrl}?${params.toString()}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch todos");
-      }
-
-      const {
-        todos,
-        totalPages,
-      }: GetTodosResponse = await response.json();
+      const { data } = await api.get<GetTodosResponse>("/todos", {
+        params,
+      });
 
       set({
-        todos,
-        totalPages,
+        todos: data.todos,
+        totalPages: data.totalPages,
       });
     } catch (error) {
       console.error("Failed to fetch todos:", error);
@@ -71,19 +57,7 @@ export const useTodo = create<TodoStore>((set) => ({
     set({ loading: true });
 
     try {
-      const response = await fetch(todoUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create todo");
-      }
-
-      const todo: Todo = await response.json();
+      const { data: todo } = await api.post<Todo>("/todos", data);
 
       set((state) => ({
         todos: [...state.todos, todo],
@@ -105,26 +79,16 @@ export const useTodo = create<TodoStore>((set) => ({
     }));
 
     try {
-      const response = await fetch(`${todoUrl}/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error(`Todo: ${response.status}`);
-      }
+      await api.delete(`/todos/${id}`);
 
       set((state) => ({
-        todos: state.todos.filter(
-          (item) => item.id !== id
-        ),
+        todos: state.todos.filter((item) => item.id !== id),
       }));
     } catch (error) {
       console.error("Failed to delete todo:", error);
     } finally {
       set((state) => ({
-        loadingIds: state.loadingIds.filter(
-          (loadingId) => loadingId !== id
-        ),
+        loadingIds: state.loadingIds.filter((loadingId) => loadingId !== id),
       }));
     }
   },
@@ -132,27 +96,13 @@ export const useTodo = create<TodoStore>((set) => ({
   editTodo: async (data, onClose) => {
     const { id, ...dataToEdit } = data;
 
-    set(state => ({  loadingIds: [...state.loadingIds, id] }));
-  
+    set((state) => ({ loadingIds: [...state.loadingIds, id] }));
 
     try {
-      const response = await fetch(`${todoUrl}/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToEdit),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Todo: ${response.status}`);
-      }
-
+      await api.patch(`/todos/${id}`, data);
       set((state) => ({
         todos: state.todos.map((item) =>
-          item.id === id
-            ? { ...item, ...dataToEdit }
-            : item
+          item.id === id ? { ...item, ...dataToEdit } : item,
         ),
       }));
 
@@ -161,7 +111,10 @@ export const useTodo = create<TodoStore>((set) => ({
       console.error("Failed to update todo:", error);
     } finally {
       set({ loading: false });
-       set(state => ({ loading: false, loadingIds: state.loadingIds.filter(item => item !== id) }));
+      set((state) => ({
+        loading: false,
+        loadingIds: state.loadingIds.filter((item) => item !== id),
+      }));
     }
   },
 
@@ -169,33 +122,32 @@ export const useTodo = create<TodoStore>((set) => ({
     set({ loading: true });
 
     try {
-      const response = await fetch(
-        `${todoUrl}/createTestTodos`,
-        {
-          method: "POST",
-        }
-      );
+      const response = await fetch(`${todoUrl}/createTestTodos`, {
+        method: "POST",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to create test todos");
       }
 
-      const {
-        todos,
-        totalPages,
-      }: GetTodosResponse = await response.json();
+      const { todos, totalPages }: GetTodosResponse = await response.json();
 
       set({
         todos,
         totalPages,
       });
     } catch (error) {
-      console.error(
-        "Failed to create test todos:",
-        error
-      );
+      console.error("Failed to create test todos:", error);
     } finally {
       set({ loading: false });
+    }
+  },
+  getTodoAnalytics: async () => {
+    try {
+      const { data: analytics } = await api<TodoAnalytics>("/todos/analytics");
+      set({ analytics });
+    } catch (error) {
+      console.error("Failed to get todo analytics:", error);
     }
   },
 }));

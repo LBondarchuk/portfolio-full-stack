@@ -36,6 +36,10 @@ const TodoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  completedAt: {
+    type: Date,
+    default: null,
+  },
     isTest: {
     type: Boolean,
     default: false,
