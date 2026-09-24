@@ -9,10 +9,13 @@ const TodoCheckBox = ({ checked, onChange }: Props) => {
   return (
     <button
       type="button"
-      onClick={onChange}
+      onClick={(e) => {
+        e.stopPropagation()
+        onChange()
+      }}
       aria-pressed={checked}
       aria-label={checked ? "Mark todo as incomplete" : "Mark todo as complete"}
-      className="group grid h-6 w-6 shrink-0 place-items-center rounded-md"
+      className="group grid h-6 w-6 shrink-0 place-items-center rounded-md cursor-pointer"
     >
       <motion.span
         initial={false}

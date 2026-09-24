@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../buttons/Button/Button";
-import Modal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/modals/Modal/Modal";
 import TodoForm from "../TodoForm/TodoForm";
 
 // import { useTodo } from "../../store/todo.store";
@@ -30,10 +30,7 @@ const TodoHeader = () => {
             Add Test Todos
           </Button> */}
 
-          <Button onClick={toggleModal}>
-            Add Todo
-          
-          </Button>
+          <Button onClick={toggleModal}>Add Todo</Button>
         </div>
       </div>
 

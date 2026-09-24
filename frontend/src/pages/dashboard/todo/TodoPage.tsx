@@ -17,7 +17,7 @@ const TodoPage = () => {
   }, [getTodos, searchParams]);
 
   return (
-    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-10">
+    <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2 md:gap-4 lg:gap-10">
       <TodoHeader />
       <TodoBar />
       <TodoList />

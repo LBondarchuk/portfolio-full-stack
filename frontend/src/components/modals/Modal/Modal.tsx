@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import CloseIcon from "../Icons/Close";
+import CloseIcon from "../../Icons/Close";
 
 type Props = {
   isOpen: boolean;

@@ -13,11 +13,15 @@ import Input from "../../../../components/form/Input/Input";
 import { useTodo } from "../../store/todo.store";
 import SelectItem from "../../../../components/form/Select/SelectItem";
 import { MetaStyles } from "../TodoItem/TodoContent/TodoMeta/todoMeta.styles";
-import { categories, priorities, statuses } from "../../constants/todo.constants";
+import {
+  categories,
+  priorities,
+  statuses,
+} from "../../constants/todo.constants";
 import Loader from "../../../../components/Loader/Loader";
 
 type FormFilelds = Pick<CreateTodo, "title" | "description">;
-type SelectName = "category" | "status" | "priority" ;
+type SelectName = "category" | "status" | "priority";
 
 type Selects = {
   category: Category;
@@ -40,25 +44,25 @@ const TodoForm = ({
   initialValues?: EditTodo;
 }) => {
   const [openSelect, setOpenSelect] = useState<SelectName | null>(null);
-  const {createTodo,editTodo, loading} = useTodo();
+  const { createTodo, editTodo, loading } = useTodo();
 
   const [form, setForm] = useState<FormFilelds>(
     initialValues
       ? {
-          title: initialValues.title,
-          description: initialValues.description,
+          title: initialValues.title ?? "",
+          description: initialValues.description ?? "",
         }
-      : defaultInputs
+      : defaultInputs,
   );
 
   const [formSelects, setFormSelects] = useState<Selects>(
     initialValues
       ? {
-          category: initialValues.category,
-          status: initialValues.status,
-          priority: initialValues.priority,
+          category: initialValues.category ?? defaultSelects.category,
+          status: initialValues.status ?? defaultSelects.status,
+          priority: initialValues.priority ?? defaultSelects.priority,
         }
-      : defaultSelects
+      : defaultSelects,
   );
 
   const isChanged = initialValues
@@ -73,21 +77,26 @@ const TodoForm = ({
     event.preventDefault();
 
     if (initialValues) {
-      editTodo({
-        id: initialValues.id,
-        ...form,
-        ...formSelects,
-      },closeModal);
+      editTodo(
+        {
+          id: initialValues.id,
+          ...form,
+          ...formSelects,
+        },
+        closeModal,
+      );
     } else {
-      createTodo({
-        ...form,
-        ...formSelects,
-      }, closeModal);
+      createTodo(
+        {
+          ...form,
+          ...formSelects,
+        },
+        closeModal,
+      );
     }
 
     setForm(defaultInputs);
     setFormSelects(defaultSelects);
-
   };
 
   return (
@@ -95,6 +104,7 @@ const TodoForm = ({
       <FormField name="title" title="Titel">
         <Input
           id="title"
+          maxLength={50}
           name="title"
           required
           type="text"
@@ -114,7 +124,9 @@ const TodoForm = ({
         <textarea
           id="description"
           name="description"
+          rows={6}
           value={form.description}
+          maxLength={900}
           placeholder="Enter task description"
           onChange={(event) =>
             setForm((prev) => ({
@@ -202,7 +214,13 @@ const TodoForm = ({
         </Select>
       </FormField>
 
-      <Button disabled={!isChanged } className={!isChanged ? 'bg-gray-dark/80':''}>{loading?<Loader />:initialValues? "Edit Todo":"Add Todo"}</Button>
+      <Button
+        type="submit"
+        disabled={!isChanged}
+        className={!isChanged ? "bg-gray-dark/80" : ""}
+      >
+        {loading ? <Loader /> : initialValues ? "Edit Todo" : "Add Todo"}
+      </Button>
     </form>
   );
 };

@@ -16,7 +16,7 @@ const TodoContent = ({ todo }: Props) => {
         <h3
           className={`font-medium transition-colors ${
             isDone ? "text-text-secondary line-through opacity-60" : "text-text"
-          }`}
+          } truncate`}
         >
           {title}
         </h3>
@@ -24,7 +24,7 @@ const TodoContent = ({ todo }: Props) => {
         <p
           className={`text-sm transition-colors ${
             isDone ? "text-text-secondary opacity-50" : "text-text-secondary"
-          }`}
+          } truncate`}
         >
           {description}
         </p>
