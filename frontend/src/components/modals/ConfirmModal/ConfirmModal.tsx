@@ -1,4 +1,4 @@
-import Button from "../../../features/todo/components/buttons/Button/Button";
+import Button from "../../buttons/Button/Button";
 import Loader from "../../Loader/Loader";
 import Modal from "../Modal/Modal";
 
@@ -48,7 +48,7 @@ const ConfirmModal = ({
             disabled={isLoading}
             className="bg-danger text-white hover:bg-danger/90"
           >
-            {isLoading ? <Loader/> : confirmText}
+            {isLoading ? <Loader /> : confirmText}
           </Button>
         </div>
       </div>

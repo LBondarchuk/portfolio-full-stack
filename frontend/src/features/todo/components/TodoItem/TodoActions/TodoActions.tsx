@@ -7,7 +7,7 @@ import Loader from "../../../../../components/Loader/Loader";
 import EditIcon from "../../../../../components/Icons/Edit";
 import DeleteIcon from "../../../../../components/Icons/Delete";
 import ConfirmModal from "../../../../../components/modals/ConfirmModal/ConfirmModal";
-import Button from "../../buttons/Button/Button";
+import Button from "../../../../../components/buttons/Button/Button";
 
 type Props = {
   todo: Todo;

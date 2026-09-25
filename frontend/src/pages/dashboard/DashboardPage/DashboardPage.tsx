@@ -1,7 +1,9 @@
+import Calendar from "../../../components/Calendar/Calendar";
+
 const DashboardPage = () => {
   return (
-    <div className=''>
-      DashboardPage
+    <div className="">
+      <Calendar />
     </div>
   );
 };
