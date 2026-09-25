@@ -12,7 +12,10 @@ const Modal = ({ isOpen, onClose, children }: Props) => {
   return (
     <div
       className="fixed inset-0 grid place-items-center bg-black/50 z-10"
-      onClick={onClose}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClose();
+      }}
     >
       <div
         className="relative w-full max-w-lg rounded-xl bg-surface p-6 shadow-xl"

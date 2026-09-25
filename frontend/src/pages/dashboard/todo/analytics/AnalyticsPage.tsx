@@ -23,10 +23,12 @@ const TodoAnalyticsPage = () => {
       <TodoKPI summary={analytics.summary} />
       <CompletionRate completionRate={analytics.summary.completionRate} />
       <div className="grid min-w-0 gap-6 lg:grid-cols-2">
-        <TodoAnalyticSattus status={analytics.status}/>
-        <TodoAnalyticCategory categories={analytics.categories}  />
-        <TodoAnalyticPriority priorities={ analytics.priorities} />
-        <TodoAnalyticWeeklyCompletion weeklyCompletion={analytics.weeklyCompletion}/>
+        <TodoAnalyticSattus status={analytics.status} />
+        <TodoAnalyticCategory categories={analytics.categories} />
+        <TodoAnalyticPriority priorities={analytics.priorities} />
+        <TodoAnalyticWeeklyCompletion
+          weeklyCompletion={analytics.weeklyCompletion}
+        />
       </div>
     </div>
   );

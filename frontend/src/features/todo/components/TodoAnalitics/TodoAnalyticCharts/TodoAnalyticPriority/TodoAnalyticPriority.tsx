@@ -14,29 +14,22 @@ type Props = {
 };
 
 const priorityColors: Record<string, string> = {
-  high: "#FFCACA",
-  medium: "#F7E9D4",
+  high: "#f4adad",
+  medium: "#efd2a7",
   low: "#E2E8F1",
 };
 
 const PriorityShape = (props: PieSectorShapeProps) => {
   const priority = String(props.payload?.name ?? "");
 
-  return (
-    <Sector
-      {...props}
-      fill={priorityColors[priority] ?? "#E2E8F1"}
-    />
-  );
+  return <Sector {...props} fill={priorityColors[priority] ?? "#E2E8F1"} />;
 };
 
 const TodoAnalyticPriority = ({ priorities }: Props) => {
   return (
     <div className="min-w-0 rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5">
-        <h2 className="font-semibold text-text">
-          Priority distribution
-        </h2>
+        <h2 className="font-semibold text-text">Priority distribution</h2>
 
         <p className="text-sm text-text-secondary">
           Number of tasks by priority
@@ -71,15 +64,11 @@ const TodoAnalyticPriority = ({ priorities }: Props) => {
 
       <div className="flex flex-wrap justify-center gap-5 text-sm text-text-secondary">
         {priorities.map((item) => (
-          <div
-            key={item.name}
-            className="flex items-center gap-2"
-          >
+          <div key={item.name} className="flex items-center gap-2">
             <span
               className="h-3 w-3 rounded-full"
               style={{
-                backgroundColor:
-                  priorityColors[item.name] ?? "#E2E8F1",
+                backgroundColor: priorityColors[item.name] ?? "#E2E8F1",
               }}
             />
 

@@ -29,29 +29,16 @@ const dayColors: Record<string, string> = {
 const WeeklyBar = (props: BarShapeProps) => {
   const day = String(props.payload?.day ?? "");
 
-  return (
-    <Rectangle
-      {...props}
-      fill={dayColors[day] ?? "#F1F5F9"}
-    />
-  );
+  return <Rectangle {...props} fill={dayColors[day] ?? "#F1F5F9"} />;
 };
 
-const TodoAnalyticWeeklyCompletion = ({
-  weeklyCompletion,
-}: Props) => {
-
-  console.log(weeklyCompletion,'wk')
+const TodoAnalyticWeeklyCompletion = ({ weeklyCompletion }: Props) => {
   return (
     <div className="min-w-0 rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5">
-        <h2 className="font-semibold text-text">
-          Weekly progress
-        </h2>
+        <h2 className="font-semibold text-text">Weekly progress</h2>
 
-        <p className="text-sm text-text-secondary">
-          Completed tasks this week
-        </p>
+        <p className="text-sm text-text-secondary">Completed tasks this week</p>
       </div>
 
       <div className="h-72">
@@ -95,11 +82,7 @@ const TodoAnalyticWeeklyCompletion = ({
               }}
             />
 
-            <Bar
-              dataKey="value"
-              radius={[8, 8, 0, 0]}
-              shape={WeeklyBar}
-            />
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} shape={WeeklyBar} />
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -18,29 +18,22 @@ type Props = {
 
 const categoryColors: Record<string, string> = {
   work: "#DFE7FF",
-  study: "#ECE9FF",
+  study: "#d0cbed",
   personal: "#FCCEE8",
-  other: "#F1F5F9",
+  other: "#c7d5e2",
 };
 
 const CategoryBar = (props: BarShapeProps) => {
   const category = String(props.payload?.name ?? "");
 
-  return (
-    <Rectangle
-      {...props}
-      fill={categoryColors[category] ?? "#F1F5F9"}
-    />
-  );
+  return <Rectangle {...props} fill={categoryColors[category] ?? "#F1F5F9"} />;
 };
 
 const TodoAnalyticCategory = ({ categories }: Props) => {
   return (
     <div className="min-w-0 rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5">
-        <h2 className="font-semibold text-text">
-          Todos by category
-        </h2>
+        <h2 className="font-semibold text-text">Todos by category</h2>
 
         <p className="text-sm text-text-secondary">
           Where your tasks are concentrated
@@ -92,11 +85,7 @@ const TodoAnalyticCategory = ({ categories }: Props) => {
               }}
             />
 
-            <Bar
-              dataKey="value"
-              radius={[0, 8, 8, 0]}
-              shape={CategoryBar}
-            />
+            <Bar dataKey="value" radius={[0, 8, 8, 0]} shape={CategoryBar} />
           </BarChart>
         </ResponsiveContainer>
       </div>

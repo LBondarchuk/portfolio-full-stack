@@ -6,20 +6,12 @@ type Props = {
 };
 
 const TodoKPI = ({ summary }: Props) => {
-  const {
-    total,
-    completed,
-    inProgress,
-    highPriority,
-    completionRate,
-  } = summary;
+  const { total, completed, inProgress, highPriority, completionRate } =
+    summary;
 
   return (
     <div className="grid gap-4 grid-cols-2 xl:grid-cols-4">
-      <TodoKPICard
-        title="Total Todos"
-        value={total}
-      />
+      <TodoKPICard title="Total Todos" value={total} />
 
       <TodoKPICard
         title="Completed"
@@ -27,15 +19,9 @@ const TodoKPI = ({ summary }: Props) => {
         subtitle={`${completionRate}% completion rate`}
       />
 
-      <TodoKPICard
-        title="In Progress"
-        value={inProgress}
-      />
+      <TodoKPICard title="In Progress" value={inProgress} />
 
-      <TodoKPICard
-        title="High Priority"
-        value={highPriority}
-      />
+      <TodoKPICard title="High Priority" value={highPriority} />
     </div>
   );
 };

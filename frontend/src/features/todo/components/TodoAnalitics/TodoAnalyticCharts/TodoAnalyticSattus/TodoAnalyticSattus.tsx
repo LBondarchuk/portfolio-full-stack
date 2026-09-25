@@ -17,32 +17,23 @@ type Props = {
 
 const statusColors: Record<string, string> = {
   todo: "#e2e8f0",
-  "in-progress": "#d2e0f4",
-  done: "#def2ed",
+  "in-progress": "#c4d5ed",
+  done: "#c1ddd6",
 };
 
 const StatusBar = (props: BarShapeProps) => {
   const status = String(props.payload?.name ?? "");
 
-  return (
-    <Rectangle
-      {...props}
-      fill={statusColors[status] ?? "#e2e8f0"}
-    />
-  );
+  return <Rectangle {...props} fill={statusColors[status] ?? "#e2e8f0"} />;
 };
 
 const TodoAnalyticStatus = ({ status }: Props) => {
   return (
     <div className="min-w-0 rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5">
-        <h2 className="font-semibold text-text">
-          Todos by status
-        </h2>
+        <h2 className="font-semibold text-text">Todos by status</h2>
 
-        <p className="text-sm text-text-secondary">
-          Current task distribution
-        </p>
+        <p className="text-sm text-text-secondary">Current task distribution</p>
       </div>
 
       <div className="h-72 text-text-secondary">
@@ -90,11 +81,7 @@ const TodoAnalyticStatus = ({ status }: Props) => {
               }}
             />
 
-            <Bar
-              dataKey="value"
-              radius={[8, 8, 0, 0]}
-              shape={StatusBar}
-            />
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} shape={StatusBar} />
           </BarChart>
         </ResponsiveContainer>
       </div>
