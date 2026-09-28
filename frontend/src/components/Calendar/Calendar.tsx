@@ -5,59 +5,112 @@ import WeekDays from "./WeekDays/WeekDays";
 import CalendarCell from "./CalendarGrid/CalendarCell/CalendarCell";
 import { createCalendarCells } from "./calendarUtils";
 
-const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+const isSameDate = (firstDate: Date, secondDate: Date) => {
+  return (
+    firstDate.getFullYear() === secondDate.getFullYear() &&
+    firstDate.getMonth() === secondDate.getMonth() &&
+    firstDate.getDate() === secondDate.getDate()
+  );
+};
+export type CalendarVariant = "default" | "picker";
+type CalendarProps = {
+  variant?: CalendarVariant;
+  value: Date;
+  onChange: (date: Date) => void;
+};
 
-  const changeYear = (year: number) => {
-    const newDate = new Date(currentDate);
+const Calendar = ({
+  variant = "default",
+  value,
+  onChange,
+}: CalendarProps) => {
+  const [viewDate, setViewDate] = useState(new Date());
+
+
+  const handleYearChange = (year: number) => {
+    const newDate = new Date(viewDate);
+
     newDate.setFullYear(year);
-    setCurrentDate(newDate);
+
+    setViewDate(newDate);
   };
 
-  const switchMonth = (amount: number) => {
-    const newDate = new Date(currentDate);
+  const handleMonthChange = (amount: number) => {
+    const newDate = new Date(viewDate);
+
     newDate.setMonth(newDate.getMonth() + amount);
-    setCurrentDate(newDate);
+
+    setViewDate(newDate);
+  };
+
+const handleDateSelect = (date: Date) => {
+  const newDate = new Date(date);
+
+  onChange(newDate);
+  setViewDate(newDate);
+};
+  const handleToday = () => {
+    const today = new Date();
+
+    onChange(today);
+    setViewDate(today);
   };
 
   const { previousMonthCells, currentMonthCells, nextMonthCells } =
-    createCalendarCells(currentDate);
+    createCalendarCells(viewDate);
 
   return (
-    <div>
+    <div
+      className={
+        variant === "picker"
+          ? "w-80 rounded-2xl border border-gray-200 bg-white shadow-lg p-3 box-border"
+          : "w-full"
+      }
+    >
       <CalendarHeader
-        onChangeYear={changeYear}
-        currentDate={currentDate}
-        onPreviousMonth={() => switchMonth(-1)}
-        onNextMonth={() => switchMonth(1)}
-        onToday={() => setCurrentDate(new Date())}
+        variant={variant}
+        currentDate={viewDate}
+        onChangeYear={handleYearChange}
+        onPreviousMonth={() => handleMonthChange(-1)}
+        onNextMonth={() => handleMonthChange(1)}
+        onToday={handleToday}
       />
 
       <WeekDays />
 
       <CalendarGrid>
         <>
-          {previousMonthCells.map((day) => (
+          {previousMonthCells.map((date) => (
             <CalendarCell
-              key={`prev-${day}`}
+              key={`prev-${date.getTime()}`}
               type="adjacent"
-              onClick={() => switchMonth(-1)}
+              date={date}
+              onClick={() => handleDateSelect(date)}
             >
-              {day}
+              {date.getDate()}
             </CalendarCell>
           ))}
 
-          {currentMonthCells.map((day) => (
-            <CalendarCell key={`current-${day}`}>{day}</CalendarCell>
+          {currentMonthCells.map((date) => (
+            <CalendarCell
+              key={`current-${date.getTime()}`}
+              date={date}
+             isActive={isSameDate(value, date)}
+              onClick={() => handleDateSelect(date)}
+              calendarVariant={variant}
+            >
+              {date.getDate()}
+            </CalendarCell>
           ))}
 
-          {nextMonthCells.map((day) => (
+          {nextMonthCells.map((date) => (
             <CalendarCell
-              key={`next-${day}`}
+              key={`next-${date.getTime()}`}
               type="adjacent"
-              onClick={() => switchMonth(1)}
+              date={date}
+              onClick={() => handleDateSelect(date)}
             >
-              {day}
+              {date.getDate()}
             </CalendarCell>
           ))}
         </>

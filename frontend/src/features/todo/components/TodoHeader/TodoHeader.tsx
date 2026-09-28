@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Button from "../../../../components/buttons/Button/Button";
+
 import Modal from "../../../../components/modals/Modal/Modal";
 import TodoForm from "../TodoForm/TodoForm";
+import Button from "../../../../components/buttons/Button/Button";
 
 // import { useTodo } from "../../store/todo.store";
 

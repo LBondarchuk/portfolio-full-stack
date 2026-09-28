@@ -1,15 +1,21 @@
 import { motion } from "motion/react";
+import type { CalendarVariant } from "../../Calendar";
 
 type CalendarCellProps = {
   type?: "current" | "adjacent";
   children: React.ReactNode;
-  onClick?:()=> void
+  onClick?: () => void;
+  isActive?: boolean;
+  date: Date
+  calendarVariant?: CalendarVariant 
 };
 
 const CalendarCell = ({
   type = "current",
   children,
   onClick,
+  isActive = false,
+  calendarVariant,
 }: CalendarCellProps) => {
   const isAdjacent = type === "adjacent";
 
@@ -23,8 +29,6 @@ const CalendarCell = ({
       whileTap={{
         scale: 0.97,
       }}
-
-  
       transition={{
         type: "spring",
         stiffness: 400,
@@ -55,9 +59,20 @@ const CalendarCell = ({
               `
           }
 
-          group-hover:border-orange-300
-          group-hover:shadow-lg
-          group-hover:shadow-orange-900/10
+          ${
+            isActive
+              ? `
+                border-orange-400
+                bg-orange-100
+                shadow-md
+                shadow-orange-900/10
+              `
+              : `
+                group-hover:border-orange-300
+                group-hover:shadow-lg
+                group-hover:shadow-orange-900/10
+              `
+          }
         `}
       >
         <div
@@ -75,39 +90,37 @@ const CalendarCell = ({
           "
         />
 
-      
         <span
           className={`
-            relative 
+            relative z-10
             text-sm font-semibold
             transition-transform duration-300
             group-hover:scale-110
 
             ${
-              isAdjacent
-                ? "text-gray-400"
-                : "text-gray-700"
+              isActive
+                ? "text-orange-700"
+                : isAdjacent
+                  ? "text-gray-400"
+                  : "text-gray-700"
             }
           `}
         >
           {children}
         </span>
 
-        {!isAdjacent && (
+        {isActive && ( calendarVariant !== "picker")&& (
           <span
             className="
-              absolute
-              bottom-3
-              h-1.5
-              w-1.5
-              rounded-full
-              bg-orange-400
-              opacity-0
-              scale-50
-              transition-all duration-300
-              group-hover:scale-100
-              group-hover:opacity-100
-            "
+    absolute
+    bottom-3
+    left-1/2
+    h-1.5
+    w-1.5
+    -translate-x-1/2
+    rounded-full
+    bg-orange-500
+  "
           />
         )}
       </div>

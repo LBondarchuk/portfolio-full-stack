@@ -2,13 +2,19 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import ArrowDownIcon from "../../../Icons/ArrowDown";
 import Button from "../../../buttons/Button/Button";
+import type { CalendarVariant } from "../../Calendar";
 
 type YearSelectorProps = {
   currentDate: Date;
   onChangeYear: (year: number) => void;
+  variant?: CalendarVariant;
 };
 
-const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
+const YearSelector = ({
+  currentDate,
+  onChangeYear,
+  variant,
+}: YearSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentYear = currentDate.getFullYear();
@@ -75,12 +81,12 @@ const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
                 stiffness: 400,
                 damping: 25,
               }}
-              className="
+              className={`
                 absolute
-                left-1/2
+               
                 mt-2
                 w-64
-                -translate-x-1/2
+                
                 rounded-2xl
                 border border-gray-200/70
                 bg-white/95
@@ -88,17 +94,18 @@ const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
                 shadow-xl
                 shadow-gray-900/10
                 backdrop-blur-md
-              "
+                ${variant === "picker" ? "left-1/5" : " left-1/5 sm:-translate-x-1/2"}
+              `}
             >
               <div className="mb-3 flex items-center justify-between">
-                <Button variant="ghost"  onClick={() => changeYearRange(-1)}>
+                <Button variant="ghost" onClick={() => changeYearRange(-1)}>
                   <ArrowDownIcon className="h-4 w-4 rotate-90" />
                 </Button>
                 <span className="font-semibold text-gray-800">
                   {startYear} – {startYear + 9}
                 </span>
 
-              <Button variant="ghost"  onClick={() => changeYearRange(1)}>
+                <Button variant="ghost" onClick={() => changeYearRange(1)}>
                   <ArrowDownIcon className="h-4 w-4 -rotate-90" />
                 </Button>
               </div>
@@ -118,6 +125,7 @@ const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
                         px-3 py-2
                         text-sm font-medium
                         transition-colors
+                        cursor-pointer
                         ${
                           isCurrentYear
                             ? `
@@ -145,7 +153,6 @@ const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
                 variant="ghost"
                 className="w-full  mt-3"
                 onClick={() => setIsOpen(false)}
-    
               >
                 Close
               </Button>
