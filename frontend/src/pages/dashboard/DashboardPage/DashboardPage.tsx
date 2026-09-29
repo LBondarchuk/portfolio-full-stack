@@ -8,7 +8,7 @@ const DashboardPage = () => {
   return (
     <div className="">
      <Calendar
-    variant="picker"
+    // variant="picker"
     value={selectedDate}
     onChange={setSelectedDate}
   />

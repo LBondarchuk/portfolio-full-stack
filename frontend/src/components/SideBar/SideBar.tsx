@@ -38,6 +38,10 @@ const SideBar = ({ isOpen }: Props) => {
       linkName: "Game 2048",
       link: "/dashboard/2048",
     },
+    {
+      linkName: "Events",
+      link: "/dashboard/events",
+    },
   ];
 
   const isTodoRoute = location.pathname.startsWith("/dashboard/todo");

@@ -1,5 +1,6 @@
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+
 import ArrowDownIcon from "../../../Icons/ArrowDown";
 import Button from "../../../buttons/Button/Button";
 import type { CalendarVariant } from "../../Calendar";
@@ -13,17 +14,19 @@ type YearSelectorProps = {
 const YearSelector = ({
   currentDate,
   onChangeYear,
-  variant,
 }: YearSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentYear = currentDate.getFullYear();
 
-  const [startYear, setStartYear] = useState(Math.floor(currentYear / 10) * 10);
+  const [startYear, setStartYear] = useState(
+    Math.floor(currentYear / 10) * 10,
+  );
 
-  const years = Array.from({ length: 10 }, (_, index) => {
-    return startYear + index;
-  });
+  const years = Array.from(
+    { length: 10 },
+    (_, index) => startYear + index,
+  );
 
   const changeYearRange = (amount: number) => {
     setStartYear((prev) => prev + amount * 10);
@@ -31,115 +34,138 @@ const YearSelector = ({
 
   const selectYear = (year: number) => {
     onChangeYear(year);
+    setIsOpen(false);
   };
 
   return (
     <div className="relative">
+      {/* Trigger */}
       <motion.button
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.96 }}
+        type="button"
+        whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen((prev) => !prev)}
         className="
-          relative
-          cursor-pointer
-          rounded-xl
-          border border-gray-200
-          bg-gray-50
-          px-4 py-2
-          text-lg font-semibold
-          text-gray-800
-          shadow-sm
+          flex
+          h-9
+          items-center
+          gap-1.5
+          rounded-lg
+          border
+          border-border
+          bg-surface
+          px-3
+          text-sm
+          font-medium
+          text-text
           transition-colors
-          hover:border-orange-200
-          hover:bg-orange-50
-          hover:text-orange-600
+          hover:border-primary/30
+          hover:bg-gray-light
         "
       >
-        {currentYear}
+        <span>{currentYear}</span>
+
+        <ArrowDownIcon
+          className={`
+            size-3.5
+            text-text-secondary
+            transition-transform
+            duration-200
+            ${isOpen ? "rotate-180" : ""}
+          `}
+        />
       </motion.button>
 
       <AnimatePresence>
         {isOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            {/* Outside click */}
+            <div
+              className="fixed inset-0 z-20"
               onClick={() => setIsOpen(false)}
-              className="
-                fixed
-                inset-0
-              "
             />
 
+            {/* Dropdown */}
             <motion.div
-              initial={{ opacity: 0, y: -6, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -6, scale: 0.96 }}
-              transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 25,
+              initial={{
+                opacity: 0,
+                y: -6,
+                scale: 0.97,
               }}
-              className={`
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              exit={{
+                opacity: 0,
+                y: -6,
+                scale: 0.97,
+              }}
+              transition={{
+                duration: 0.15,
+                ease: "easeOut",
+              }}
+              className="
                 absolute
-               
+                right-0
+                top-full
+                z-30
                 mt-2
                 w-64
-                
-                rounded-2xl
-                border border-gray-200/70
-                bg-white/95
+                rounded-xl
+                border
+                border-border
+                bg-surface
                 p-3
-                shadow-xl
-                shadow-gray-900/10
-                backdrop-blur-md
-                ${variant === "picker" ? "left-1/5" : " left-1/5 sm:-translate-x-1/2"}
-              `}
+                shadow-lg
+              "
             >
+              {/* Range header */}
               <div className="mb-3 flex items-center justify-between">
-                <Button variant="ghost" onClick={() => changeYearRange(-1)}>
-                  <ArrowDownIcon className="h-4 w-4 rotate-90" />
+                <Button
+                  variant="ghost"
+                  onClick={() => changeYearRange(-1)}
+                  className="size-8 p-0"
+                >
+                  <ArrowDownIcon className="size-3.5 rotate-90" />
                 </Button>
-                <span className="font-semibold text-gray-800">
+
+                <span className="text-sm font-semibold text-text">
                   {startYear} – {startYear + 9}
                 </span>
 
-                <Button variant="ghost" onClick={() => changeYearRange(1)}>
-                  <ArrowDownIcon className="h-4 w-4 -rotate-90" />
+                <Button
+                  variant="ghost"
+                  onClick={() => changeYearRange(1)}
+                  className="size-8 p-0"
+                >
+                  <ArrowDownIcon className="size-3.5 -rotate-90" />
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              {/* Years */}
+              <div className="grid grid-cols-2 gap-1.5">
                 {years.map((year) => {
                   const isCurrentYear = year === currentYear;
 
                   return (
                     <motion.button
                       key={year}
-                      whileHover={{ scale: 1.03 }}
+                      type="button"
                       whileTap={{ scale: 0.96 }}
                       onClick={() => selectYear(year)}
                       className={`
-                        rounded-xl
-                        px-3 py-2
-                        text-sm font-medium
+                        rounded-lg
+                        px-3
+                        py-2
+                        text-sm
+                        font-medium
                         transition-colors
-                        cursor-pointer
+
                         ${
                           isCurrentYear
-                            ? `
-                              bg-orange-500
-                              text-white
-                              shadow-sm
-                              shadow-orange-500/20
-                            `
-                            : `
-                              bg-gray-50
-                              text-gray-700
-                              hover:bg-orange-50
-                              hover:text-orange-600
-                            `
+                            ? "bg-primary text-white"
+                            : "text-text hover:bg-gray-light"
                         }
                       `}
                     >
@@ -149,13 +175,25 @@ const YearSelector = ({
                 })}
               </div>
 
-              <Button
-                variant="ghost"
-                className="w-full  mt-3"
+              {/* Close */}
+              <button
+                type="button"
                 onClick={() => setIsOpen(false)}
+                className="
+                  mt-3
+                  w-full
+                  rounded-lg
+                  py-2
+                  text-xs
+                  font-medium
+                  text-text-secondary
+                  transition-colors
+                  hover:bg-gray-light
+                  hover:text-text
+                "
               >
                 Close
-              </Button>
+              </button>
             </motion.div>
           </>
         )}
