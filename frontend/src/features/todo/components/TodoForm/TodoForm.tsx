@@ -8,7 +8,7 @@ import type {
 } from "../../types/todo.type";
 import FormField from "../../../../components/form/FormField/FormField";
 import Select from "../../../../components/form/Select/Select";
-import Button from "../buttons/Button/Button";
+import Button from "../../../../components/buttons/Button/Button";
 import Input from "../../../../components/form/Input/Input";
 import { useTodo } from "../../store/todo.store";
 import SelectItem from "../../../../components/form/Select/SelectItem";
@@ -90,7 +90,6 @@ const TodoForm = ({
         {
           ...form,
           ...formSelects,
-     
         },
         closeModal,
       );
