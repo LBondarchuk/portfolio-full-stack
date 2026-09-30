@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import type { Event } from "../../../../types/events.types";
 import EventDetailsHeader from "./EventDetailsHeader/EventDetailsHeader";
 import EventTitle from "./EventTitle/EventTitle";
 import EventInfo from "./EventInfo/EventInfo";
 import Actions from "./Actions/Actions";
+import { useEffect } from "react";
+import { useEvents } from "../../../../store/events.store";
 
 type Props = {
   id: string;
@@ -11,14 +12,12 @@ type Props = {
 };
 
 const EventDetails = ({ id, onClose }: Props) => {
-  const event: Event = {
-    id: "1",
-    title: "Workout",
-    date: "2026-09-29",
-    startTime: "09:00",
-    endTime: "10:00",
-    location: "Gym",
-  };
+  const { getEvent, event } = useEvents();
+  useEffect(() => {
+    getEvent(id);
+  }, [getEvent, id]);
+
+  if (!event) return;
 
   return (
     <motion.aside

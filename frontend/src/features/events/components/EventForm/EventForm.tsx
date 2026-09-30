@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import FormField from "../../../../components/form/FormField/FormField";
 import Input from "../../../../components/form/Input/Input";
@@ -6,43 +7,100 @@ import SelectItem from "../../../../components/form/Select/SelectItem";
 import Button from "../../../../components/buttons/Button/Button";
 import TimePicker from "../../../../components/form/TimePicker/TimePicker";
 import DatePicker from "../../../../components/form/DatePicker/DatePicker";
-import type { CreateEvent, EventPriority } from "../../types/events.types";
+import type {
+  CreateEvent,
+  EventPriority,
+} from "../../types/events.types";
 import { useEvents } from "../../store/events.store";
+import { useSearchParams } from "react-router";
+import { formatDateParam, parseDateParam } from "../../utils/date";
 
 type Props = {
   onClose: () => void;
+  defaultValue?: CreateEvent;
 };
 
-const defaultForm: CreateEvent = {
-  title: "",
-  startTime: "08:00",
-  endTime: "22:00",
-  date: new Date().toISOString(),
-  priority: "medium",
-};
-const colors: EventPriority[] = ["low", "medium", "high"];
+const priorities: EventPriority[] = ["low", "medium", "high"];
 
-const CreateEventForm = ({ onClose }: Props) => {
+const getToday = () => {
+  return formatDateParam(new Date());
+};
+
+const EventForm = ({ onClose, defaultValue }: Props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const isEditMode = Boolean(defaultValue);
+
+  const dateParam = searchParams.get("date");
+
+  const initialForm: CreateEvent = defaultValue ?? {
+    title: "",
+    startTime: "09:00",
+    endTime: "10:00",
+    date: dateParam || getToday(),
+    priority: "medium",
+  };
+
+  const [form, setForm] = useState<CreateEvent>(initialForm);
+  const [isPriorityOpen, setIsPriorityOpen] = useState(false);
+
   const addEvent = useEvents((state) => state.addEvent);
-  const [isColorOpen, setIsColorOpen] = useState(false);
-  const [form, setForm] = useState<CreateEvent>(defaultForm);
+  const updateEvent = useEvents((state) => state.updateEvent);
 
-  const handleCreate = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const setValue = <K extends keyof CreateEvent>(
+    key: K,
+    value: CreateEvent[K],
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!isEditMode) {
       addEvent(form);
-      setForm(defaultForm)
+      onClose();
+      return;
+    }
+
+    const id = searchParams.get("id");
+
+    if (!id) return;
+
+    const handleOnSuccess = () => {
+      const oldDate = defaultValue?.date;
+      const newDate = form.date;
+
+      if (oldDate !== newDate) {
+        setSearchParams((prev) => {
+          const next = new URLSearchParams(prev);
+
+          next.set("date", newDate);
+
+          return next;
+        });
+      }
+    };
+
+    updateEvent(id, form, handleOnSuccess);
+
     onClose();
   };
 
   return (
-    <form className="grid gap-6" onSubmit={handleCreate}>
+    <form className="grid gap-6" onSubmit={handleSubmit}>
       <div>
         <h2 className="text-xl font-semibold tracking-tight text-text">
-          Create event
+          {isEditMode ? "Edit event" : "Create event"}
         </h2>
 
         <p className="mt-1 text-sm text-text-secondary">
-          Add a new event to your calendar.
+          {isEditMode
+            ? "Update the event details."
+            : "Add a new event to your calendar."}
         </p>
       </div>
 
@@ -54,80 +112,82 @@ const CreateEventForm = ({ onClose }: Props) => {
             type="text"
             placeholder="e.g. Team meeting"
             value={form.title}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, title: e.target.value }))
-            }
+            onChange={(e) => setValue("title", e.target.value)}
+            required
           />
         </FormField>
 
-        <FormField name="date" title="Date">
-          <DatePicker
-            value={new Date(form.date)}
-            onChange={(date) =>
-              setForm((prev) => ({ ...prev, date: date.toISOString() }))
-            }
-          />
-        </FormField>
+        {isEditMode && (
+          <FormField name="date" title="Date">
+            <DatePicker
+              value={parseDateParam(form.date)}
+              onChange={(date) => {
+                setValue("date", formatDateParam(date));
+              }}
+            />
+          </FormField>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <FormField name="startTime" title="Start time">
             <TimePicker
               value={form.startTime}
-              onChange={(startTime) =>
-                setForm((prev) => ({ ...prev, startTime }))
-              }
+              onChange={(value) => setValue("startTime", value)}
             />
           </FormField>
 
           <FormField name="endTime" title="End time">
             <TimePicker
               value={form.endTime}
-              onChange={(endTime) => setForm((prev) => ({ ...prev, endTime }))}
+              onChange={(value) => setValue("endTime", value)}
             />
           </FormField>
         </div>
 
         <FormField name="location" title="Location">
           <Input
-            value={form.location}
-            onChange={(e) => {
-              setForm((prev) => ({ ...prev, location: e.target.value }));
-            }}
             id="location"
             name="location"
             type="text"
             placeholder="e.g. Office, Gym..."
+            value={form.location ?? ""}
+            onChange={(e) => setValue("location", e.target.value)}
           />
         </FormField>
 
         <FormField name="attendees" title="Attendees">
           <Input
-            value={form.attendees}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, attendees: +e.target.value }))
-            }
             id="attendees"
             name="attendees"
             type="number"
             min={0}
             placeholder="0"
+            value={form.attendees ?? ""}
+            onChange={(e) =>
+              setValue(
+                "attendees",
+                e.target.value === ""
+                  ? undefined
+                  : Number(e.target.value),
+              )
+            }
           />
         </FormField>
 
-        <FormField name="color" title="Color">
+        <FormField name="priority" title="Priority">
           <Select
             value={form.priority}
-            isOpen={isColorOpen}
-            onOpen={() => setIsColorOpen(true)}
-            onClose={() => setIsColorOpen(false)}
+            isOpen={isPriorityOpen}
+            onOpen={() => setIsPriorityOpen(true)}
+            onClose={() => setIsPriorityOpen(false)}
           >
-            {colors.map((item) => (
+            {priorities.map((item) => (
               <SelectItem
                 key={item}
                 isSelected={form.priority === item}
                 onClick={() => {
-                  setForm((prev) => ({ ...prev, priority: item }));
-                  setIsColorOpen(false);
+                  setValue("priority", item);
+                  setIsPriorityOpen(false);
                 }}
               >
                 <div className="flex items-center gap-2">
@@ -150,13 +210,12 @@ const CreateEventForm = ({ onClose }: Props) => {
 
         <FormField name="description" title="Description">
           <textarea
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, description: e.target.value }))
-            }
             id="description"
             name="description"
             rows={4}
             placeholder="Add some details..."
+            value={form.description ?? ""}
+            onChange={(e) => setValue("description", e.target.value)}
             className="
               w-full
               resize-none
@@ -183,10 +242,12 @@ const CreateEventForm = ({ onClose }: Props) => {
           Cancel
         </Button>
 
-        <Button type="submit">Create event</Button>
+        <Button type="submit">
+          {isEditMode ? "Save changes" : "Create event"}
+        </Button>
       </div>
     </form>
   );
 };
 
-export default CreateEventForm;
+export default EventForm;
