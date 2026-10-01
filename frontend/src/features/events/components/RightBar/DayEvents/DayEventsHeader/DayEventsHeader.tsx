@@ -1,7 +1,7 @@
 import { FiCalendar, FiPlus } from "react-icons/fi";
 import { useState } from "react";
 import Modal from "../../../../../../components/modals/Modal/Modal";
-import CreateEventForm from "../../../CreateEventForm/CreateEventForm";
+import EventForm from "../../../EventForm/EventForm";
 import Button from "../../../../../../components/buttons/Button/Button";
 type Props = {
   date: Date;
@@ -43,13 +43,16 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
         </div>
 
         {eventsLength > 0 && (
-          <Button className="px-2! cursor-pointer" onClick={() => setFormOpen(true)}>
+          <Button
+            className="px-2! cursor-pointer"
+            onClick={() => setFormOpen(true)}
+          >
             <FiPlus className="size-4" />
           </Button>
         )}
       </div>
       <Modal isOpen={isFormOpen} onClose={() => setFormOpen(false)}>
-        <CreateEventForm onClose={() => setFormOpen(false)} />
+        <EventForm onClose={() => setFormOpen(false)} />
       </Modal>
     </div>
   );

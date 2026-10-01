@@ -1,4 +1,4 @@
-import Todo from "../models/Todo.model.js";
+import Todo from "../../models/Todo.model.js";
 
 export const createTodos = async (req, res) => {
   try {
@@ -12,7 +12,6 @@ export const createTodos = async (req, res) => {
    
 
     const todo = await Todo.create(data);
-    console.log(todo)
 
     const { _id, ...rest } = todo.toObject();
 

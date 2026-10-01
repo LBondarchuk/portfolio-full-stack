@@ -109,20 +109,7 @@ const CalendarCell = ({
           {children}
         </span>
 
-        {isActive && ( calendarVariant !== "picker")&& (
-          <span
-            className="
-    absolute
-    bottom-3
-    left-1/2
-    h-1.5
-    w-1.5
-    -translate-x-1/2
-    rounded-full
-    bg-orange-500
-  "
-          />
-        )}
+   
       </div>
     </motion.div>
   );

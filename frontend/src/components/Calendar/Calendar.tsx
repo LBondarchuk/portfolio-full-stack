@@ -12,20 +12,23 @@ const isSameDate = (firstDate: Date, secondDate: Date) => {
     firstDate.getDate() === secondDate.getDate()
   );
 };
+
 export type CalendarVariant = "default" | "picker";
+
 type CalendarProps = {
   variant?: CalendarVariant;
   value: Date;
   onChange: (date: Date) => void;
+  renderCell?: (date: Date) => React.ReactNode;
 };
 
 const Calendar = ({
   variant = "default",
   value,
   onChange,
+  renderCell,
 }: CalendarProps) => {
   const [viewDate, setViewDate] = useState(new Date());
-
 
   const handleYearChange = (year: number) => {
     const newDate = new Date(viewDate);
@@ -43,12 +46,13 @@ const Calendar = ({
     setViewDate(newDate);
   };
 
-const handleDateSelect = (date: Date) => {
-  const newDate = new Date(date);
+  const handleDateSelect = (date: Date) => {
+    const newDate = new Date(date);
 
-  onChange(newDate);
-  setViewDate(newDate);
-};
+    onChange(newDate);
+    setViewDate(newDate);
+  };
+
   const handleToday = () => {
     const today = new Date();
 
@@ -56,14 +60,35 @@ const handleDateSelect = (date: Date) => {
     setViewDate(today);
   };
 
-  const { previousMonthCells, currentMonthCells, nextMonthCells } =
-    createCalendarCells(viewDate);
+  const {
+    previousMonthCells,
+    currentMonthCells,
+    nextMonthCells,
+  } = createCalendarCells(viewDate);
+
+  const renderCalendarCell = (
+    date: Date,
+    type: "current" | "adjacent",
+  ) => {
+    return (
+      <CalendarCell
+        key={`${type}-${date.getTime()}`}
+        type={type === "adjacent" ? "adjacent" : undefined}
+        date={date}
+        isActive={isSameDate(value, date)}
+        onClick={() => handleDateSelect(date)}
+        calendarVariant={variant}
+      >
+        {renderCell ? renderCell(date) : date.getDate()}
+      </CalendarCell>
+    );
+  };
 
   return (
     <div
       className={
         variant === "picker"
-          ? "w-80 rounded-2xl border border-gray-200 bg-white shadow-lg p-3 box-border"
+          ? "box-border w-80 rounded-2xl border border-gray-200 bg-white p-3 shadow-lg"
           : "w-full"
       }
     >
@@ -79,41 +104,17 @@ const handleDateSelect = (date: Date) => {
       <WeekDays />
 
       <CalendarGrid>
-        <>
-          {previousMonthCells.map((date) => (
-            <CalendarCell
-              key={`prev-${date.getTime()}`}
-              type="adjacent"
-              date={date}
-              onClick={() => handleDateSelect(date)}
-            >
-              {date.getDate()}
-            </CalendarCell>
-          ))}
+        {previousMonthCells.map((date) =>
+          renderCalendarCell(date, "adjacent"),
+        )}
 
-          {currentMonthCells.map((date) => (
-            <CalendarCell
-              key={`current-${date.getTime()}`}
-              date={date}
-             isActive={isSameDate(value, date)}
-              onClick={() => handleDateSelect(date)}
-              calendarVariant={variant}
-            >
-              {date.getDate()}
-            </CalendarCell>
-          ))}
+        {currentMonthCells.map((date) =>
+          renderCalendarCell(date, "current"),
+        )}
 
-          {nextMonthCells.map((date) => (
-            <CalendarCell
-              key={`next-${date.getTime()}`}
-              type="adjacent"
-              date={date}
-              onClick={() => handleDateSelect(date)}
-            >
-              {date.getDate()}
-            </CalendarCell>
-          ))}
-        </>
+        {nextMonthCells.map((date) =>
+          renderCalendarCell(date, "adjacent"),
+        )}
       </CalendarGrid>
     </div>
   );
