@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-
 import ArrowDownIcon from "../../../Icons/ArrowDown";
 import Button from "../../../buttons/Button/Button";
 import type { CalendarVariant } from "../../Calendar";
@@ -11,22 +10,14 @@ type YearSelectorProps = {
   variant?: CalendarVariant;
 };
 
-const YearSelector = ({
-  currentDate,
-  onChangeYear,
-}: YearSelectorProps) => {
+const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentYear = currentDate.getFullYear();
 
-  const [startYear, setStartYear] = useState(
-    Math.floor(currentYear / 10) * 10,
-  );
+  const [startYear, setStartYear] = useState(Math.floor(currentYear / 10) * 10);
 
-  const years = Array.from(
-    { length: 10 },
-    (_, index) => startYear + index,
-  );
+  const years = Array.from({ length: 10 }, (_, index) => startYear + index);
 
   const changeYearRange = (amount: number) => {
     setStartYear((prev) => prev + amount * 10);
@@ -39,7 +30,6 @@ const YearSelector = ({
 
   return (
     <div className="relative">
-      {/* Trigger */}
       <motion.button
         type="button"
         whileTap={{ scale: 0.97 }}
@@ -62,7 +52,7 @@ const YearSelector = ({
           hover:bg-gray-light
         "
       >
-        <span>{currentYear}</span>
+        <span className="cursor-pointer">{currentYear}</span>
 
         <ArrowDownIcon
           className={`
@@ -78,13 +68,11 @@ const YearSelector = ({
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Outside click */}
             <div
               className="fixed inset-0 z-20"
               onClick={() => setIsOpen(false)}
             />
 
-            {/* Dropdown */}
             <motion.div
               initial={{
                 opacity: 0,
@@ -120,12 +108,12 @@ const YearSelector = ({
                 shadow-lg
               "
             >
-              {/* Range header */}
+            
               <div className="mb-3 flex items-center justify-between">
                 <Button
                   variant="ghost"
                   onClick={() => changeYearRange(-1)}
-                  className="size-8 p-0"
+                  className=" px-2!"
                 >
                   <ArrowDownIcon className="size-3.5 rotate-90" />
                 </Button>
@@ -137,13 +125,12 @@ const YearSelector = ({
                 <Button
                   variant="ghost"
                   onClick={() => changeYearRange(1)}
-                  className="size-8 p-0"
+                  className=" px-2!"
                 >
                   <ArrowDownIcon className="size-3.5 -rotate-90" />
                 </Button>
               </div>
 
-              {/* Years */}
               <div className="grid grid-cols-2 gap-1.5">
                 {years.map((year) => {
                   const isCurrentYear = year === currentYear;
@@ -175,7 +162,6 @@ const YearSelector = ({
                 })}
               </div>
 
-              {/* Close */}
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
@@ -190,6 +176,7 @@ const YearSelector = ({
                   transition-colors
                   hover:bg-gray-light
                   hover:text-text
+                  cursor-pointer
                 "
               >
                 Close

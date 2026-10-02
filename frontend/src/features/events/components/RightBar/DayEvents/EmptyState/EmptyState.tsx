@@ -2,10 +2,11 @@ import { motion } from "motion/react";
 import { FiCalendar, FiPlus } from "react-icons/fi";
 import Button from "../../../../../../components/buttons/Button/Button";
 import Modal from "../../../../../../components/modals/Modal/Modal";
-import CreateEventForm from "../../../CreateEventForm/CreateEventForm";
+import CreateEventForm from "../../../EventForm/EventForm";
 import { useState } from "react";
+
 const EmptyState = () => {
-   const [isFormOpen, setFormOpen] = useState(false)
+  const [isFormOpen, setFormOpen] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -22,15 +23,15 @@ const EmptyState = () => {
         This day is completely free. Add an event to start planning.
       </p>
 
-      <Button  onClick={()=> setFormOpen(true)}>
+      <Button onClick={() => setFormOpen(true)}>
         <div className="flex items-center content-center gap-1">
           <FiPlus className="size-3.5" />
           <span>Add event</span>
         </div>
       </Button>
 
-        <Modal isOpen={ isFormOpen} onClose={()=>setFormOpen(false)}>
-        <CreateEventForm onClose={()=> setFormOpen(false)}/>
+      <Modal isOpen={isFormOpen} onClose={() => setFormOpen(false)}>
+        <CreateEventForm onClose={() => setFormOpen(false)} />
       </Modal>
     </motion.div>
   );

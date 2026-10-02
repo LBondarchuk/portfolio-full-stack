@@ -3,6 +3,7 @@ import { useState } from "react";
 import Modal from "../../../../components/modals/Modal/Modal";
 import TodoForm from "../TodoForm/TodoForm";
 import Button from "../../../../components/buttons/Button/Button";
+import PageHeader from "../../../../components/PageHeader/PageHeader";
 
 // import { useTodo } from "../../store/todo.store";
 
@@ -18,13 +19,10 @@ const TodoHeader = () => {
   return (
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-text">Todo</h1>
-
-          <p className="text-base text-text-secondary">
-            Manage your tasks and stay organized.
-          </p>
-        </div>
+        <PageHeader
+          title="To Do"
+          description="Manage your tasks and stay organized."
+        />
 
         <div className="flex flex-wrap gap-3 sm:justify-end">
           {/* <Button onClick={getTestTodos}>

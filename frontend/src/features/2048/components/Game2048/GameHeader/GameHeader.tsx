@@ -1,4 +1,5 @@
 import Button from "../../../../../components/buttons/Button/Button";
+import PageHeader from "../../../../../components/PageHeader/PageHeader";
 
 type Props = {
   restart: () => void;
@@ -6,15 +7,14 @@ type Props = {
 const GameHeader = ({ restart }: Props) => {
   return (
     <div className="mb-8 grid w-full grid-cols-[1fr_auto] gap-2">
-      <div>
-        <h1 className="md:text-3xl font-bold text-text"> 2048</h1>
+      <PageHeader
+        title="2048"
+        description="Play the classic puzzle game and beat your high score."
+      />
 
-        <p className="text-base text-text-secondary">
-          Join the numbers and get to 2048!
-        </p>
-      </div>
-
-      <Button onClick={restart} className="text-nowrap h-fit ">New Game</Button>
+      <Button onClick={restart} className="text-nowrap h-fit ">
+        New Game
+      </Button>
     </div>
   );
 };

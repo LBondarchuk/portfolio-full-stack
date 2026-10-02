@@ -19,6 +19,7 @@ import {
   statuses,
 } from "../../constants/todo.constants";
 import Loader from "../../../../components/Loader/Loader";
+import { toast } from "react-toastify";
 
 type FormFilelds = Pick<CreateTodo, "title" | "description">;
 type SelectName = "category" | "status" | "priority";
@@ -73,32 +74,44 @@ const TodoForm = ({
       formSelects.priority !== initialValues.priority
     : form.title.trim() !== "";
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
 
+
+const handleSubmitForm = async (
+  event: React.SubmitEvent<HTMLFormElement>,
+) => {
+  event.preventDefault();
+
+  try {
     if (initialValues) {
-      editTodo(
-        {
-          id: initialValues.id,
-          ...form,
-          ...formSelects,
-        },
-        closeModal,
-      );
+      await editTodo({
+        id: initialValues.id,
+        ...form,
+        ...formSelects,
+      });
     } else {
-      createTodo(
-        {
-          ...form,
-          ...formSelects,
-        },
-        closeModal,
-      );
+      await createTodo({
+        ...form,
+        ...formSelects,
+      });
     }
 
     setForm(defaultInputs);
     setFormSelects(defaultSelects);
-  };
+    closeModal();
 
+    toast.success(
+      initialValues
+        ? "Todo updated successfully"
+        : "Todo created successfully",
+    );
+  } catch {
+    toast.error(
+      initialValues
+        ? "Failed to update todo"
+        : "Failed to create todo",
+    );
+  }
+};
   return (
     <form className="grid gap-4" onSubmit={handleSubmitForm}>
       <FormField name="title" title="Titel">

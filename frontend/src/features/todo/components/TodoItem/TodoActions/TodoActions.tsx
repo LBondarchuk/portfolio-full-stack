@@ -8,6 +8,7 @@ import EditIcon from "../../../../../components/Icons/Edit";
 import DeleteIcon from "../../../../../components/Icons/Delete";
 import ConfirmModal from "../../../../../components/modals/ConfirmModal/ConfirmModal";
 import Button from "../../../../../components/buttons/Button/Button";
+import { toast } from "react-toastify";
 
 type Props = {
   todo: Todo;
@@ -20,6 +21,17 @@ const TodoActions = ({ todo }: Props) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { createdAt, dueDate, ...itemToEdit } = todo;
+
+  const handleDelete = async () => {
+  try {
+    await deleteTodo(todo.id);
+
+    setConfirmModalOpen(false);
+    toast.success("Todo deleted successfully");
+  } catch {
+    toast.error("Failed to delete todo");
+  }
+};
 
   const isDeleting = loadingIds.includes(todo.id);
   if (isDeleting) {
@@ -70,7 +82,7 @@ const TodoActions = ({ todo }: Props) => {
         confirmText="Delete"
         isLoading={isDeleting}
         onClose={() => setConfirmModalOpen(false)}
-        onConfirm={() => deleteTodo(todo.id)}
+        onConfirm={() => handleDelete()}
       />
     </div>
   );

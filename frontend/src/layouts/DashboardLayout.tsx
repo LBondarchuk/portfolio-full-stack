@@ -9,7 +9,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="grid min-h-[calc(100vh-4rem)] grid-cols-1 lg:grid-cols-[250px_1fr] ">
+      <div className="grid min-h-[calc(100vh-4rem)]   grid-cols-1 lg:grid-cols-[250px_1fr] ">
         <SideBar isOpen={isSidebarOpen} />
 
         <main className="grid grid-rows-[auto_1fr] gap-2 min-h-full bg-background    box-border">

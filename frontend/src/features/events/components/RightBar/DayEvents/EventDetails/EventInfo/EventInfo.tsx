@@ -6,7 +6,7 @@ type Props = {
 };
 const EventInfo = ({ event }: Props) => {
   const formatEventDate = (date: string) => {
-    const [year, month, day] = date.split("-").map(Number);
+    const [year, month, day] = date.split("T")[0].split('-').map(Number);
 
     const eventDate = new Date(year, month - 1, day);
 
