@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import FormField from "../../../../components/form/FormField/FormField";
 import Input from "../../../../components/form/Input/Input";
@@ -7,13 +6,13 @@ import SelectItem from "../../../../components/form/Select/SelectItem";
 import Button from "../../../../components/buttons/Button/Button";
 import TimePicker from "../../../../components/form/TimePicker/TimePicker";
 import DatePicker from "../../../../components/form/DatePicker/DatePicker";
-import type {
-  CreateEvent,
-  EventPriority,
-} from "../../types/events.types";
+import type { CreateEvent, EventPriority } from "../../types/events.types";
 import { useEvents } from "../../store/events.store";
 import { useSearchParams } from "react-router";
 import { formatDateParam, parseDateParam } from "../../utils/date";
+import Loader from "../../../../components/Loader/Loader";
+import { minutesToTime, timeToMinutes } from "../../utils/timeline";
+import { toast } from "react-toastify";
 
 type Props = {
   onClose: () => void;
@@ -46,6 +45,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
 
   const addEvent = useEvents((state) => state.addEvent);
   const updateEvent = useEvents((state) => state.updateEvent);
+  const loading = useEvents((state) => state.loading);
 
   const setValue = <K extends keyof CreateEvent>(
     key: K,
@@ -57,12 +57,16 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
     }));
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
+  try {
     if (!isEditMode) {
-      addEvent(form);
+      await addEvent(form);
+
+      toast.success("Event created successfully");
       onClose();
+
       return;
     }
 
@@ -77,18 +81,25 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
       if (oldDate !== newDate) {
         setSearchParams((prev) => {
           const next = new URLSearchParams(prev);
-
           next.set("date", newDate);
-
           return next;
         });
       }
+
+      onClose();
     };
 
-    updateEvent(id, form, handleOnSuccess);
+    await updateEvent(id, form, handleOnSuccess);
 
-    onClose();
-  };
+    toast.success("Event updated successfully");
+  } catch {
+    toast.error(
+      isEditMode
+        ? "Failed to update event"
+        : "Failed to create event",
+    );
+  }
+};
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit}>
@@ -132,14 +143,32 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
           <FormField name="startTime" title="Start time">
             <TimePicker
               value={form.startTime}
-              onChange={(value) => setValue("startTime", value)}
+              onChange={(value) => {
+                setForm((prev) => {
+                  const start = timeToMinutes(value);
+                  const end = timeToMinutes(prev.endTime);
+
+                  return {
+                    ...prev,
+                    startTime: value,
+                    endTime:
+                      end <= start ? minutesToTime(start + 30) : prev.endTime,
+                  };
+                });
+              }}
             />
           </FormField>
 
           <FormField name="endTime" title="End time">
             <TimePicker
               value={form.endTime}
-              onChange={(value) => setValue("endTime", value)}
+              onChange={(value) => {
+                if (timeToMinutes(value) <= timeToMinutes(form.startTime)) {
+                  return;
+                }
+
+                setValue("endTime", value);
+              }}
             />
           </FormField>
         </div>
@@ -166,9 +195,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
             onChange={(e) =>
               setValue(
                 "attendees",
-                e.target.value === ""
-                  ? undefined
-                  : Number(e.target.value),
+                e.target.value === "" ? undefined : Number(e.target.value),
               )
             }
           />
@@ -243,7 +270,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
         </Button>
 
         <Button type="submit">
-          {isEditMode ? "Save changes" : "Create event"}
+          {loading ? <Loader /> : isEditMode ? "Save changes" : "Create event"}
         </Button>
       </div>
     </form>

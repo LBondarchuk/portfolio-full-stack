@@ -11,9 +11,9 @@ type TodoStore = {
   totalPages: number;
 
   getTodos: (params: URLSearchParams) => Promise<void>;
-  createTodo: (data: CreateTodo, onClose: () => void) => Promise<void>;
+  createTodo: (data: CreateTodo,) => Promise<void>;
   deleteTodo: (id: string) => Promise<void>;
-  editTodo: (data: EditTodo, onClose: () => void) => Promise<void>;
+  editTodo: (data: EditTodo) => Promise<void>;
   createTestTodos: () => Promise<void>;
   getTodoAnalytics: () => Promise<void>;
 };
@@ -48,12 +48,13 @@ export const useTodo = create<TodoStore>((set) => ({
       });
     } catch (error) {
       console.error("Failed to fetch todos:", error);
+      throw error;
     } finally {
       set({ loading: false });
     }
   },
 
-  createTodo: async (data, onClose) => {
+  createTodo: async (data) => {
     set({ loading: true });
 
     try {
@@ -62,10 +63,9 @@ export const useTodo = create<TodoStore>((set) => ({
       set((state) => ({
         todos: [...state.todos, todo],
       }));
-
-      onClose();
     } catch (error) {
       console.error("Failed to create todo:", error);
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -86,34 +86,44 @@ export const useTodo = create<TodoStore>((set) => ({
       }));
     } catch (error) {
       console.error("Failed to delete todo:", error);
+      throw error;
     } finally {
       set((state) => ({
-        loadingIds: state.loadingIds.filter((loadingId) => loadingId !== id),
+        loadingIds: state.loadingIds.filter(
+          (loadingId) => loadingId !== id,
+        ),
       }));
     }
   },
 
-  editTodo: async (data, onClose) => {
+  editTodo: async (data, ) => {
     const { id, ...dataToEdit } = data;
 
-    set((state) => ({ loadingIds: [...state.loadingIds, id] }));
+    set((state) => ({
+      loadingIds: state.loadingIds.includes(id)
+        ? state.loadingIds
+        : [...state.loadingIds, id],
+    }));
 
     try {
       await api.patch(`/todos/${id}`, data);
+
       set((state) => ({
         todos: state.todos.map((item) =>
-          item.id === id ? { ...item, ...dataToEdit } : item,
+          item.id === id
+            ? { ...item, ...dataToEdit }
+            : item,
         ),
       }));
 
-      onClose();
     } catch (error) {
       console.error("Failed to update todo:", error);
+      throw error;
     } finally {
-      set({ loading: false });
       set((state) => ({
-        loading: false,
-        loadingIds: state.loadingIds.filter((item) => item !== id),
+        loadingIds: state.loadingIds.filter(
+          (item) => item !== id,
+        ),
       }));
     }
   },
@@ -130,7 +140,8 @@ export const useTodo = create<TodoStore>((set) => ({
         throw new Error("Failed to create test todos");
       }
 
-      const { todos, totalPages }: GetTodosResponse = await response.json();
+      const { todos, totalPages }: GetTodosResponse =
+        await response.json();
 
       set({
         todos,
@@ -138,16 +149,21 @@ export const useTodo = create<TodoStore>((set) => ({
       });
     } catch (error) {
       console.error("Failed to create test todos:", error);
+      throw error;
     } finally {
       set({ loading: false });
     }
   },
+
   getTodoAnalytics: async () => {
     try {
-      const { data: analytics } = await api<TodoAnalytics>("/todos/analytics");
+      const { data: analytics } =
+        await api.get<TodoAnalytics>("/todos/analytics");
+
       set({ analytics });
     } catch (error) {
       console.error("Failed to get todo analytics:", error);
+      throw error;
     }
   },
 }));

@@ -8,6 +8,7 @@ import { useEvents } from "../../../../../store/events.store";
 import { useSearchParams } from "react-router";
 import Modal from "../../../../../../../components/modals/Modal/Modal";
 import EventForm from "../../../../EventForm/EventForm";
+import { toast } from "react-toastify";
 
 const Actions = () => {
   const [isFormOpen, setFormOpen] = useState(false);
@@ -18,12 +19,20 @@ const Actions = () => {
 
   const { id, ...eventRest } = event;
 
-  const handleDelete = () => {
-    deleteEvent(id, () => setIsDeleteOpen(false));
-    setSearchParams((prev) => {
-      prev.delete("id");
-      return prev;
-    });
+  const handleDelete = async () => {
+    try {
+      await deleteEvent(id, () => setIsDeleteOpen(false));
+
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("id");
+        return next;
+      });
+
+      toast.success("Event deleted successfully");
+    } catch {
+      toast.error("Failed to delete event");
+    }
   };
 
   if (!event) return null;

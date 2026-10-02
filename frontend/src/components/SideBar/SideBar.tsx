@@ -124,8 +124,7 @@ const SideBar = ({ isOpen }: Props) => {
                     <button
                       type="button"
                       onClick={() => {
-                        // тут поки нічого, якщо хочеш
-                        // ручне відкриття/закриття — додамо окремий state
+
                       }}
                       className="ml-1 rounded-md px-2 py-2 text-white hover:bg-primary-hover"
                       aria-label={

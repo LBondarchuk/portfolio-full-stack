@@ -1,20 +1,28 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import ClockIcon from "../../Icons/Clock";
-
 
 type TimePickerProps = {
   value: string;
   onChange: (value: string) => void;
 };
 
-const TimePicker = ({
-  value,
-  onChange,
-}: TimePickerProps) => {
+const TimePicker = ({ value, onChange }: TimePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const activeTimeRef = useRef<HTMLButtonElement | null>(null);
+
   const times = generateTimes();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    requestAnimationFrame(() => {
+      activeTimeRef.current?.scrollIntoView({
+        block: "center",
+      });
+    });
+  }, [isOpen]);
 
   return (
     <div className="relative">
@@ -74,33 +82,38 @@ const TimePicker = ({
                 shadow-lg
               "
             >
-              {times.map((time) => (
-                <button
-                  key={time}
-                  type="button"
-                  onClick={() => {
-                    onChange(time);
-                    setIsOpen(false);
-                  }}
-                  className={`
-                    w-full
-                    rounded-lg
-                    px-3
-                    py-2
-                    text-left
-                    text-sm
-                    transition-colors
-                    cursor-pointer
-                    ${
-                      value === time
-                        ? "bg-primary-light font-medium text-primary"
-                        : "text-text hover:bg-gray-light"
-                    }
-                  `}
-                >
-                  {time}
-                </button>
-              ))}
+              {times.map((time) => {
+                const isActive = value === time;
+
+                return (
+                  <button
+                    key={time}
+                    ref={isActive ? activeTimeRef : null}
+                    type="button"
+                    onClick={() => {
+                      onChange(time);
+                      setIsOpen(false);
+                    }}
+                    className={`
+                      w-full
+                      rounded-lg
+                      px-3
+                      py-2
+                      text-left
+                      text-sm
+                      transition-colors
+                      cursor-pointer
+                      ${
+                        isActive
+                          ? "bg-primary-light font-medium text-primary"
+                          : "text-text hover:bg-gray-light"
+                      }
+                    `}
+                  >
+                    {time}
+                  </button>
+                );
+              })}
             </motion.div>
           </>
         )}
