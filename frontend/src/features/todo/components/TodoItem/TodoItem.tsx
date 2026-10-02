@@ -5,18 +5,23 @@ import TodoActions from "./TodoActions/TodoActions";
 import TodoCheckBox from "./TodoCheckBox/TodoCheckBox";
 import TodoContent from "./TodoContent/TodoContent";
 import TodoModal from "./TodoModal/TodoModal";
+import { toast } from "react-toastify";
 type Props = {
   todo: Todo;
 };
 const TodoItem = ({ todo }: Props) => {
   const { editTodo } = useTodo();
   const [isTodoModalOpen, setTodoModalOpen] = useState(false);
-  const setDone = () => {
-    editTodo(
-      { id: todo.id, status: todo.status === "done" ? "in-progress" : "done" },
-      () => {},
-    );
-  };
+const setDone = async () => {
+  try {
+    await editTodo({
+      id: todo.id,
+      status: todo.status === "done" ? "in-progress" : "done",
+    });
+  } catch {
+    toast.error("Failed to update todo");
+  }
+};
   return (
     <article onClick={()=>{setTodoModalOpen(true)}} className="grid grid-cols-[auto_1fr_auto] gap-4 rounded-xl border border-border bg-surface p-4 shadow-sm cursor-pointer">
       <TodoCheckBox checked={todo.status === "done"} onChange={setDone} />

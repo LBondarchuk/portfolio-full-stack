@@ -4,6 +4,7 @@ import Button from "../../../../../../components/buttons/Button/Button";
 import Modal from "../../../../../../components/modals/Modal/Modal";
 import CreateEventForm from "../../../EventForm/EventForm";
 import { useState } from "react";
+
 const EmptyState = () => {
   const [isFormOpen, setFormOpen] = useState(false);
   return (

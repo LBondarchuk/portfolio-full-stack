@@ -5,6 +5,7 @@ import TodoList from "../../../features/todo/components/TodoList/TodoList";
 import { useTodo } from "../../../features/todo/store/todo.store";
 import { useEffect } from "react";
 import Pagination from "../../../components/Pagination/Pagination";
+import { toast } from "react-toastify";
 
 const TodoPage = () => {
   const { getTodos, totalPages, } = useTodo();
@@ -12,9 +13,17 @@ const TodoPage = () => {
   const pageParam = searchParams.get("page");
   const page = pageParam ? Number(pageParam) : 1;
 
-  useEffect(() => {
-    getTodos(searchParams);
-  }, [getTodos, searchParams]);
+useEffect(() => {
+  const loadTodos = async () => {
+    try {
+      await getTodos(searchParams);
+    } catch {
+      toast.error("Failed to load todos");
+    }
+  };
+
+  loadTodos();
+}, [getTodos, searchParams]);
 
   return (
     <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2 md:gap-4 lg:gap-10">

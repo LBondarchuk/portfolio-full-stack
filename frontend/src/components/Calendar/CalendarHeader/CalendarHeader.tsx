@@ -81,7 +81,7 @@ const CalendarHeader = ({
 
   
         {!isPicker && (
-          <div className="flex shrink-0 items-center justify-between gap-2 w-full md:w-fit">
+          <div className="flex shrink-0 items-center justify-between gap-2 w-full md:w-fit ">
             <YearSelector
               currentDate={currentDate}
               onChangeYear={onChangeYear}

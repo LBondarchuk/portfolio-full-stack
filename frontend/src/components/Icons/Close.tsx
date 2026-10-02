@@ -7,7 +7,7 @@ const CloseIcon = ({ onClick,className }: IconProps) => {
       type="button"
       onClick={onClick}
       aria-label="Close modal"
-      className={`grid h-9 w-9 place-items-center rounded-md text-text-secondary transition-colors duration-200 hover:bg-gray-light hover:text-text  ${className}`}
+      className={`grid h-9 w-9 place-items-center rounded-md text-text-secondary transition-colors duration-200 hover:bg-gray-light hover:text-text cursor-pointer  ${className}`}
     >
       <IoCloseSharp className="h-5 w-5" />
     </button>

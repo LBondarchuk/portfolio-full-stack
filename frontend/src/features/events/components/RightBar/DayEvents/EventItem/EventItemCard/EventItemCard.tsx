@@ -1,5 +1,6 @@
 import { FiClock, FiMapPin } from "react-icons/fi";
 import type { EventListItem } from "../../../../../types/events.types";
+import { getDuration } from "../../../../../utils/timeline";
 
 type Props = {
   event: EventListItem;
@@ -11,24 +12,7 @@ type Props = {
 };
 
 const EventItemCard = ({ event, accent }: Props) => {
-  const getDuration = (start: string, end: string) => {
-    const [startHours, startMinutes] = start.split(":").map(Number);
-    const [endHours, endMinutes] = end.split(":").map(Number);
 
-    const startTotal = startHours * 60 + startMinutes;
-    const endTotal = endHours * 60 + endMinutes;
-
-    const duration = endTotal - startTotal;
-
-    if (duration < 60) {
-      return `${duration}m`;
-    }
-
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-
-    return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
-  };
   return (
     <div
       className={`
@@ -41,6 +25,7 @@ const EventItemCard = ({ event, accent }: Props) => {
           group-hover:border-border
           group-hover:shadow-md
           cursor-pointer
+          h-full
         `}
     >
       <div className="flex items-start justify-between gap-2">
