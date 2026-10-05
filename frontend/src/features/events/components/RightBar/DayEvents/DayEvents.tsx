@@ -36,7 +36,7 @@ const DayEvents = ({ date }: DayEventsProps) => {
     const loadEvents = async () => {
       const formattedDate = formatDateParam(date);
       try {
-      await  getEvents(formattedDate);
+        await getEvents(formattedDate);
       } catch {
         toast.error("Failed to load events");
       }
@@ -125,6 +125,7 @@ const DayEvents = ({ date }: DayEventsProps) => {
                     gridColumn: 1,
                     gridRow: index + 1,
                   }}
+                  data-time={time}
                   className="
           sticky left-0 z-15
           w-13
@@ -150,6 +151,7 @@ const DayEvents = ({ date }: DayEventsProps) => {
                     gridColumn: `2 / ${maxColumn + 2}`,
                     gridRow: index + 1,
                   }}
+                  data-time={time}
                   className="border-b border-border"
                 />
               ))}

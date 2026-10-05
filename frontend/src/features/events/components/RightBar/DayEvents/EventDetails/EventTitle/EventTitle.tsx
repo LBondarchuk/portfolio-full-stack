@@ -13,7 +13,7 @@ const EventTitle = ({title}: Props) => {
               </span>
             </div>
 
-            <h3 className="text-lg font-semibold tracking-tight text-text">
+            <h3 className="text-lg font-semibold tracking-tight text-text overflow-hidden">
               {title}
             </h3>
           </div>

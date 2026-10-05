@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import type { CalendarVariant } from "../../Calendar";
 
 type CalendarCellProps = {
   type?: "current" | "adjacent";
@@ -7,7 +6,7 @@ type CalendarCellProps = {
   onClick?: () => void;
   isActive?: boolean;
   date: Date
-  calendarVariant?: CalendarVariant 
+
 };
 
 const CalendarCell = ({
@@ -15,7 +14,7 @@ const CalendarCell = ({
   children,
   onClick,
   isActive = false,
-  calendarVariant,
+
 }: CalendarCellProps) => {
   const isAdjacent = type === "adjacent";
 
