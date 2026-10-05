@@ -1,8 +1,8 @@
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-
 import todoRout from "./routes/todos.route.js";
 import eventRout from "./routes/events.route.js";
 
@@ -12,9 +12,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use("/api/todos", todoRout);
-app.use("/api/events", eventRout);
 
 const connect = async () => {
   if (mongoose.connection.readyState === 1) {
@@ -35,4 +32,8 @@ app.use(async (req, res, next) => {
   }
 });
 
+app.use("/api/todos", todoRout);
+app.use("/api/events", eventRout);
+
 export default app;
+
