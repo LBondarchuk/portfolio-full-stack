@@ -29,7 +29,7 @@ const EventItemCard = ({ event, accent }: Props) => {
         `}
     >
       <div className="flex items-start justify-between gap-2">
-        <h3 className="truncate text-xs font-semibold text-text">
+        <h3 className="truncate text-xs font-semibold text-text max-w-62.5">
           {event.title}
         </h3>
 

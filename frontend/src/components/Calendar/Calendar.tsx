@@ -77,7 +77,7 @@ const Calendar = ({
         date={date}
         isActive={isSameDate(value, date)}
         onClick={() => handleDateSelect(date)}
-        calendarVariant={variant}
+    
       >
         {renderCell ? renderCell(date) : date.getDate()}
       </CalendarCell>

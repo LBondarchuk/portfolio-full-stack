@@ -20,7 +20,7 @@ const MenuButton = ({ isOpen, toggleSidebar }: Props) => {
           y: isOpen ? 0 : -7,
           rotate: isOpen ? 45 : 0,
           width: isOpen ? 24 : 24,
-          backgroundColor: isOpen ? "white" : "var(--color-primary)",
+          backgroundColor:  "var(--color-primary)",
         }}
         transition={{
           type: "spring",
@@ -34,7 +34,7 @@ const MenuButton = ({ isOpen, toggleSidebar }: Props) => {
         animate={{
           opacity: isOpen ? 0 : 1,
           scaleX: isOpen ? 0 : 1,
-          backgroundColor: isOpen ? "white" : "var(--color-primary)",
+          backgroundColor:  "var(--color-primary)",
         }}
         transition={{
           duration: 0.12,
@@ -47,7 +47,7 @@ const MenuButton = ({ isOpen, toggleSidebar }: Props) => {
           y: isOpen ? 0 : 7,
           rotate: isOpen ? -45 : 0,
           width: isOpen ? 24 : 24,
-          backgroundColor: isOpen ? "white" : "var(--color-primary)",
+          backgroundColor:  "var(--color-primary)",
         }}
         transition={{
           type: "spring",
