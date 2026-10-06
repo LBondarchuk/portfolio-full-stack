@@ -5,10 +5,12 @@ import { getEventCounts } from "../controllers/event/getEventCounts.controller.j
 import { getEvent } from "../controllers/event/getEvent.controller.js";
 import { deleteEvent } from "../controllers/event/deleteEvent.controller.js";
 import { updateEvent } from "../controllers/event/updateEvent.controller.js";
+import { getDayCount } from "../controllers/event/getDayCount.controller.js";
 
 const router = express.Router();
 
 router.get("/month", getEventCounts);
+router.get('/day-count', getDayCount)
 router.get("/", getEvents);
 router.get("/:id", getEvent);
 router.delete("/:id", deleteEvent);

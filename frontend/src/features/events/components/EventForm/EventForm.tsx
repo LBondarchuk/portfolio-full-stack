@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import FormField from "../../../../components/form/FormField/FormField";
 import Input from "../../../../components/form/Input/Input";
 import Select from "../../../../components/form/Select/Select";
@@ -7,102 +7,54 @@ import Button from "../../../../components/buttons/Button/Button";
 import TimePicker from "../../../../components/form/TimePicker/TimePicker";
 import DatePicker from "../../../../components/form/DatePicker/DatePicker";
 import type { CreateEvent, EventPriority } from "../../types/events.types";
-import { useEvents } from "../../store/events.store";
-import { useSearchParams } from "react-router";
-import { formatDateParam, parseDateParam } from "../../utils/date";
 import Loader from "../../../../components/Loader/Loader";
-import { minutesToTime, timeToMinutes } from "../../utils/timeline";
-import { toast } from "react-toastify";
+import { parseDateParam } from "../../utils/date";
+import { useEventForm } from "./useEventForm";
 
 type Props = {
   onClose: () => void;
   defaultValue?: CreateEvent;
 };
 
+export type EventInputs = Pick<
+  CreateEvent,
+  "title" | "description" | "attendees"
+>;
+
 const priorities: EventPriority[] = ["low", "medium", "high"];
 
-const getToday = () => {
-  return formatDateParam(new Date());
-};
-
 const EventForm = ({ onClose, defaultValue }: Props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    form,
+    loading,
+    isEditMode,
+    isPriorityOpen,
+    setValue,
+    setIsPriorityOpen,
+    handleDateChange,
+    handleStartTimeChange,
+    handleEndTimeChange,
+    handleSubmit,
+  } = useEventForm({
+    onClose,
+    defaultValue,
+  });
 
-  const isEditMode = Boolean(defaultValue);
-
-  const dateParam = searchParams.get("date");
-
-  const initialForm: CreateEvent = defaultValue ?? {
-    title: "",
-    startTime: "09:00",
-    endTime: "10:00",
-    date: dateParam || getToday(),
-    priority: "medium",
-  };
-
-  const [form, setForm] = useState<CreateEvent>(initialForm);
-  const [isPriorityOpen, setIsPriorityOpen] = useState(false);
-
-  const addEvent = useEvents((state) => state.addEvent);
-  const updateEvent = useEvents((state) => state.updateEvent);
-  const loading = useEvents((state) => state.loading);
-
-  const setValue = <K extends keyof CreateEvent>(
-    key: K,
-    value: CreateEvent[K],
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  try {
-    if (!isEditMode) {
-      await addEvent(form);
-
-      toast.success("Event created successfully");
-      onClose();
-
-      return;
-    }
-
-    const id = searchParams.get("id");
-
-    if (!id) return;
-
-    const handleOnSuccess = () => {
-      const oldDate = defaultValue?.date;
-      const newDate = form.date;
-
-      if (oldDate !== newDate) {
-        setSearchParams((prev) => {
-          const next = new URLSearchParams(prev);
-          next.set("date", newDate);
-          return next;
-        });
-      }
-
-      onClose();
-    };
-
-    await updateEvent(id, form, handleOnSuccess);
-
-    toast.success("Event updated successfully");
-  } catch {
-    toast.error(
-      isEditMode
-        ? "Failed to update event"
-        : "Failed to create event",
-    );
-  }
-};
+  const {
+    register,
+    handleSubmit: hookFormSubmit,
+    formState: { errors },
+  } = useForm<EventInputs>({
+    defaultValues: {
+      title: defaultValue?.title ?? "",
+      description: defaultValue?.description ?? "",
+      attendees: defaultValue?.attendees,
+    },
+    mode: "onBlur",
+  });
 
   return (
-    <form className="grid gap-6" onSubmit={handleSubmit}>
+    <form className="grid gap-6" onSubmit={hookFormSubmit(handleSubmit)}>
       <div>
         <h2 className="text-xl font-semibold tracking-tight text-text">
           {isEditMode ? "Edit event" : "Create event"}
@@ -118,23 +70,35 @@ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
       <div className="grid gap-4">
         <FormField name="title" title="Title">
           <Input
+            {...register("title", {
+              required: "Title is required.",
+              minLength: {
+                value: 3,
+                message: "Title must contain at least 3 characters.",
+              },
+              maxLength: {
+                value: 100,
+                message: "Title must not exceed 100 characters.",
+              },
+              validate: (value) =>
+                value.trim().length > 0 || "Title cannot contain only spaces.",
+            })}
             id="title"
-            name="title"
             type="text"
             placeholder="e.g. Team meeting"
-            value={form.title}
-            onChange={(e) => setValue("title", e.target.value)}
-            required
+            aria-invalid={Boolean(errors.title)}
           />
+
+          {errors.title && (
+            <p className="mt-1.5 text-xs text-danger">{errors.title.message}</p>
+          )}
         </FormField>
 
         {isEditMode && (
           <FormField name="date" title="Date">
             <DatePicker
               value={parseDateParam(form.date)}
-              onChange={(date) => {
-                setValue("date", formatDateParam(date));
-              }}
+              onChange={handleDateChange}
             />
           </FormField>
         )}
@@ -143,33 +107,12 @@ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
           <FormField name="startTime" title="Start time">
             <TimePicker
               value={form.startTime}
-              onChange={(value) => {
-                setForm((prev) => {
-                  const start = timeToMinutes(value);
-                  const end = timeToMinutes(prev.endTime);
-
-                  return {
-                    ...prev,
-                    startTime: value,
-                    endTime:
-                      end <= start ? minutesToTime(start + 30) : prev.endTime,
-                  };
-                });
-              }}
+              onChange={handleStartTimeChange}
             />
           </FormField>
 
           <FormField name="endTime" title="End time">
-            <TimePicker
-              value={form.endTime}
-              onChange={(value) => {
-                if (timeToMinutes(value) <= timeToMinutes(form.startTime)) {
-                  return;
-                }
-
-                setValue("endTime", value);
-              }}
-            />
+            <TimePicker value={form.endTime} onChange={handleEndTimeChange} />
           </FormField>
         </div>
 
@@ -180,25 +123,48 @@ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
             type="text"
             placeholder="e.g. Office, Gym..."
             value={form.location ?? ""}
-            onChange={(e) => setValue("location", e.target.value)}
+            onChange={(event) => setValue("location", event.target.value)}
           />
         </FormField>
 
         <FormField name="attendees" title="Attendees">
           <Input
+            {...register("attendees", {
+              setValueAs: (value) => (value === "" ? undefined : Number(value)),
+
+              min: {
+                value: 0,
+                message: "Attendees cannot be negative.",
+              },
+
+              max: {
+                value: 100,
+                message: "Maximum 100 attendees allowed.",
+              },
+
+              validate: (value) => {
+                if (value === undefined) {
+                  return true;
+                }
+
+                return (
+                  Number.isInteger(value) || "Attendees must be a whole number."
+                );
+              },
+            })}
             id="attendees"
-            name="attendees"
             type="number"
             min={0}
+            max={100}
             placeholder="0"
-            value={form.attendees ?? ""}
-            onChange={(e) =>
-              setValue(
-                "attendees",
-                e.target.value === "" ? undefined : Number(e.target.value),
-              )
-            }
+            aria-invalid={Boolean(errors.attendees)}
           />
+
+          {errors.attendees && (
+            <p className="mt-1.5 text-xs text-danger">
+              {errors.attendees.message}
+            </p>
+          )}
         </FormField>
 
         <FormField name="priority" title="Priority">
@@ -214,6 +180,7 @@ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
                 isSelected={form.priority === item}
                 onClick={() => {
                   setValue("priority", item);
+
                   setIsPriorityOpen(false);
                 }}
               >
@@ -237,12 +204,16 @@ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
 
         <FormField name="description" title="Description">
           <textarea
+            {...register("description", {
+              maxLength: {
+                value: 500,
+                message: "Description must not exceed 500 characters.",
+              },
+            })}
             id="description"
-            name="description"
             rows={4}
             placeholder="Add some details..."
-            value={form.description ?? ""}
-            onChange={(e) => setValue("description", e.target.value)}
+            aria-invalid={Boolean(errors.description)}
             className="
               w-full
               resize-none
@@ -261,6 +232,18 @@ const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
               focus:border-primary
             "
           />
+
+          <div className="mt-1.5 flex items-center justify-between">
+            {errors.description ? (
+              <p className="text-xs text-danger">
+                {errors.description.message}
+              </p>
+            ) : (
+              <span />
+            )}
+
+            <span className="text-xs text-text-muted">Max. 500 characters</span>
+          </div>
         </FormField>
       </div>
 

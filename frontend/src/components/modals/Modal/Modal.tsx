@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, children }: Props) => {
 
   return (
     <div
-      className="fixed inset-0 grid place-items-center bg-black/50 z-20"
+      className="fixed inset-0 grid place-items-center bg-black/50 z-20 overflow-scroll py-2"
       onClick={(event) => {
         event.stopPropagation();
         onClose();

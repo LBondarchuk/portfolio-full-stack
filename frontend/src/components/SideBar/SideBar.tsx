@@ -104,7 +104,7 @@ const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
 
   return (
     <>
-      {/* Mobile overlay */}
+
       <motion.button
         type="button"
         aria-label="Close navigation"
@@ -115,14 +115,14 @@ const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
           pointerEvents: isOpen ? "auto" : "none",
         }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-30 bg-slate-950/30 backdrop-blur-[2px] lg:hidden"
+        className="fixed inset-0 z-25 bg-slate-950/30 backdrop-blur-[2px] lg:hidden"
       />
 
       <aside
         
         aria-label="Main navigation"
         className={`
-          fixed inset-y-0 left-0 z-40 w-64
+          fixed inset-y-0 left-0 z-26 w-64
           bg-primary
           shadow-xl
           transition-transform duration-300 ease-out
@@ -139,7 +139,7 @@ const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
         `}
       >
         <div className="flex h-full flex-col pt-20 lg:pt-6">
-          {/* Brand / section label */}
+          
           <div className="px-5 pb-5">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">
               Workspace

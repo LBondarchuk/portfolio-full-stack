@@ -1,24 +1,15 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router";
+
 import DayEventsHeader from "./DayEventsHeader/DayEventsHeader";
 import EventItem from "./EventItem/EventItem";
 import EmptyState from "./EmptyState/EmptyState";
 import EventDetails from "./EventDetails/EventDetails";
-import { useEvents } from "../../../store/events.store";
-import { formatDateParam } from "../../../utils/date";
-import {
-  assignColumns,
-  formatTime,
-  timeToMinutes,
-} from "../../../utils/timeline";
-import {
-  PADDING_MINUTES,
-  ROW_HEIGHT,
-  TIME_STEP,
-} from "../../../constants/dayEvents";
+
+import { formatTime } from "../../../utils/timeline";
+import { ROW_HEIGHT } from "../../../constants/dayEvents";
+
 import Loader from "../../../../../components/Loader/Loader";
-import { toast } from "react-toastify";
+import { useDayEvents } from "./hooks/useDayEvents";
 
 interface DayEventsProps {
   date: Date;
@@ -26,76 +17,41 @@ interface DayEventsProps {
 }
 
 const DayEvents = ({ date }: DayEventsProps) => {
-  const { events, getEvents, loading } = useEvents();
-  const [params, setParams] = useSearchParams();
-
-  const id = params.get("id");
-  const isFullView = params.get("fullView") === "true";
-
-  useEffect(() => {
-    const loadEvents = async () => {
-      const formattedDate = formatDateParam(date);
-      try {
-        await getEvents(formattedDate);
-      } catch {
-        toast.error("Failed to load events");
-      }
-    };
-
-    loadEvents();
-  }, [date, getEvents]);
-
-  const handleClose = () => {
-    setParams((prev) => {
-      prev.delete("id");
-
-      return prev;
-    });
-  };
+  const {
+    events,
+    loading,
+    id,
+    isFullView,
+    sortedEvents,
+    positionedEvents,
+    times,
+    maxColumn,
+    getGridLine,
+    handleClose,
+  } = useDayEvents({ date });
 
   if (id && !isFullView) {
-    return <EventDetails id={id} onClose={handleClose} />;
+    return (
+      <EventDetails
+        id={id}
+        onClose={handleClose}
+      />
+    );
   }
 
-  const sortedEvents = [...events].sort(
-    (a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime),
-  );
-  const positionedEvents = assignColumns(sortedEvents);
+  if (loading && !isFullView) {
+    return <Loader />;
+  }
 
-  const startTime =
-    Math.min(
-      ...positionedEvents.map((event) => timeToMinutes(event.startTime)),
-    ) - PADDING_MINUTES;
-
-  const endTime =
-    Math.max(...positionedEvents.map((event) => timeToMinutes(event.endTime))) +
-    PADDING_MINUTES;
-
-  const timelineStart = Math.floor(startTime / TIME_STEP) * TIME_STEP;
-
-  const timelineEnd = Math.ceil(endTime / TIME_STEP) * TIME_STEP;
-
-  const times = Array.from(
-    {
-      length: (timelineEnd - timelineStart) / TIME_STEP + 1,
-    },
-    (_, index) => timelineStart + index * TIME_STEP,
-  );
-
-  const getGridLine = (time: string) => {
-    const minutes = timeToMinutes(time);
-
-    return Math.floor((minutes - timelineStart) / TIME_STEP) + 1;
-  };
-
-  const maxColumn = Math.max(...positionedEvents.map((event) => event.column));
-  if (loading && !isFullView) return <Loader />;
   return (
     <div className="flex min-h-0 flex-1">
       <aside className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface">
-        <DayEventsHeader date={date} eventsLength={events.length} />
+        <DayEventsHeader
+          date={date}
+          eventsLength={events.length}
+        />
 
-        <div className="min-h-0 flex-1 overflow-auto px-4 py-4 pl-0 ">
+        <div className="min-h-0 flex-1 overflow-auto px-4 py-4 pl-0">
           {sortedEvents.length === 0 && !loading ? (
             <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
               <EmptyState />
@@ -127,18 +83,17 @@ const DayEvents = ({ date }: DayEventsProps) => {
                   }}
                   data-time={time}
                   className="
-          sticky left-0 z-15
-          w-13
-          border-b border-r border-border
-          bg-surface
-          pt-1
-          text-[10px]
-          font-semibold
-          tabular-nums
-          text-text-muted
-          text-center
-        
-        "
+                    sticky left-0 z-15
+                    w-13
+                    border-b border-r border-border
+                    bg-surface
+                    pt-1
+                    text-center
+                    text-[10px]
+                    font-semibold
+                    tabular-nums
+                    text-text-muted
+                  "
                 >
                   {formatTime(time)}
                 </div>

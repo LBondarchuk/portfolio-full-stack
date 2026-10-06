@@ -47,8 +47,6 @@ export const useEventItemInteractions = (
     const handleMove = (e: PointerEvent) => {
       const deltaY = e.clientY - startY;
 
-      // Вважаємо це drag тільки після
-      // реального переміщення миші.
       if (Math.abs(deltaY) > 5) {
         didDragRef.current = true;
       }

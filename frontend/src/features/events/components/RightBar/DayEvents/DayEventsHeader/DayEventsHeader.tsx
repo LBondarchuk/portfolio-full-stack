@@ -9,7 +9,6 @@ import Button from "../../../../../../components/buttons/Button/Button";
 type Props = {
   date: Date;
   eventsLength: number;
- 
 };
 
 const DayEventsHeader = ({ date, eventsLength }: Props) => {
@@ -38,7 +37,7 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
   };
 
   return (
-    <div className="shrink-0 border-b border-border px-4 py-4">
+    <header className="shrink-0 border-b border-border px-4 py-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="mb-2 flex items-center gap-2">
@@ -71,7 +70,7 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
         )}
       </div>
 
-      {(eventsLength >= 2||  isFullView )&& (
+      {(eventsLength >= 2 || isFullView) && (
         <button
           type="button"
           onClick={handleToggleFullView}
@@ -111,7 +110,7 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
       <Modal isOpen={isFormOpen} onClose={() => setFormOpen(false)}>
         <EventForm onClose={() => setFormOpen(false)} />
       </Modal>
-    </div>
+    </header>
   );
 };
 
