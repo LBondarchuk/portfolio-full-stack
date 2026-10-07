@@ -1,15 +1,12 @@
 import { motion } from "framer-motion";
-
 import DayEventsHeader from "./DayEventsHeader/DayEventsHeader";
 import EventItem from "./EventItem/EventItem";
 import EmptyState from "./EmptyState/EmptyState";
 import EventDetails from "./EventDetails/EventDetails";
-
 import { formatTime } from "../../../utils/timeline";
 import { ROW_HEIGHT } from "../../../constants/dayEvents";
-
-import Loader from "../../../../../components/Loader/Loader";
 import { useDayEvents } from "./hooks/useDayEvents";
+import DayEventsSkeleton from "./DayEventsSkeleton/DayEventsSkeleton";
 
 interface DayEventsProps {
   date: Date;
@@ -31,29 +28,21 @@ const DayEvents = ({ date }: DayEventsProps) => {
   } = useDayEvents({ date });
 
   if (id && !isFullView) {
-    return (
-      <EventDetails
-        id={id}
-        onClose={handleClose}
-      />
-    );
+    return <EventDetails id={id} onClose={handleClose} />;
   }
 
-  if (loading && !isFullView) {
-    return <Loader />;
+  if (loading) {
+    return <DayEventsSkeleton />;
   }
 
   return (
-    <div className="flex min-h-0 flex-1">
-      <aside className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface">
-        <DayEventsHeader
-          date={date}
-          eventsLength={events.length}
-        />
+    <div className="flex min-h-0  flex-1">
+      <aside className="flex h-125 md:h-auto  md:min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface">
+        <DayEventsHeader date={date} eventsLength={events.length} />
 
-        <div className="min-h-0 flex-1 overflow-auto px-4 py-4 pl-0">
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 pl-0">
           {sortedEvents.length === 0 && !loading ? (
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+            <div className="min-h-0 flex-1  px-4 py-4">
               <EmptyState />
             </div>
           ) : (

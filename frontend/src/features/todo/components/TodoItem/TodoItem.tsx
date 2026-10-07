@@ -6,30 +6,38 @@ import TodoCheckBox from "./TodoCheckBox/TodoCheckBox";
 import TodoContent from "./TodoContent/TodoContent";
 import TodoModal from "./TodoModal/TodoModal";
 import { toast } from "react-toastify";
+import TodoItemSkeleton from "./TodoItemSkeleton/TodoItemSkeleton";
 type Props = {
   todo: Todo;
 };
 const TodoItem = ({ todo }: Props) => {
-  const { editTodo } = useTodo();
+  const { editTodo, loadingIds } = useTodo();
   const [isTodoModalOpen, setTodoModalOpen] = useState(false);
-const setDone = async () => {
-  try {
-    await editTodo({
-      id: todo.id,
-      status: todo.status === "done" ? "in-progress" : "done",
-    });
-  } catch {
-    toast.error("Failed to update todo");
-  }
-};
+  const setDone = async () => {
+    try {
+      await editTodo({
+        id: todo.id,
+        status: todo.status === "done" ? "in-progress" : "done",
+      });
+    } catch {
+      toast.error("Failed to update todo");
+    }
+  };
+
+  if (loadingIds.includes(todo.id)) return <TodoItemSkeleton />;
   return (
-    <article onClick={()=>{setTodoModalOpen(true)}} className="grid grid-cols-[auto_1fr_auto] gap-4 rounded-xl border border-border bg-surface p-4 shadow-sm cursor-pointer">
+    <article
+      onClick={() => {
+        setTodoModalOpen(true);
+      }}
+      className="grid grid-cols-[auto_1fr_auto] gap-4 rounded-xl border border-border bg-surface p-4 shadow-sm cursor-pointer"
+    >
       <TodoCheckBox checked={todo.status === "done"} onChange={setDone} />
       <TodoContent todo={todo} />
       <TodoActions todo={todo} />
       <TodoModal
         todo={todo}
-        isOpen={ isTodoModalOpen}
+        isOpen={isTodoModalOpen}
         onClose={() => {
           setTodoModalOpen(false);
         }}

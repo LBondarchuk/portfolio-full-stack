@@ -131,7 +131,10 @@ const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
               ? "translate-x-0"
               : "-translate-x-full"
           }
-          lg:static
+          lg:sticky
+          lg:top-0
+          lg:h-dvh
+          lg:self-start
           lg:z-auto
           lg:w-64
           lg:translate-x-0

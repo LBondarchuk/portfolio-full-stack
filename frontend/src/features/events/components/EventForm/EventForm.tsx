@@ -10,6 +10,7 @@ import type { CreateEvent, EventPriority } from "../../types/events.types";
 import Loader from "../../../../components/Loader/Loader";
 import { parseDateParam } from "../../utils/date";
 import { useEventForm } from "./useEventForm";
+import Textarea from "../../../../components/form/Textarea/Textarea";
 
 type Props = {
   onClose: () => void;
@@ -50,7 +51,6 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
       description: defaultValue?.description ?? "",
       attendees: defaultValue?.attendees,
     },
-    mode: "onBlur",
   });
 
   return (
@@ -83,15 +83,12 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
               validate: (value) =>
                 value.trim().length > 0 || "Title cannot contain only spaces.",
             })}
+            error={errors.title?.message}
             id="title"
             type="text"
             placeholder="e.g. Team meeting"
             aria-invalid={Boolean(errors.title)}
           />
-
-          {errors.title && (
-            <p className="mt-1.5 text-xs text-danger">{errors.title.message}</p>
-          )}
         </FormField>
 
         {isEditMode && (
@@ -158,6 +155,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
             max={100}
             placeholder="0"
             aria-invalid={Boolean(errors.attendees)}
+            error={errors.attendees?.message}
           />
 
           {errors.attendees && (
@@ -203,7 +201,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
         </FormField>
 
         <FormField name="description" title="Description">
-          <textarea
+          <Textarea
             {...register("description", {
               maxLength: {
                 value: 500,
@@ -214,36 +212,8 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
             rows={4}
             placeholder="Add some details..."
             aria-invalid={Boolean(errors.description)}
-            className="
-              w-full
-              resize-none
-              rounded-md
-              border
-              border-border
-              bg-surface
-              px-3
-              py-2
-              text-sm
-              text-text
-              outline-none
-              transition-colors
-              duration-200
-              placeholder:text-text-muted
-              focus:border-primary
-            "
+            error={errors.description?.message}
           />
-
-          <div className="mt-1.5 flex items-center justify-between">
-            {errors.description ? (
-              <p className="text-xs text-danger">
-                {errors.description.message}
-              </p>
-            ) : (
-              <span />
-            )}
-
-            <span className="text-xs text-text-muted">Max. 500 characters</span>
-          </div>
         </FormField>
       </div>
 

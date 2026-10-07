@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "react-toastify";
@@ -18,7 +19,7 @@ interface UseDayEventsProps {
 }
 
 export const useDayEvents = ({ date }: UseDayEventsProps) => {
-  const { events, getEvents, loading } = useEvents();
+  const { events, getEvents, eventsLoading } = useEvents();
   const [params, setParams] = useSearchParams();
 
   const id = params.get("id");
@@ -26,10 +27,8 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
 
   useEffect(() => {
     const loadEvents = async () => {
-      const formattedDate = formatDateParam(date);
-
       try {
-        await getEvents(formattedDate);
+        await getEvents(formatDateParam(date));
       } catch {
         toast.error("Failed to load events");
       }
@@ -41,31 +40,34 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
   const handleClose = () => {
     setParams((prev) => {
       prev.delete("id");
-
       return prev;
     });
   };
 
   const sortedEvents = [...events].sort(
     (a, b) =>
-      timeToMinutes(a.startTime) - timeToMinutes(b.startTime),
+      timeToMinutes(a.startTime) -
+      timeToMinutes(b.startTime),
   );
 
   const positionedEvents = assignColumns(sortedEvents);
-
   const startTime =
-    Math.min(
-      ...positionedEvents.map((event) =>
-        timeToMinutes(event.startTime),
-      ),
-    ) - PADDING_MINUTES;
+    positionedEvents.length > 0
+      ? Math.min(
+          ...positionedEvents.map((event) =>
+            timeToMinutes(event.startTime),
+          ),
+        ) - PADDING_MINUTES
+      : 0;
 
   const endTime =
-    Math.max(
-      ...positionedEvents.map((event) =>
-        timeToMinutes(event.endTime),
-      ),
-    ) + PADDING_MINUTES;
+    positionedEvents.length > 0
+      ? Math.max(
+          ...positionedEvents.map((event) =>
+            timeToMinutes(event.endTime),
+          ),
+        ) + PADDING_MINUTES
+      : 24 * 60;
 
   const timelineStart =
     Math.floor(startTime / TIME_STEP) * TIME_STEP;
@@ -78,7 +80,8 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
       length:
         (timelineEnd - timelineStart) / TIME_STEP + 1,
     },
-    (_, index) => timelineStart + index * TIME_STEP,
+    (_, index) =>
+      timelineStart + index * TIME_STEP,
   );
 
   const getGridLine = (time: string) => {
@@ -91,13 +94,18 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
     );
   };
 
-  const maxColumn = Math.max(
-    ...positionedEvents.map((event) => event.column),
-  );
+  const maxColumn =
+    positionedEvents.length > 0
+      ? Math.max(
+          ...positionedEvents.map(
+            (event) => event.column,
+          ),
+        )
+      : 1;
 
   return {
     events,
-    loading,
+    loading: eventsLoading,
     id,
     isFullView,
     sortedEvents,
@@ -108,3 +116,4 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
     handleClose,
   };
 };
+

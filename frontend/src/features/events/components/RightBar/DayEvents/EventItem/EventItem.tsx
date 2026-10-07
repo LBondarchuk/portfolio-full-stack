@@ -1,4 +1,3 @@
-
 import { motion } from "motion/react";
 import { useSearchParams } from "react-router";
 
@@ -24,6 +23,7 @@ const EventItem = ({
     isDragging,
     dragY,
     resizeHeight,
+    didDragRef,
     handleDragStart,
     handleResizeStart,
   } = useEventItemInteractions(event);
@@ -32,12 +32,14 @@ const EventItem = ({
     event.priority ?? "medium"
   ];
 
-  const handleClickEvent = (id: string) => {
-    if (isDragging) return;
+  const handleClickEvent = () => {
+    if (didDragRef.current) {
+      didDragRef.current = false;
+      return;
+    }
 
     setParamsId((prev) => {
-      prev.set("id", id);
-
+      prev.set("id", event.id);
       return prev;
     });
   };
@@ -45,9 +47,7 @@ const EventItem = ({
   return (
     <motion.button
       type="button"
-      onClick={() =>
-        handleClickEvent(event.id)
-      }
+      onClick={handleClickEvent}
       variants={{
         hidden: {
           opacity: 0,
@@ -69,8 +69,7 @@ const EventItem = ({
       style={{
         gridColumn,
         gridRow,
-        height:
-          resizeHeight ?? undefined,
+        height: resizeHeight ?? undefined,
       }}
       className={`
         group
@@ -89,7 +88,6 @@ const EventItem = ({
         event={event}
         accent={accent}
       />
-
       <div
         onPointerDown={handleDragStart}
         className="
@@ -99,7 +97,6 @@ const EventItem = ({
           cursor-grab
         "
       />
-
       <div
         onPointerDown={handleResizeStart}
         className="
@@ -117,4 +114,3 @@ const EventItem = ({
 };
 
 export default EventItem;
-

@@ -1,5 +1,5 @@
 import TodoKPI from "../../../../features/todo/components/TodoAnalitics/TodoKPI/TodoKPI";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTodo } from "../../../../features/todo/store/todo.store";
 import CompletionRate from "../../../../features/todo/components/TodoAnalitics/CompletionRate/CompletionRate";
 import TodoAnalyticCategory from "../../../../features/todo/components/TodoAnalitics/TodoAnalyticCharts/TodoAnalyticCategory/TodoAnalyticCategory";
@@ -8,23 +8,49 @@ import TodoAnalyticSattus from "../../../../features/todo/components/TodoAnaliti
 import TodoAnalyticWeeklyCompletion from "../../../../features/todo/components/TodoAnalitics/TodoAnalyticCharts/TodoAnalyticWeeklyCompletion/TodoAnalyticWeeklyCompletion";
 import PageHeader from "../../../../components/PageHeader/PageHeader";
 import { toast } from "react-toastify";
+import AnalyticsSkeleton from "./AnalyticsSkeleton";
 
 const TodoAnalyticsPage = () => {
-  const { analytics, getTodoAnalytics } = useTodo();
+  const { analytics, analyticsLoading, getTodoAnalytics } = useTodo();
+  const [initialRequestComplete, setInitialRequestComplete] = useState(false);
 
- useEffect(() => {
-  const loadAnalytics = async () => {
-    try {
-      await getTodoAnalytics();
-    } catch {
-      toast.error("Failed to load analytics");
-    }
-  };
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
 
-  loadAnalytics();
-}, [getTodoAnalytics]);
+    const loadAnalytics = async () => {
+      try {
+        await getTodoAnalytics(controller.signal);
+      } catch {
+        if (!controller.signal.aborted) toast.error("Failed to load analytics");
+      } finally {
+        if (isMounted) setInitialRequestComplete(true);
+      }
+    };
 
-  if (!analytics) return;
+    loadAnalytics();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [getTodoAnalytics]);
+
+  if (analyticsLoading || !initialRequestComplete) return <AnalyticsSkeleton />;
+
+  if (!analytics) {
+    return (
+      <div className="grid gap-6 h-full overflow-scroll">
+        <PageHeader
+          title="Analytics"
+          description="Track your productivity and get insights into your tasks."
+        />
+        <p role="alert" className="rounded-xl border border-border bg-surface p-5 text-sm text-text-secondary">
+          Analytics could not be loaded. Please try again later.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-6">

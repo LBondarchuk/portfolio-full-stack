@@ -1,119 +1,180 @@
+
 import { create } from "zustand";
-import type { CreateEvent, Event, EventListItem } from "../types/events.types";
+import type {
+  CreateEvent,
+  Event,
+  EventListItem,
+} from "../types/events.types";
 import { api } from "../../../api/axios";
-
-
 
 type EventsStore = {
   events: EventListItem[];
+  eventsDate: string | null;
   event: Event | null;
   eventCounts: Record<string, number>;
   dayCount: number;
-  loading: boolean;
 
-  getEvents: (date: string) => Promise<void>;
+  loading: boolean;
+  eventsLoading: boolean;
+
+  getEvents: (date: string, signal?: AbortSignal) => Promise<void>;
   addEvent: (event: CreateEvent) => Promise<void>;
-  getEvent: (id: string) => Promise<void>;
+  getEvent: (id: Event["id"], signal?: AbortSignal) => Promise<void>;
   updateEvent: (
-    id: string,
+    id: Event["id"],
     data: Partial<Event>,
     onSuccess: () => void,
   ) => Promise<void>;
-  deleteEvent: (id: string, onClose: () => void) => Promise<void>;
-  getEventCounts: (month: string) => Promise<void>;
-  getDayCount: () => Promise<void>;
+  deleteEvent: (id: Event["id"], onClose: () => void) => Promise<void>;
+  getEventCounts: (month: string, signal?: AbortSignal) => Promise<void>;
+  getDayCount: (signal?: AbortSignal) => Promise<void>;
 };
 
 export const useEvents = create<EventsStore>((set) => ({
   events: [],
+  eventsDate: null,
+  event: null,
   eventCounts: {},
   dayCount: 0,
-  event: null,
+
   loading: false,
+  eventsLoading: false,
 
-  getEventCounts: async (month) => {
-    set({ loading: true });
+getEvents: async (date) => {
+  set({
+    eventsDate: date,
+    eventsLoading: true,
+    events: [],
+  });
 
+  try {
+    const { data } = await api(`/events?date=${date}`);
+
+    set({
+      events: data,
+    });
+  } catch (error) {
+    console.error("Failed to get events:", error);
+    throw error;
+  } finally {
+    set({
+      eventsLoading: false,
+    });
+  }
+},
+  getEventCounts: async (month, signal) => {
     try {
-      const { data: eventCounts } = await api(`/events/month?month=${month}`);
+      const { data } = await api(`/events/month?month=${month}`, {
+        signal,
+      });
 
-      set({ eventCounts });
+      set({
+        eventCounts: data,
+      });
     } catch (error) {
-      console.error(error);
+      if (!signal?.aborted) {
+        console.error("Failed to get event counts:", error);
+      }
+
       throw error;
-    } finally {
-      set({ loading: false });
     }
   },
 
-  getDayCount: async () => {
-    set({ loading: true });
-
+  // Get total number of days that contain events
+  getDayCount: async (signal) => {
     try {
-      const { data } = await api.get("/events/day-count");
+      const { data } = await api.get("/events/day-count", {
+        signal,
+      });
 
-      set({ dayCount: data.count });
+      set({
+        dayCount: data.count,
+      });
     } catch (error) {
-      console.error("Failed to get event day count:", error);
+      if (!signal?.aborted) {
+        console.error("Failed to get event day count:", error);
+      }
+
       throw error;
-    } finally {
-      set({ loading: false });
     }
   },
 
-  getEvents: async (date) => {
-    set({ loading: true });
+  // Get one event
+  getEvent: async (id, signal) => {
+    set({
+      loading: true,
+    });
 
     try {
-      const { data: events } = await api(`/events?date=${date}`);
+      const { data } = await api(`/events/${id}`, {
+        signal,
+      });
 
-      set({ events });
+      set({
+        event: data,
+      });
     } catch (error) {
-      console.error(error);
+      if (!signal?.aborted) {
+        console.error("Failed to get event:", error);
+      }
+
       throw error;
     } finally {
-      set({ loading: false });
+      set({
+        loading: false,
+      });
     }
   },
 
-  addEvent: async (event) => {
-    set({ loading: true });
+  // Create event
+  addEvent: async (newEvent) => {
+    set({
+      loading: true,
+    });
 
     try {
-      const { data } = await api.post("/events", event);
+      const { data: createdEvent } = await api.post<Event>(
+        "/events",
+        newEvent,
+      );
 
-      set((state) => ({
-        events: [...state.events, data],
-      }));
-      await useEvents.getState().getDayCount();
+      const eventDate = createdEvent.date.slice(0, 10);
+
+      // Reload events for the current day.
+      // This keeps EventListItem data consistent with the API.
+      if (useEvents.getState().eventsDate === eventDate) {
+        await useEvents.getState().getEvents(eventDate);
+      }
+
+      // Reload calendar counters.
+      await Promise.all([
+        useEvents
+          .getState()
+          .getEventCounts(eventDate.slice(0, 7)),
+
+        useEvents.getState().getDayCount(),
+      ]);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to add event:", error);
       throw error;
     } finally {
-      set({ loading: false });
+      set({
+        loading: false,
+      });
     }
   },
 
-  getEvent: async (id) => {
-    set({ loading: true });
-
-    try {
-      const { data: event } = await api(`/events/${id}`);
-
-      set({ event });
-    } catch (error) {
-      console.error(error);
-      throw error;
-    } finally {
-      set({ loading: false });
-    }
-  },
-
+  // Update event
   updateEvent: async (id, data, onSuccess) => {
-    set({ loading: true });
+    set({
+      loading: true,
+    });
 
     try {
-      const { data: updatedEvent } = await api.patch(`/events/${id}`, data);
+      const { data: updatedEvent } = await api.patch<Event>(
+        `/events/${id}`,
+        data,
+      );
 
       set((state) => ({
         events: state.events.map((event) =>
@@ -122,23 +183,34 @@ export const useEvents = create<EventsStore>((set) => ({
         event: updatedEvent,
       }));
 
+      // If the date changed, reload calendar counters.
       if ("date" in data) {
+        const month = updatedEvent.date.slice(0, 7);
+
+        await useEvents.getState().getEventCounts(month);
         await useEvents.getState().getDayCount();
       }
 
       onSuccess();
     } catch (error) {
-      console.error(error);
+      console.error("Failed to update event:", error);
       throw error;
     } finally {
-      set({ loading: false });
+      set({
+        loading: false,
+      });
     }
   },
 
+  // Delete event
   deleteEvent: async (id, onClose) => {
-    set({ loading: true });
+    set({
+      loading: true,
+    });
 
     try {
+      const deletedEvent = useEvents.getState().event;
+
       await api.delete(`/events/${id}`);
 
       set((state) => ({
@@ -146,14 +218,23 @@ export const useEvents = create<EventsStore>((set) => ({
         event: null,
       }));
 
-      await useEvents.getState().getDayCount();
+      // Reload calendar counters after deletion.
+      if (deletedEvent) {
+        const month = deletedEvent.date.slice(0, 7);
+
+        await useEvents.getState().getEventCounts(month);
+        await useEvents.getState().getDayCount();
+      }
 
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error("Failed to delete event:", error);
       throw error;
     } finally {
-      set({ loading: false });
+      set({
+        loading: false,
+      });
     }
   },
 }));
+

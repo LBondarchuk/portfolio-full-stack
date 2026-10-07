@@ -1,14 +1,12 @@
 import { Link } from "react-router";
 import CalendarIcon from "../../Icons/Calendar";
-import { useEvents } from "../../../features/events/store/events.store";
-import { useEffect } from "react";
+import CalendarCountSkeleton from "./Skeleton/CalendarCountSkeleton";
+import useCalendarCount from "./hooks/useCalendarCount";
 
 const CalendarCount = () => {
-  const { getDayCount, dayCount } = useEvents();
+  const { dayCount, isLoading } = useCalendarCount();
 
-  useEffect(() => {
-    getDayCount();
-  }, [getDayCount]);
+  if (isLoading) return <CalendarCountSkeleton />;
 
   const meetingsToday = dayCount ?? 0;
 

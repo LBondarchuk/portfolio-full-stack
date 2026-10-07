@@ -9,19 +9,20 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="grid min-h-[calc(100vh-4rem)]   grid-cols-1 lg:grid-cols-[250px_1fr] ">
-        <SideBar isOpen={isSidebarOpen} onClose={()=>{setSidebarOpen(false)}}/>
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[250px_minmax(0,1fr)]">
+        <SideBar
+          isOpen={isSidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
 
-        <main className="grid grid-rows-[auto_1fr] gap-2 min-h-full bg-background    box-border">
+        <main className="grid min-w-0 grid-rows-[4rem_1fr] bg-background">
           <TopBar
             isSidebarOpen={isSidebarOpen}
             setSidebarOpen={setSidebarOpen}
           />
-          <div className="p-4 lg:p-8">
 
-          <div className="h-full rounded-2xl bg-surface p-4 shadow-sm ">
+          <div className="p-4 lg:p-8">
             <Outlet />
-          </div>
           </div>
         </main>
       </div>

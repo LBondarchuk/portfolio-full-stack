@@ -13,17 +13,21 @@ const TodoPage = () => {
   const pageParam = searchParams.get("page");
   const page = pageParam ? Number(pageParam) : 1;
 
-useEffect(() => {
-  const loadTodos = async () => {
-    try {
-      await getTodos(searchParams);
-    } catch {
-      toast.error("Failed to load todos");
-    }
-  };
+  useEffect(() => {
+    const controller = new AbortController();
 
-  loadTodos();
-}, [getTodos, searchParams]);
+    const loadTodos = async () => {
+      try {
+        await getTodos(searchParams, controller.signal);
+      } catch {
+        if (!controller.signal.aborted) toast.error("Failed to load todos");
+      }
+    };
+
+    loadTodos();
+
+    return () => controller.abort();
+  }, [getTodos, searchParams]);
 
   return (
     <div className="grid h-full grid-rows-[auto_auto_1fr] gap-2 md:gap-4 lg:gap-10">

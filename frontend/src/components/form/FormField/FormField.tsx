@@ -11,7 +11,7 @@ const FormField = <T extends object>({
   children,
   className
 }: Props<T>) => (
-  <div className={`grid gap-1.5 ${className}`}>
+  <div className={`grid gap-1.5  ${className} `}>
     <label htmlFor={String(name)} className="text-sm font-medium text-text">
       {title}
     </label>

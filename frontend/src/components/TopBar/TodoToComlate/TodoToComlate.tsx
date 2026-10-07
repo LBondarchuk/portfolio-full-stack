@@ -1,38 +1,24 @@
-import { useEffect } from "react";
 import {
   FiArrowDownRight,
   FiArrowUpRight,
   FiCheckSquare,
 } from "react-icons/fi";
 import { Link } from "react-router";
-import { useTodo } from "../../../features/todo/store/todo.store";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
+import TodoToComlateSkeleton from "./Skeleton/TodoToComlateSkeleton";
+import useTodoCompletion from "./hooks/useTodoCompletion";
 
 const TodoToComlate = () => {
-  const { getTodoActivity, todoActivity } = useTodo();
+  const {
+    todoActivity,
+    currentCompleted,
+    percentage,
+    trendIsPositive,
+    trendIsNegative,
+    isLoading,
+  } = useTodoCompletion();
 
-  useEffect(() => {
-    getTodoActivity();
-  }, [getTodoActivity]);
-
-  const currentCompleted =
-    todoActivity[todoActivity.length - 1]?.completed ?? 0;
-
-  const previousCompleted =
-    todoActivity[todoActivity.length - 2]?.completed ?? 0;
-
-  const difference = currentCompleted - previousCompleted;
-
-  const trendIsPositive = difference > 0;
-
-  const trendIsNegative = difference < 0;
-
-  const percentage =
-    previousCompleted > 0
-      ? Math.round((Math.abs(difference) / previousCompleted) * 100)
-      : currentCompleted > 0
-        ? 100
-        : 0;
+  if (isLoading) return <TodoToComlateSkeleton />;
   return (
     <div className="flex items-center gap-2">
       <div className="flex size-8 items-center justify-center rounded-lg bg-primary-light text-primary">
