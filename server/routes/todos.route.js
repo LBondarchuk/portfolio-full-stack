@@ -6,9 +6,11 @@ import { deleteTodo } from "../controllers/todo/deleteTodo.controller.js";
 import { updateTodo } from "../controllers/todo/updateTodo.controller.js";
 import { createTestTodos } from "../controllers/todo/createTestTodos.controller.js";
 import { getTodoAnalytics } from "../controllers/todo/getTodoAnalytics.controller.js";
+import { getTodoActivity } from "../controllers/todo/getTodoActivity.controller.js";
 
 const router = express.Router();
 router.get("/", getTodos);
+router.get("/activity", getTodoActivity);
 router.post("/", createTodos);
 router.post("/createTestTodos", createTestTodos);
 router.delete("/:id", deleteTodo);

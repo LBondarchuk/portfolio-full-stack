@@ -1,14 +1,13 @@
-import Loader from "../../../../components/Loader/Loader";
+
 import { useTodo } from "../../store/todo.store";
 import TodoItem from "../TodoItem/TodoItem";
+import TodoItemSkeleton from "../TodoItem/TodoItemSkeleton/TodoItemSkeleton";
 
 const TodoList = () => {
-  const { todos, loading } = useTodo();
-
-  if (loading) return <Loader size="lg" />;
+  const { todos, loading,loadingIds } = useTodo();
 
 
-  if (todos.length === 0) {
+  if (todos.length === 0 && !loading) {
     return (
       <div className="grid  h-full place-items-center py-4 ">
         <div className="grid place-items-center ">
@@ -24,9 +23,12 @@ const TodoList = () => {
   return (
     <div className="grid h-full grid-rows-[1fr_auto] ">
       <div className="grid content-start gap-y-3 overflow-y-auto py-4">
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
+        {loadingIds.includes('create') && <TodoItemSkeleton/>}
+        {loading&& !loadingIds.length
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <TodoItemSkeleton key={index} />
+            ))
+          : todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
       </div>
     </div>
   );

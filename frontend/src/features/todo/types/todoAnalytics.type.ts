@@ -27,3 +27,8 @@ export type TodoAnalytics = {
 };
 
 export type TodoSummary = TodoAnalytics["summary"];
+
+export type TodoActivity = {
+  day: string;
+  completed: number;
+};

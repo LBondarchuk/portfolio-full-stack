@@ -1,157 +1,102 @@
-import { useState } from "react";
-import type {
-  Category,
-  CreateTodo,
-  EditTodo,
-  Priority,
-  Status,
-} from "../../types/todo.type";
+import { useForm } from "react-hook-form";
+import type { CreateTodo, EditTodo } from "../../types/todo.type";
 import FormField from "../../../../components/form/FormField/FormField";
 import Select from "../../../../components/form/Select/Select";
 import Button from "../../../../components/buttons/Button/Button";
 import Input from "../../../../components/form/Input/Input";
-import { useTodo } from "../../store/todo.store";
 import SelectItem from "../../../../components/form/Select/SelectItem";
+import Loader from "../../../../components/Loader/Loader";
+import { useTodo } from "../../store/todo.store";
 import { MetaStyles } from "../TodoItem/TodoContent/TodoMeta/todoMeta.styles";
+
 import {
   categories,
   priorities,
   statuses,
 } from "../../constants/todo.constants";
-import Loader from "../../../../components/Loader/Loader";
-import { toast } from "react-toastify";
 
-type FormFilelds = Pick<CreateTodo, "title" | "description">;
-type SelectName = "category" | "status" | "priority";
+import { useTodoForm } from "./useTodoForm";
+import Textarea from "../../../../components/form/Textarea/Textarea";
 
-type Selects = {
-  category: Category;
-  status: Status;
-  priority: Priority;
-};
-
-const defaultInputs: FormFilelds = { title: "", description: "" };
-const defaultSelects: Selects = {
-  category: "study",
-  status: "todo",
-  priority: "medium",
-};
-
-const TodoForm = ({
-  closeModal,
-  initialValues,
-}: {
+type Props = {
   closeModal: () => void;
   initialValues?: EditTodo;
-}) => {
-  const [openSelect, setOpenSelect] = useState<SelectName | null>(null);
-  const { createTodo, editTodo, loading } = useTodo();
-
-  const [form, setForm] = useState<FormFilelds>(
-    initialValues
-      ? {
-          title: initialValues.title ?? "",
-          description: initialValues.description ?? "",
-        }
-      : defaultInputs,
-  );
-
-  const [formSelects, setFormSelects] = useState<Selects>(
-    initialValues
-      ? {
-          category: initialValues.category ?? defaultSelects.category,
-          status: initialValues.status ?? defaultSelects.status,
-          priority: initialValues.priority ?? defaultSelects.priority,
-        }
-      : defaultSelects,
-  );
-
-  const isChanged = initialValues
-    ? form.title !== initialValues.title ||
-      form.description !== initialValues.description ||
-      formSelects.category !== initialValues.category ||
-      formSelects.status !== initialValues.status ||
-      formSelects.priority !== initialValues.priority
-    : form.title.trim() !== "";
-
-
-
-const handleSubmitForm = async (
-  event: React.SubmitEvent<HTMLFormElement>,
-) => {
-  event.preventDefault();
-
-  try {
-    if (initialValues) {
-      await editTodo({
-        id: initialValues.id,
-        ...form,
-        ...formSelects,
-      });
-    } else {
-      await createTodo({
-        ...form,
-        ...formSelects,
-      });
-    }
-
-    setForm(defaultInputs);
-    setFormSelects(defaultSelects);
-    closeModal();
-
-    toast.success(
-      initialValues
-        ? "Todo updated successfully"
-        : "Todo created successfully",
-    );
-  } catch {
-    toast.error(
-      initialValues
-        ? "Failed to update todo"
-        : "Failed to create todo",
-    );
-  }
 };
+
+export type TodoInputs = Pick<CreateTodo, "title" | "description">;
+
+const TodoForm = ({ closeModal, initialValues }: Props) => {
+  const {
+    register,
+    handleSubmit: hookFormSubmit,
+    formState: { errors, isDirty },
+  } = useForm<TodoInputs>({
+    defaultValues: {
+      title: initialValues?.title ?? "",
+      description: initialValues?.description ?? "",
+    },
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  });
+  const {
+    openSelect,
+    setOpenSelect,
+    isChanged,
+    formSelects,
+    setFormSelects,
+    handleSubmitForm,
+  } = useTodoForm(closeModal, initialValues, isDirty);
+
+  const { loading } = useTodo();
+
   return (
-    <form className="grid gap-4" onSubmit={handleSubmitForm}>
+    <form className="grid gap-4" onSubmit={hookFormSubmit(handleSubmitForm)}>
       <FormField name="title" title="Titel">
         <Input
+          {...register("title", {
+            validate: (value) => {
+              const trimmedValue = value?.trim() ?? "";
+
+              if (!trimmedValue) {
+                return "Title cannot contain only spaces.";
+              }
+
+              if (trimmedValue.length < 3) {
+                return "Title must contain at least 3 characters.";
+              }
+
+              if (trimmedValue.length > 50) {
+                return "Title must not exceed 50 characters.";
+              }
+
+              return true;
+            },
+          })}
+          error={errors.title?.message}
+          className="w-full"
           id="title"
-          maxLength={50}
-          name="title"
-          required
           type="text"
-          value={form.title}
-          onChange={(event) =>
-            setForm((prev) => ({
-              ...prev,
-              title: event.target.value,
-            }))
-          }
           placeholder="Enter task title"
-          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text outline-none transition-colors duration-200 focus:border-primary"
         />
       </FormField>
 
       <FormField name="description" title="Description">
-        <textarea
+        <Textarea
+          {...register("description", {
+            maxLength: {
+              value: 900,
+              message: "Description must not exceed 900 characters.",
+            },
+          })}
           id="description"
-          name="description"
           rows={6}
-          value={form.description}
           maxLength={900}
           placeholder="Enter task description"
-          onChange={(event) =>
-            setForm((prev) => ({
-              ...prev,
-              description: event.target.value,
-            }))
-          }
-          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text outline-none transition-colors duration-200 focus:border-primary"
+          aria-invalid={Boolean(errors.description)}
+          error={errors.description?.message}
         />
       </FormField>
-
-      <FormField name={"categoty"} title={"Category"}>
+      <FormField name="category" title="Category">
         <Select
           value={formSelects.category}
           isOpen={openSelect === "category"}
@@ -168,6 +113,7 @@ const handleSubmitForm = async (
                   ...prev,
                   category,
                 }));
+
                 setOpenSelect(null);
               }}
             >
@@ -176,7 +122,7 @@ const handleSubmitForm = async (
           ))}
         </Select>
       </FormField>
-      <FormField name={"status"} title={"Status"}>
+      <FormField name="status" title="Status">
         <Select
           value={formSelects.status}
           isOpen={openSelect === "status"}
@@ -193,6 +139,7 @@ const handleSubmitForm = async (
                   ...prev,
                   status,
                 }));
+
                 setOpenSelect(null);
               }}
             >
@@ -201,7 +148,8 @@ const handleSubmitForm = async (
           ))}
         </Select>
       </FormField>
-      <FormField name={"priority"} title={"Priority"}>
+
+      <FormField name="priority" title="Priority">
         <Select
           value={formSelects.priority}
           isOpen={openSelect === "priority"}
@@ -218,6 +166,7 @@ const handleSubmitForm = async (
                   ...prev,
                   priority,
                 }));
+
                 setOpenSelect(null);
               }}
             >
