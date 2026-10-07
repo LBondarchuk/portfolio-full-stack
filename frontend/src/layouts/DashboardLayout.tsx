@@ -1,18 +1,19 @@
 import { Outlet } from "react-router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import SideBar from "../components/SideBar/SideBar";
 import TopBar from "../components/TopBar/TopBar";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
   return (
     <div className="min-h-screen">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[250px_minmax(0,1fr)]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[16rem_minmax(0,1fr)]">
         <SideBar
           isOpen={isSidebarOpen}
-          onClose={() => setSidebarOpen(false)}
+          onClose={closeSidebar}
         />
 
         <main className="grid min-w-0 grid-rows-[4rem_1fr] bg-background">

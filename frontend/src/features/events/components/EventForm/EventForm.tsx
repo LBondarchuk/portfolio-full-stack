@@ -57,42 +57,42 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
     <form className="grid gap-6" onSubmit={hookFormSubmit(handleSubmit)}>
       <div>
         <h2 className="text-xl font-semibold tracking-tight text-text">
-          {isEditMode ? "Edit event" : "Create event"}
+          {isEditMode ? "Termin bearbeiten" : "Termin erstellen"}
         </h2>
 
         <p className="mt-1 text-sm text-text-secondary">
           {isEditMode
-            ? "Update the event details."
-            : "Add a new event to your calendar."}
+            ? "Termindetails aktualisieren."
+            : "Einen neuen Termin zum Kalender hinzufügen."}
         </p>
       </div>
 
       <div className="grid gap-4">
-        <FormField name="title" title="Title">
+        <FormField name="title" title="Titel">
           <Input
             {...register("title", {
-              required: "Title is required.",
+              required: "Bitte gib einen Titel ein.",
               minLength: {
                 value: 3,
-                message: "Title must contain at least 3 characters.",
+                message: "Der Titel muss mindestens 3 Zeichen enthalten.",
               },
               maxLength: {
                 value: 100,
-                message: "Title must not exceed 100 characters.",
+                message: "Der Titel darf höchstens 100 Zeichen enthalten.",
               },
               validate: (value) =>
-                value.trim().length > 0 || "Title cannot contain only spaces.",
+                value.trim().length > 0 || "Der Titel darf nicht nur aus Leerzeichen bestehen.",
             })}
             error={errors.title?.message}
             id="title"
             type="text"
-            placeholder="e.g. Team meeting"
+            placeholder="z. B. Teambesprechung"
             aria-invalid={Boolean(errors.title)}
           />
         </FormField>
 
         {isEditMode && (
-          <FormField name="date" title="Date">
+          <FormField name="date" title="Datum">
             <DatePicker
               value={parseDateParam(form.date)}
               onChange={handleDateChange}
@@ -101,42 +101,42 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
         )}
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField name="startTime" title="Start time">
+          <FormField name="startTime" title="Beginn">
             <TimePicker
               value={form.startTime}
               onChange={handleStartTimeChange}
             />
           </FormField>
 
-          <FormField name="endTime" title="End time">
+          <FormField name="endTime" title="Ende">
             <TimePicker value={form.endTime} onChange={handleEndTimeChange} />
           </FormField>
         </div>
 
-        <FormField name="location" title="Location">
+        <FormField name="location" title="Ort">
           <Input
             id="location"
             name="location"
             type="text"
-            placeholder="e.g. Office, Gym..."
+            placeholder="z. B. Büro, Fitnessstudio …"
             value={form.location ?? ""}
             onChange={(event) => setValue("location", event.target.value)}
           />
         </FormField>
 
-        <FormField name="attendees" title="Attendees">
+        <FormField name="attendees" title="Teilnehmende">
           <Input
             {...register("attendees", {
               setValueAs: (value) => (value === "" ? undefined : Number(value)),
 
               min: {
                 value: 0,
-                message: "Attendees cannot be negative.",
+                message: "Die Anzahl der Teilnehmenden darf nicht negativ sein.",
               },
 
               max: {
                 value: 100,
-                message: "Maximum 100 attendees allowed.",
+                message: "Es sind höchstens 100 Teilnehmende möglich.",
               },
 
               validate: (value) => {
@@ -145,7 +145,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
                 }
 
                 return (
-                  Number.isInteger(value) || "Attendees must be a whole number."
+                  Number.isInteger(value) || "Bitte gib eine ganze Zahl ein."
                 );
               },
             })}
@@ -165,7 +165,7 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
           )}
         </FormField>
 
-        <FormField name="priority" title="Priority">
+        <FormField name="priority" title="Priorität">
           <Select
             value={form.priority}
             isOpen={isPriorityOpen}
@@ -193,24 +193,24 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
                     }`}
                   />
 
-                  <span className="capitalize">{item}</span>
+                  <span className="capitalize">{{ low: "Niedrig", medium: "Mittel", high: "Hoch" }[item]}</span>
                 </div>
               </SelectItem>
             ))}
           </Select>
         </FormField>
 
-        <FormField name="description" title="Description">
+        <FormField name="description" title="Beschreibung">
           <Textarea
             {...register("description", {
               maxLength: {
                 value: 500,
-                message: "Description must not exceed 500 characters.",
+                message: "Die Beschreibung darf höchstens 500 Zeichen enthalten.",
               },
             })}
             id="description"
             rows={4}
-            placeholder="Add some details..."
+            placeholder="Weitere Details hinzufügen …"
             aria-invalid={Boolean(errors.description)}
             error={errors.description?.message}
           />
@@ -219,11 +219,11 @@ const EventForm = ({ onClose, defaultValue }: Props) => {
 
       <div className="flex items-center justify-end gap-2 border-t border-border pt-4">
         <Button type="button" variant="ghost" onClick={onClose}>
-          Cancel
+          Abbrechen
         </Button>
 
         <Button type="submit">
-          {loading ? <Loader /> : isEditMode ? "Save changes" : "Create event"}
+          {loading ? <Loader /> : isEditMode ? "Änderungen speichern" : "Termin erstellen"}
         </Button>
       </div>
     </form>

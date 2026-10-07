@@ -10,30 +10,31 @@ import {
   type BarShapeProps,
 } from "recharts";
 import type { TodoAnalyticsItem } from "../../../../types/todoAnalytics.type";
+import { getTodoLabel } from "../../../../utils/todoLabels";
 
 type Props = {
   status: TodoAnalyticsItem[];
 };
 
 const statusColors: Record<string, string> = {
-  todo: "#e2e8f0",
-  "in-progress": "#c4d5ed",
-  done: "#c1ddd6",
+  todo: "var(--chart-status-todo)",
+  "in-progress": "var(--chart-status-progress)",
+  done: "var(--chart-status-done)",
 };
 
 const StatusBar = (props: BarShapeProps) => {
   const status = String(props.payload?.name ?? "");
 
-  return <Rectangle {...props} fill={statusColors[status] ?? "#e2e8f0"} />;
+  return <Rectangle {...props} fill={statusColors[status] ?? "var(--chart-status-todo)"} />;
 };
 
 const TodoAnalyticStatus = ({ status }: Props) => {
   return (
     <div className="min-w-0 rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5">
-        <h2 className="font-semibold text-text">Todos by status</h2>
+        <h2 className="font-semibold text-text">Aufgaben nach Status</h2>
 
-        <p className="text-sm text-text-secondary">Current task distribution</p>
+        <p className="text-sm text-text-secondary">Aktuelle Aufgabenverteilung</p>
       </div>
 
       <div className="h-72 text-text-secondary">
@@ -50,11 +51,12 @@ const TodoAnalyticStatus = ({ status }: Props) => {
             <CartesianGrid
               vertical={false}
               stroke="currentColor"
-              opacity={0.08}
+              opacity={0.3}
             />
 
             <XAxis
               dataKey="name"
+              tickFormatter={getTodoLabel}
               tickLine={false}
               axisLine={false}
               stroke="currentColor"
@@ -79,6 +81,7 @@ const TodoAnalyticStatus = ({ status }: Props) => {
                 color: "var(--color-text)",
                 fontWeight: 600,
               }}
+              itemStyle={{ color: "var(--color-text-secondary)" }}
             />
 
             <Bar dataKey="value" radius={[8, 8, 0, 0]} shape={StatusBar} />

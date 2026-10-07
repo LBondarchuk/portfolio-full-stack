@@ -48,7 +48,7 @@ const EventsPage = () => {
       try {
         await getEventCounts(formatMonth(selectedDate), controller.signal);
       } catch {
-        if (!controller.signal.aborted) toast.error("Failed to load event counts");
+        if (!controller.signal.aborted) toast.error("Terminzahlen konnten nicht geladen werden.");
       }
     };
 
@@ -76,8 +76,8 @@ const EventsPage = () => {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden md:gap-4 lg:gap-10 h-full">
       <PageHeader
-        title="Events"
-        description="Plan your events and keep your schedule organized."
+        title="Zeitblick"
+        description="Plane deine Termine und behalte den Überblick über deinen Kalender."
       />
 
       <div

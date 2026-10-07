@@ -88,7 +88,7 @@ const Calendar = ({
     <div
       className={
         variant === "picker"
-          ? "box-border w-80 rounded-2xl border border-gray-200 bg-white p-3 shadow-lg"
+          ? "box-border w-80 rounded-2xl border border-border bg-surface p-3 shadow-lg"
           : "w-full"
       }
     >

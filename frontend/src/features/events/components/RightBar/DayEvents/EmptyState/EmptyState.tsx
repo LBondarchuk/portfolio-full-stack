@@ -17,16 +17,16 @@ const EmptyState = () => {
         <FiCalendar className="size-5 text-text-muted" />
       </div>
 
-      <h3 className="text-sm font-semibold text-text">Nothing planned</h3>
+      <h3 className="text-sm font-semibold text-text">Nichts geplant</h3>
 
       <p className="mt-1 max-w-55 text-xs leading-5 text-text-secondary">
-        This day is completely free. Add an event to start planning.
+        Dieser Tag ist noch frei. Füge einen Termin hinzu und beginne mit der Planung.
       </p>
 
       <Button onClick={() => setFormOpen(true)}>
         <div className="flex items-center content-center gap-1">
           <FiPlus className="size-3.5" />
-          <span>Add event</span>
+          <span>Termin hinzufügen</span>
         </div>
       </Button>
 

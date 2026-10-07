@@ -20,8 +20,8 @@ const TodoHeader = () => {
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader
-          title="To Do"
-          description="Manage your tasks and stay organized."
+          title="FokusFlow"
+          description="Verwalte deine Aufgaben und behalte den Überblick."
         />
 
         <div className="flex flex-wrap gap-3 sm:justify-end">
@@ -29,7 +29,7 @@ const TodoHeader = () => {
             Add Test Todos
           </Button> */}
 
-          <Button onClick={toggleModal}>Add Todo</Button>
+          <Button onClick={toggleModal}>Aufgabe hinzufügen</Button>
         </div>
       </div>
 

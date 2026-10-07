@@ -35,7 +35,7 @@ const EventDetails = ({ id, onClose }: Props) => {
       } catch {
         if (isActive && !controller.signal.aborted) {
           setErrorId(id);
-          toast.error("Failed to load event");
+          toast.error("Termin konnte nicht geladen werden.");
         }
       } finally {
         if (isActive) setLoadingId(null);
@@ -93,9 +93,9 @@ const EventDetails = ({ id, onClose }: Props) => {
         </>
       ) : (
         <>
-          <EventDetailsHeader title="Event unavailable" onClose={onClose} />
+          <EventDetailsHeader title="Termin nicht verfügbar" onClose={onClose} />
           <div className="flex flex-1 items-center justify-center p-5 text-sm text-text-secondary">
-            The event details could not be displayed.
+            Die Termindetails konnten nicht angezeigt werden.
           </div>
         </>
       )}

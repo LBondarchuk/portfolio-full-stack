@@ -11,7 +11,7 @@ type DatePickerProps = {
 const DatePicker = ({ value, onChange }: DatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const formattedDate = value.toLocaleDateString("en-US", {
+  const formattedDate = value.toLocaleDateString("de-DE", {
     month: "short",
     day: "numeric",
     year: "numeric",

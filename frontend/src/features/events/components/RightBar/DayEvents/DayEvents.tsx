@@ -37,7 +37,7 @@ const DayEvents = ({ date }: DayEventsProps) => {
 
   return (
     <div className="flex min-h-0  flex-1">
-      <aside className="flex h-125 md:h-auto  md:min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface">
+      <aside className="flex h-180 md:h-auto  md:min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-surface">
         <DayEventsHeader date={date} eventsLength={events.length} />
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 pl-0">

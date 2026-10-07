@@ -20,7 +20,7 @@ const TodoPage = () => {
       try {
         await getTodos(searchParams, controller.signal);
       } catch {
-        if (!controller.signal.aborted) toast.error("Failed to load todos");
+        if (!controller.signal.aborted) toast.error("Aufgaben konnten nicht geladen werden.");
       }
     };
 

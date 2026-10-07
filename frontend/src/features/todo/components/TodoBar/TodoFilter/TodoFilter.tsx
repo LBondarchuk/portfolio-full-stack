@@ -19,6 +19,7 @@ import type {
 
 import { MetaStyles } from "../../TodoItem/TodoContent/TodoMeta/todoMeta.styles";
 import FilterIcon from "../../../../../components/Icons/Filter";
+import { getTodoLabel } from "../../../utils/todoLabels";
 
 const getFilterValue = <T extends string>(
   params: URLSearchParams,
@@ -70,7 +71,7 @@ const TodoFilter = () => {
         aria-expanded={isFilterOpen}
       >
         <FilterIcon />
-        <span>Filter</span>
+        <span>Filtern</span>
       </button>
 
       <div
@@ -81,16 +82,16 @@ const TodoFilter = () => {
         `}
       >
         <FilterIcon className="-translate-y-2 hidden md:block" />
-        <FormField title="Category" name="category" className="w-full md:w-fit">
+        <FormField title="Kategorie" name="category" className="w-full md:w-fit">
           <Select
-            value={category === "all" ? "All" : category}
+            value={getTodoLabel(category)}
             isOpen={openSelect === "category"}
             onOpen={() => setOpenSelect("category")}
             onClose={() => setOpenSelect(null)}
             buttonClassName={
               category !== "all"
-                ? `${MetaStyles.category[category]} min-w-30 w-full`
-                : "min-w-30 w-full"
+                ? ` ${MetaStyles.category[category]} min-w-30 w-full`
+                : "min-w-30 w-full bg-white"
             }
           >
             {categoryFilters.map((item) => (
@@ -111,7 +112,7 @@ const TodoFilter = () => {
                   setOpenSelect(null);
                 }}
               >
-                {item}
+                {getTodoLabel(item)}
               </SelectItem>
             ))}
           </Select>
@@ -119,14 +120,14 @@ const TodoFilter = () => {
 
         <FormField title="Status" name="status" className="w-full md:w-fit">
           <Select
-            value={status === "all" ? "All" : status}
+            value={getTodoLabel(status)}
             isOpen={openSelect === "status"}
             onOpen={() => setOpenSelect("status")}
             onClose={() => setOpenSelect(null)}
             buttonClassName={
               status !== "all"
                 ? `${MetaStyles.status[status]} min-w-30`
-                : "min-w-30"
+                : "min-w-30 bg-white"
             }
           >
             {statusFilters.map((item) => (
@@ -147,22 +148,22 @@ const TodoFilter = () => {
                   setOpenSelect(null);
                 }}
               >
-                {item}
+                {getTodoLabel(item)}
               </SelectItem>
             ))}
           </Select>
         </FormField>
 
-        <FormField title="Priority" name="priority" className="w-full md:w-fit">
+        <FormField title="Priorität" name="priority" className="w-full md:w-fit">
           <Select
-            value={priority === "all" ? "All" : priority}
+            value={getTodoLabel(priority)}
             isOpen={openSelect === "priority"}
             onOpen={() => setOpenSelect("priority")}
             onClose={() => setOpenSelect(null)}
             buttonClassName={
               priority !== "all"
                 ? `${MetaStyles.priority[priority]} min-w-30`
-                : "min-w-30"
+                : "min-w-30 bg-white"
             }
           >
             {priorityFilters.map((item) => (
@@ -183,7 +184,7 @@ const TodoFilter = () => {
                   setOpenSelect(null);
                 }}
               >
-                {item}
+                {getTodoLabel(item)}
               </SelectItem>
             ))}
           </Select>

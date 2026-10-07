@@ -10,7 +10,7 @@ const EventInfo = ({ event }: Props) => {
 
     const eventDate = new Date(year, month - 1, day);
 
-    return eventDate.toLocaleDateString("en-US", {
+    return eventDate.toLocaleDateString("de-DE", {
       weekday: "long",
       month: "short",
       day: "numeric",
@@ -22,26 +22,26 @@ const EventInfo = ({ event }: Props) => {
     <div className="space-y-1">
       <InfoRow
         icon={<FiCalendar />}
-        label="Date"
+        label="Datum"
         value={formatEventDate(event.date)}
       />
 
       <InfoRow
         icon={<FiClock />}
-        label="Time"
+        label="Uhrzeit"
         value={`${event.startTime} – ${event.endTime}`}
       />
 
       {event.location && (
-        <InfoRow icon={<FiMapPin />} label="Location" value={event.location} />
+        <InfoRow icon={<FiMapPin />} label="Ort" value={event.location} />
       )}
 
       {event.attendees !== undefined && (
         <InfoRow
           icon={<FiUsers />}
-          label="Attendees"
+          label="Teilnehmende"
           value={`${event.attendees} ${
-            event.attendees === 1 ? "person" : "people"
+            event.attendees === 1 ? "Person" : "Personen"
           }`}
         />
       )}

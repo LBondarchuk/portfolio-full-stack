@@ -8,31 +8,32 @@ import {
 } from "recharts";
 
 import type { TodoAnalyticsItem } from "../../../../types/todoAnalytics.type";
+import { getTodoLabel } from "../../../../utils/todoLabels";
 
 type Props = {
   priorities: TodoAnalyticsItem[];
 };
 
 const priorityColors: Record<string, string> = {
-  high: "#f4adad",
-  medium: "#efd2a7",
-  low: "#E2E8F1",
+  high: "var(--chart-priority-high)",
+  medium: "var(--chart-priority-medium)",
+  low: "var(--chart-priority-low)",
 };
 
 const PriorityShape = (props: PieSectorShapeProps) => {
   const priority = String(props.payload?.name ?? "");
 
-  return <Sector {...props} fill={priorityColors[priority] ?? "#E2E8F1"} />;
+  return <Sector {...props} fill={priorityColors[priority] ?? "var(--chart-priority-low)"} />;
 };
 
 const TodoAnalyticPriority = ({ priorities }: Props) => {
   return (
     <div className="min-w-0 rounded-2xl border border-border bg-surface p-6">
       <div className="mb-5">
-        <h2 className="font-semibold text-text">Priority distribution</h2>
+        <h2 className="font-semibold text-text">Aufgaben nach Priorität</h2>
 
         <p className="text-sm text-text-secondary">
-          Number of tasks by priority
+          Anzahl der Aufgaben je Priorität
         </p>
       </div>
 
@@ -57,6 +58,8 @@ const TodoAnalyticPriority = ({ priorities }: Props) => {
                 border: "1px solid var(--color-border)",
                 borderRadius: "12px",
               }}
+              labelStyle={{ color: "var(--color-text)", fontWeight: 600 }}
+              itemStyle={{ color: "var(--color-text-secondary)" }}
             />
           </PieChart>
         </ResponsiveContainer>
@@ -68,12 +71,12 @@ const TodoAnalyticPriority = ({ priorities }: Props) => {
             <span
               className="h-3 w-3 rounded-full"
               style={{
-                backgroundColor: priorityColors[item.name] ?? "#E2E8F1",
+                backgroundColor: priorityColors[item.name] ?? "var(--chart-priority-low)",
               }}
             />
 
             <span>
-              {item.name}: {item.value}
+              {getTodoLabel(item.name)}: {item.value}
             </span>
           </div>
         ))}

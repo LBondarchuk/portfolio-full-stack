@@ -77,7 +77,7 @@ export const useEventForm = ({ onClose, defaultValue }: Props) => {
       if (!isEditMode) {
         await addEvent({...form, ...data});
 
-        toast.success("Event created successfully");
+        toast.success("Termin wurde erstellt.");
         onClose();
 
         return;
@@ -104,10 +104,10 @@ export const useEventForm = ({ onClose, defaultValue }: Props) => {
 
       await updateEvent(id, {...form, ...data}, handleOnSuccess);
 
-      toast.success("Event updated successfully");
+      toast.success("Termin wurde aktualisiert.");
     } catch {
       toast.error(
-        isEditMode ? "Failed to update event" : "Failed to create event",
+        isEditMode ? "Termin konnte nicht aktualisiert werden." : "Termin konnte nicht erstellt werden.",
       );
     }
   };

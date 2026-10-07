@@ -13,7 +13,7 @@ const EducationSkillsSection = () => {
       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">03 / Bildungsweg</p>
       <h2 className="mt-4 text-2xl font-semibold">Fundament & Weiterbildung</h2>
       <div className="mt-7 border-l border-primary/40 pl-5">
-        <p className="font-semibold">Junior Specialist in Computer Technology</p>
+        <p className="font-semibold">Junior-Spezialist für Computertechnik</p>
         <p className="mt-1 text-sm leading-6 text-text-secondary">Vinnytsia College der Nationalen Universität für Lebensmitteltechnologien · Ukraine</p>
         <p className="mt-2 text-xs text-text-muted">2009 — 2013</p>
       </div>

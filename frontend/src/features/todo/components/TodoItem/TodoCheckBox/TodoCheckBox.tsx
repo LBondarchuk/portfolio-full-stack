@@ -14,7 +14,7 @@ const TodoCheckBox = ({ checked, onChange }: Props) => {
         onChange()
       }}
       aria-pressed={checked}
-      aria-label={checked ? "Mark todo as incomplete" : "Mark todo as complete"}
+      aria-label={checked ? "Aufgabe als unerledigt markieren" : "Aufgabe als erledigt markieren"}
       className="group grid h-6 w-6 shrink-0 place-items-center rounded-md cursor-pointer"
     >
       <motion.span

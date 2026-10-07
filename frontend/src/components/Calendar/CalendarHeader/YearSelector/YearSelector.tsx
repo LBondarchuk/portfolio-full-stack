@@ -179,7 +179,7 @@ const YearSelector = ({ currentDate, onChangeYear }: YearSelectorProps) => {
                   cursor-pointer
                 "
               >
-                Close
+                Schließen
               </button>
             </motion.div>
           </>

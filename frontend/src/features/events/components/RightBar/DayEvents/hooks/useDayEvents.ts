@@ -30,7 +30,7 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
       try {
         await getEvents(formatDateParam(date));
       } catch {
-        toast.error("Failed to load events");
+        toast.error("Termine konnten nicht geladen werden.");
       }
     };
 
@@ -116,4 +116,3 @@ export const useDayEvents = ({ date }: UseDayEventsProps) => {
     handleClose,
   };
 };
-

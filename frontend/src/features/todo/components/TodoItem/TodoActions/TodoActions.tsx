@@ -27,9 +27,9 @@ const TodoActions = ({ todo }: Props) => {
     await deleteTodo(todo.id);
 
     setConfirmModalOpen(false);
-    toast.success("Todo deleted successfully");
+    toast.success("Aufgabe wurde gelöscht.");
   } catch {
-    toast.error("Failed to delete todo");
+    toast.error("Aufgabe konnte nicht gelöscht werden.");
   }
 };
 
@@ -53,7 +53,7 @@ const TodoActions = ({ todo }: Props) => {
         }}
       >
         <EditIcon className="inline-block md:hidden" />
-        <span className="hidden md:inline-block">Edit</span>
+        <span className="hidden md:inline-block">Bearbeiten</span>
       </Button>
 
       <Button
@@ -65,7 +65,7 @@ const TodoActions = ({ todo }: Props) => {
         }}
       >
         <DeleteIcon className="inline-block md:hidden" />
-        <span className="hidden md:inline-block">Delete</span>
+        <span className="hidden md:inline-block">Löschen</span>
       </Button>
 
       <Modal isOpen={isEditOpen} onClose={() => setEditOpen(false)}>
@@ -76,10 +76,10 @@ const TodoActions = ({ todo }: Props) => {
       </Modal>
       <ConfirmModal
         isOpen={isConfirmModalOpen}
-        title="Delete Todo"
-        message={`Are you sure you want to delete "${todo.title}"?`}
-        cancelText="Cancel"
-        confirmText="Delete"
+        title="Aufgabe löschen"
+        message={`Möchtest du „${todo.title}“ wirklich löschen?`}
+        cancelText="Abbrechen"
+        confirmText="Löschen"
         isLoading={isDeleting}
         onClose={() => setConfirmModalOpen(false)}
         onConfirm={() => handleDelete()}

@@ -47,7 +47,7 @@ const TimePicker = ({ value, onChange }: TimePickerProps) => {
           cursor-pointer
         "
       >
-        <span>{value || "Select time"}</span>
+        <span>{value || "Uhrzeit auswählen"}</span>
 
         <ClockIcon className="size-4 text-text-secondary" />
       </button>

@@ -11,17 +11,17 @@ const TodoKPI = ({ summary }: Props) => {
 
   return (
     <div className="grid gap-4 grid-cols-2 xl:grid-cols-4">
-      <TodoKPICard title="Total Todos" value={total} />
+      <TodoKPICard title="Aufgaben insgesamt" value={total} />
 
       <TodoKPICard
-        title="Completed"
+        title="Erledigt"
         value={completed}
-        subtitle={`${completionRate}% completion rate`}
+        subtitle={`${completionRate}% erledigt`}
       />
 
-      <TodoKPICard title="In Progress" value={inProgress} />
+      <TodoKPICard title="In Bearbeitung" value={inProgress} />
 
-      <TodoKPICard title="High Priority" value={highPriority} />
+      <TodoKPICard title="Hohe Priorität" value={highPriority} />
     </div>
   );
 };

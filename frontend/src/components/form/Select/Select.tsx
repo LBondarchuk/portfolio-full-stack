@@ -9,8 +9,7 @@ type SelectProps = {
   onOpen: () => void;
   onClose: () => void;
   className?: string;
-  buttonClassName?:string
-
+  buttonClassName?: string;
 };
 
 const Select = ({
@@ -20,7 +19,7 @@ const Select = ({
   onOpen,
   onClose,
   className,
-  buttonClassName
+  buttonClassName,
 }: SelectProps) => {
   const toggleSelect = () => {
     if (isOpen) {
@@ -37,9 +36,9 @@ const Select = ({
       <button
         type="button"
         onClick={toggleSelect}
-        className={`grid w-full cursor-pointer grid-cols-[1fr_auto] items-center rounded-md border border-border px-3 py-2 text-left text-sm transition-colors duration-200 ${
-    buttonClassName ?? "bg-surface text-text"
-  }`}
+        className={`grid w-full cursor-pointer grid-cols-[1fr_auto] items-center rounded-md border border-border px-3 py-2 text-left text-sm transition-colors  duration-200 ${
+          buttonClassName ?? " text-text"
+        }`}
       >
         <span className="capitalize">{value}</span>
 

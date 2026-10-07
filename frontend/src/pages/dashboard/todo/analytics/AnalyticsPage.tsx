@@ -22,7 +22,7 @@ const TodoAnalyticsPage = () => {
       try {
         await getTodoAnalytics(controller.signal);
       } catch {
-        if (!controller.signal.aborted) toast.error("Failed to load analytics");
+        if (!controller.signal.aborted) toast.error("Auswertung konnte nicht geladen werden.");
       } finally {
         if (isMounted) setInitialRequestComplete(true);
       }
@@ -42,11 +42,11 @@ const TodoAnalyticsPage = () => {
     return (
       <div className="grid gap-6 h-full overflow-scroll">
         <PageHeader
-          title="Analytics"
-          description="Track your productivity and get insights into your tasks."
+          title="FokusFlow · Einblicke"
+          description="Behalte deine Produktivität im Blick und erhalte Einblicke in deine Aufgaben."
         />
         <p role="alert" className="rounded-xl border border-border bg-surface p-5 text-sm text-text-secondary">
-          Analytics could not be loaded. Please try again later.
+          Die Auswertung konnte nicht geladen werden. Bitte versuche es später erneut.
         </p>
       </div>
     );
@@ -55,8 +55,8 @@ const TodoAnalyticsPage = () => {
   return (
     <div className="grid gap-6">
       <PageHeader
-        title="Analytics"
-        description="Track your productivity and get insights into your tasks."
+        title="FokusFlow · Einblicke"
+        description="Behalte deine Produktivität im Blick und erhalte Einblicke in deine Aufgaben."
       />
       <TodoKPI summary={analytics.summary} />
       <CompletionRate completionRate={analytics.summary.completionRate} />

@@ -9,7 +9,7 @@ const EventTitle = ({title}: Props) => {
               <span className="size-2 rounded-full bg-primary" />
 
               <span className="text-xs font-medium text-primary">
-                Upcoming event
+                Bevorstehender Termin
               </span>
             </div>
 

@@ -12,7 +12,7 @@ const TodoSearch = () => {
       <div className="relative w-full">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 " />
         <Input
-          placeholder="Search tasks..."
+          placeholder="Aufgaben suchen …"
           className="pl-10 w-full"
           value={search}
           onChange={(e) =>

@@ -45,31 +45,32 @@ const CalendarCell = ({
           ${
             isAdjacent
               ? `
-                border-gray-200/60
-                bg-gray-50/70
-                text-gray-400
+                border-border/60
+                bg-background/70
+                text-text-muted
               `
               : `
-                border-orange-200/70
-                bg-orange-50
-                text-gray-800
+                border-border
+                bg-surface
+                text-text
                 shadow-sm
-                shadow-orange-900/5
+                shadow-black/5
               `
           }
 
           ${
             isActive
               ? `
-                border-orange-400
-                bg-orange-100
+                border-primary
+                bg-primary-light
                 shadow-md
-                shadow-orange-900/10
+                shadow-primary/10
               `
               : `
-                group-hover:border-orange-300
+                group-hover:border-primary/50
+                group-hover:bg-primary-light/40
                 group-hover:shadow-lg
-                group-hover:shadow-orange-900/10
+                group-hover:shadow-primary/10
               `
           }
         `}
@@ -80,7 +81,7 @@ const CalendarCell = ({
             absolute inset-0
             rounded-2xl
             bg-linear-to-br
-            from-orange-400/10
+            from-primary/10
             via-transparent
             to-transparent
             opacity-0
@@ -98,10 +99,10 @@ const CalendarCell = ({
 
             ${
               isActive
-                ? "text-orange-700"
+                ? "text-primary"
                 : isAdjacent
-                  ? "text-gray-400"
-                  : "text-gray-700"
+                  ? "text-text-muted"
+                  : "text-text"
             }
           `}
         >

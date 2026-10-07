@@ -8,12 +8,12 @@ const GameHeader = ({ restart }: Props) => {
   return (
     <div className="mb-8 grid w-full grid-cols-[1fr_auto] gap-2">
       <PageHeader
-        title="2048"
-        description="Play the classic puzzle game and beat your high score."
+        title="Zahlenrausch · 2048"
+        description="Spiele den Klassiker und übertriff deinen persönlichen Rekord."
       />
 
       <Button onClick={restart} className="text-nowrap h-fit ">
-        New Game
+        Neues Spiel
       </Button>
     </div>
   );

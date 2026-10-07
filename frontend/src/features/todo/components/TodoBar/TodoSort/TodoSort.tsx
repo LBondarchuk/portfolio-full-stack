@@ -8,6 +8,11 @@ export type SortOption = "newest" | "oldest";
 
 const sortOptions: SortOption[] = ["newest", "oldest"];
 
+const sortLabels: Record<SortOption, string> = {
+  newest: "Neueste zuerst",
+  oldest: "Älteste zuerst",
+};
+
 const TodoSort = () => {
   const [isSortPanelOpen, setSortPanelOpen] = useState(false);
   const [isSortOpen, setSortOpen] = useState(false);
@@ -40,7 +45,7 @@ const TodoSort = () => {
         aria-expanded={isSortPanelOpen}
       >
         <SortIcon />
-        <span>Sort</span>
+        <span>Sortieren</span>
       </button>
 
       <div className={isSortPanelOpen ? "block" : "hidden md:block"}>
@@ -48,7 +53,7 @@ const TodoSort = () => {
           <SortIcon className="-translate-y-2 hidden md:block" />
 
           <Select
-            value={sort === "newest" ? "Newest" : "Oldest"}
+            value={sortLabels[sort]}
             isOpen={isSortOpen}
             onOpen={() => setSortOpen(true)}
             onClose={() => setSortOpen(false)}
@@ -59,7 +64,7 @@ const TodoSort = () => {
                 key={item}
                 onClick={() => handleSortChange(item)}
               >
-                {item}
+                {sortLabels[item]}
               </SelectItem>
             ))}
           </Select>

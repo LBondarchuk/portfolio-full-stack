@@ -10,7 +10,7 @@ type Props = {
 };
 
 const formatDateTime = (date: string) => {
-  return new Intl.DateTimeFormat("uk-UA", {
+  return new Intl.DateTimeFormat("de-DE", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -49,7 +49,7 @@ const TodoModal = ({ todo, isOpen, onClose }: Props) => {
 
         <div className="max-h-80 overflow-y-auto">
           <p className="wrap-break-word whitespace-pre-wrap text-sm leading-6 text-text-secondary">
-            {description || "No description"}
+            {description || "Keine Beschreibung"}
           </p>
         </div>
 
@@ -62,13 +62,13 @@ const TodoModal = ({ todo, isOpen, onClose }: Props) => {
 
         <div className="grid gap-2 text-sm text-text-secondary">
           <div>
-            <span className="font-medium text-text">Created:</span>{" "}
+            <span className="font-medium text-text">Erstellt:</span>{" "}
             {formatDateTime(createdAt)}
           </div>
 
           {dueDate && (
             <div>
-              <span className="font-medium text-text">Due date:</span>{" "}
+            <span className="font-medium text-text">Fällig am:</span>{" "}
               {formatDateTime(dueDate)}
             </div>
           )}

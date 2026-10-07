@@ -12,7 +12,7 @@ const MenuButton = ({ isOpen, toggleSidebar }: Props) => {
       onClick={toggleSidebar}
       whileTap={{ scale: 0.62 }}
       className="relative grid h-11 w-11 place-items-center rounded-xl cursor-pointer"
-      aria-label={isOpen ? "Close menu" : "Open menu"}
+      aria-label={isOpen ? "Menü schließen" : "Menü öffnen"}
       aria-expanded={isOpen}
     >
       <motion.span

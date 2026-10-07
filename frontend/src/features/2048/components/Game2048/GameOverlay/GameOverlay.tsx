@@ -59,16 +59,16 @@ const GameOverlay = ({ status, restart }: Props) => {
                   "
           >
             <h2 className="text-3xl font-black text-text">
-              {status === "won" ? "You won!" : "Game over!"}
+              {status === "won" ? "Du hast gewonnen!" : "Spiel beendet"}
             </h2>
 
             <p className="mt-2 text-sm text-text-secondary">
               {status === "won"
-                ? "You reached 2048!"
-                : "There are no more possible moves."}
+                ? "Du hast 2048 erreicht!"
+                : "Es sind keine weiteren Züge möglich."}
             </p>
 
-            <Button onClick={restart}>New Game</Button>
+            <Button onClick={restart}>Neues Spiel</Button>
           </motion.div>
         </motion.div>
       )}

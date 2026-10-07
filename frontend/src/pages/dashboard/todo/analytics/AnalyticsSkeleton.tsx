@@ -7,7 +7,7 @@ import TodoAnalyticWeeklyCompletionSkeleton from "../../../../features/todo/comp
 import TodoKPISkeleton from "../../../../features/todo/components/TodoAnalitics/TodoKPI/Skeleton/TodoKPISkeleton";
 
 const AnalyticsSkeleton = () => (
-  <div className="grid gap-6" aria-busy="true" aria-label="Loading task analytics">
+  <div className="grid gap-6" aria-busy="true" aria-label="Aufgabenauswertung wird geladen">
     <AnalyticsHeaderSkeleton />
     <TodoKPISkeleton />
     <CompletionRateSkeleton />

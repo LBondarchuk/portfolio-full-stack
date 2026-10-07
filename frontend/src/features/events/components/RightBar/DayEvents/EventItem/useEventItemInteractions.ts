@@ -68,7 +68,7 @@ export const useEventItemInteractions = (event: EventListItem) => {
           () => {},
         );
       } catch {
-        toast.error("Failed to move event");
+        toast.error("Termin konnte nicht verschoben werden.");
       }
     };
 
@@ -120,7 +120,7 @@ export const useEventItemInteractions = (event: EventListItem) => {
           () => {},
         );
       } catch {
-        toast.error("Failed to update event time");
+        toast.error("Terminzeit konnte nicht aktualisiert werden.");
       } finally {
         setResizeHeight(null);
       }

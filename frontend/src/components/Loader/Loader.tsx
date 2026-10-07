@@ -16,7 +16,7 @@ const Loader = ({ size = "md", className = "" }: Props) => {
     <div
       className={`grid place-items-center ${className}`}
       role="status"
-      aria-label="Loading"
+      aria-label="Wird geladen"
     >
       <motion.div
         animate={{ rotate: 360 }}

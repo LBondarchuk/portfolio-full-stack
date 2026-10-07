@@ -17,7 +17,7 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
 
   const isFullView = searchParams.get("fullView") === "true";
 
-  const formattedDate = date.toLocaleDateString("en-US", {
+  const formattedDate = date.toLocaleDateString("de-DE", {
     weekday: "long",
     month: "short",
     day: "numeric",
@@ -46,7 +46,7 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
             </div>
 
             <span className="truncate text-[10px] font-semibold uppercase tracking-wider text-text-muted">
-              Daily schedule
+              Tagesübersicht
             </span>
           </div>
 
@@ -56,10 +56,8 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
 
           <p className="mt-1 text-[11px] text-text-secondary">
             {eventsLength === 0
-              ? "No events planned"
-              : `${eventsLength} ${
-                  eventsLength === 1 ? "event" : "events"
-                } scheduled`}
+              ? "Keine Termine geplant"
+              : `${eventsLength} ${eventsLength === 1 ? "Termin" : "Termine"} geplant`}
           </p>
         </div>
 
@@ -85,7 +83,7 @@ const DayEventsHeader = ({ date, eventsLength }: Props) => {
           hover:text-primary
         "
         >
-          <span>{isFullView ? "Back to calendar" : "Open full view"}</span>
+          <span>{isFullView ? "Zurück zum Kalender" : "Vollbild öffnen"}</span>
 
           {isFullView ? (
             <FiMinimize2

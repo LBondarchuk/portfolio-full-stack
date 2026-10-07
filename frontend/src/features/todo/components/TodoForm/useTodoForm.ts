@@ -72,12 +72,12 @@ export const useTodoForm = (
 
       toast.success(
         initialValues
-          ? "Todo updated successfully"
-          : "Todo created successfully",
+          ? "Aufgabe wurde aktualisiert."
+          : "Aufgabe wurde erstellt.",
       );
     } catch {
       toast.error(
-        initialValues ? "Failed to update todo" : "Failed to create todo",
+        initialValues ? "Aufgabe konnte nicht aktualisiert werden." : "Aufgabe konnte nicht erstellt werden.",
       );
     }
   };

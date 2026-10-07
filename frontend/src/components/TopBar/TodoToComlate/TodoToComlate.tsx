@@ -25,7 +25,7 @@ const TodoToComlate = () => {
         <FiCheckSquare className="size-4" />
       </div>
 
-      <Link to="/dashboard/todo">
+      <Link to="/dashboard/todo/analytics">
         <div className="flex items-center gap-2">
 
 
@@ -35,7 +35,7 @@ const TodoToComlate = () => {
             </span>
 
             <span className="hidden text-xs text-text-muted sm:inline">
-              To-dos
+              Aufgaben
             </span>
           </div>
 

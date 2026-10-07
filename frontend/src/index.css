@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(html[data-theme="dark"], html[data-theme="dark"] *));
+
 @theme {
   --color-primary: #f97316;
   --color-primary-hover: #ea580c;
@@ -22,6 +24,126 @@
   --color-danger: #ef4444;
 }
 
+:root {
+  --todo-status-todo-bg: #cbd5e1;
+  --todo-status-todo-text: #334155;
+  --todo-status-progress-bg: #93c5fd;
+  --todo-status-progress-text: #1d4ed8;
+  --todo-status-done-bg: #5eead4;
+  --todo-status-done-text: #115e59;
+
+  --todo-priority-low-bg: #cbd5e1;
+  --todo-priority-low-text: #334155;
+  --todo-priority-medium-bg: #fdba74;
+  --todo-priority-medium-text: #9a3412;
+  --todo-priority-high-bg: #fca5a5;
+  --todo-priority-high-text: #991b1b;
+
+  --todo-category-work-bg: #a5b4fc;
+  --todo-category-work-text: #3730a3;
+  --todo-category-study-bg: #c4b5fd;
+  --todo-category-study-text: #5b21b6;
+  --todo-category-personal-bg: #f9a8d4;
+  --todo-category-personal-text: #9d174d;
+  --todo-category-other-bg: #cbd5e1;
+  --todo-category-other-text: #334155;
+
+  --chart-priority-low: #64748b;
+  --chart-priority-medium: #f97316;
+  --chart-priority-high: #ef4444;
+
+  --chart-category-work: #6366f1;
+  --chart-category-study: #8b5cf6;
+  --chart-category-personal: #ec4899;
+  --chart-category-other: #64748b;
+
+  --chart-status-todo: #64748b;
+  --chart-status-progress: #3b82f6;
+  --chart-status-done: #14b8a6;
+
+  --chart-week-1: #3b82f6;
+  --chart-week-2: #6366f1;
+  --chart-week-3: #8b5cf6;
+  --chart-week-4: #d946ef;
+  --chart-week-5: #ec4899;
+  --chart-week-6: #14b8a6;
+  --chart-week-7: #f59e0b;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-primary: #fb923c;
+  --color-primary-hover: #f97316;
+  --color-primary-light: #431f0b;
+
+  --color-background: #0b1120;
+  --color-surface: #111827;
+
+  --color-text: #f1f5f9;
+  --color-text-secondary: #a1aab8;
+  --color-text-muted: #7c8798;
+
+  --color-border: #293548;
+
+  --color-gray-dark: #dbe3ee;
+  --color-gray: #a1aab8;
+  --color-gray-light: #1e293b;
+
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+
+  --todo-status-todo-bg: #334155;
+  --todo-status-todo-text: #e2e8f0;
+  --todo-status-progress-bg: #1e40af;
+  --todo-status-progress-text: #93c5fd;
+  --todo-status-done-bg: #0f766e;
+  --todo-status-done-text: #5eead4;
+
+  --todo-priority-low-bg: #334155;
+  --todo-priority-low-text: #e2e8f0;
+  --todo-priority-medium-bg: #9a3412;
+  --todo-priority-medium-text: #fdba74;
+  --todo-priority-high-bg: #991b1b;
+  --todo-priority-high-text: #fca5a5;
+
+  --todo-category-work-bg: #3730a3;
+  --todo-category-work-text: #a5b4fc;
+  --todo-category-study-bg: #5b21b6;
+  --todo-category-study-text: #c4b5fd;
+  --todo-category-personal-bg: #9d174d;
+  --todo-category-personal-text: #f9a8d4;
+  --todo-category-other-bg: #334155;
+  --todo-category-other-text: #e2e8f0;
+
+  --chart-week-1: #60a5fa;
+  --chart-week-2: #818cf8;
+  --chart-week-3: #a78bfa;
+  --chart-week-4: #e879f9;
+  --chart-week-5: #f472b6;
+  --chart-week-6: #2dd4bf;
+  --chart-week-7: #fbbf24;
+
+  --toastify-color-light: var(--color-surface);
+  --toastify-text-color-light: var(--color-text);
+}
+
 html {
   scroll-behavior: smooth;
+  color-scheme: light;
+  background-color: var(--color-background);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+html[data-theme="dark"] .bg-white {
+  background-color: var(--color-surface);
+}
+
+html[data-theme="dark"] .border-white\/70,
+html[data-theme="dark"] .border-white\/80 {
+  border-color: var(--color-border);
 }

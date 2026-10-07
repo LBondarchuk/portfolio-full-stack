@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { FiArrowUpRight } from "react-icons/fi";
+import ThemeToggle from "../../theme/ThemeToggle";
 
 const PortfolioHeader = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -34,6 +35,7 @@ const PortfolioHeader = () => {
         </a>
 
         <div className="flex items-center gap-0.5 text-xs font-medium sm:gap-1">
+          <ThemeToggle />
           <a
             className="rounded-xl px-2.5 py-2 text-text-secondary transition hover:bg-gray-light hover:text-text sm:px-3"
             href="#profil"

@@ -29,9 +29,9 @@ const Actions = () => {
         return next;
       });
 
-      toast.success("Event deleted successfully");
+      toast.success("Termin wurde gelöscht.");
     } catch {
-      toast.error("Failed to delete event");
+      toast.error("Termin konnte nicht gelöscht werden.");
     }
   };
 
@@ -47,7 +47,7 @@ const Actions = () => {
           >
             <div className="flex w-full items-center justify-center gap-2">
               <EditIcon className="h-3.5! w-3.5!" />
-              <span className="text-xs">Edit</span>
+              <span className="text-xs">Bearbeiten</span>
             </div>
           </Button>
 
@@ -58,7 +58,7 @@ const Actions = () => {
           >
             <div className="flex w-full items-center justify-center gap-2">
               <DeleteIcon className="h-3.5! w-3.5!" />
-              <span className="text-xs">Delete</span>
+              <span className="text-xs">Löschen</span>
             </div>
           </Button>
         </div>
@@ -72,10 +72,10 @@ const Actions = () => {
 
       <ConfirmModal
         isOpen={isDeleteOpen}
-        title="Delete event?"
-        message="Are you sure you want to delete this event? This action cannot be undone."
-        cancelText="Cancel"
-        confirmText="Delete"
+        title="Termin löschen?"
+        message="Möchtest du diesen Termin wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+        cancelText="Abbrechen"
+        confirmText="Löschen"
         isLoading={loading}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={handleDelete}

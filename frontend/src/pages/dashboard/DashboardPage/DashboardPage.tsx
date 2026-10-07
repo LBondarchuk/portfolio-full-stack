@@ -14,8 +14,8 @@ import game2048Image from "../../../features/assets/2048.png";
 const projects = [
   {
     number: "01",
-    title: "Events",
-    category: "Full Stack · Planning",
+    title: "Zeitblick",
+    category: "Full-Stack · Planung",
     description:
       "Eine moderne Kalenderanwendung zur Planung des Tages, Verwaltung von Terminen und übersichtlichen Organisation komplexer Zeitpläne.",
     technologies: [
@@ -32,10 +32,10 @@ const projects = [
   },
   {
     number: "02",
-    title: "To Do",
-    category: "Full Stack · Productivity",
+    title: "FokusFlow",
+    category: "Full-Stack · Produktivität",
     description:
-      "Eine produktive Aufgabenverwaltung mit Suche, Filtern, Sortierung, Pagination und einer übersichtlichen Fortschrittsanalyse.",
+      "Eine produktive Aufgabenverwaltung mit Suche, Filtern, Sortierung, Seitenwechseln und einer übersichtlichen Fortschrittsanalyse.",
     technologies: [
       "React",
       "TypeScript",
@@ -49,14 +49,14 @@ const projects = [
   },
   {
     number: "03",
-    title: "2048",
-    category: "Frontend · Game",
+    title: "Zahlenrausch · 2048",
+    category: "Frontend · Spiel",
     description:
       "Eine responsive Umsetzung des klassischen 2048-Spiels mit eigener Spiellogik sowie Unterstützung für Tastatur- und Touch-Steuerung.",
     technologies: [
       "React",
       "TypeScript",
-      "Game Logic",
+      "Spiellogik",
     ],
     href: "/dashboard/2048",
     icon: FiCode,
@@ -94,7 +94,7 @@ const DashboardPage = () => (
             <span className="h-px w-8 bg-primary" />
 
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary">
-              Selected work
+              Ausgewählte Projekte
             </p>
           </div>
 
@@ -120,7 +120,7 @@ const DashboardPage = () => (
 
           <div className="mt-6 flex items-center gap-3 text-xs font-medium text-text-muted">
             <span className="h-px w-6 bg-border" />
-            React · TypeScript · Full Stack
+            React · TypeScript · Full-Stack
           </div>
         </motion.div>
       </div>
@@ -180,7 +180,7 @@ const DashboardPage = () => (
               >
                 <img
                   src={project.image}
-                  alt={`${project.title} project preview`}
+                  alt={`Vorschau des Projekts ${project.title}`}
                   className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
 
@@ -250,7 +250,7 @@ const DashboardPage = () => (
                     href={project.href}
                     className="mt-7 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.12em] text-text transition-colors hover:text-primary"
                   >
-                    {project.title === "2048"
+                    {project.href.endsWith("/2048")
                       ? "Spiel starten"
                       : "Projekt ansehen"}
 
@@ -316,4 +316,3 @@ const DashboardPage = () => (
 );
 
 export default DashboardPage;
-

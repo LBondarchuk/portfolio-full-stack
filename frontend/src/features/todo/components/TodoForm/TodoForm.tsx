@@ -17,6 +17,7 @@ import {
 
 import { useTodoForm } from "./useTodoForm";
 import Textarea from "../../../../components/form/Textarea/Textarea";
+import { getTodoLabel } from "../../utils/todoLabels";
 
 type Props = {
   closeModal: () => void;
@@ -58,15 +59,15 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
               const trimmedValue = value?.trim() ?? "";
 
               if (!trimmedValue) {
-                return "Title cannot contain only spaces.";
+                return "Der Titel darf nicht nur aus Leerzeichen bestehen.";
               }
 
               if (trimmedValue.length < 3) {
-                return "Title must contain at least 3 characters.";
+                return "Der Titel muss mindestens 3 Zeichen enthalten.";
               }
 
               if (trimmedValue.length > 50) {
-                return "Title must not exceed 50 characters.";
+                return "Der Titel darf höchstens 50 Zeichen enthalten.";
               }
 
               return true;
@@ -76,27 +77,27 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
           className="w-full"
           id="title"
           type="text"
-          placeholder="Enter task title"
+          placeholder="Aufgabentitel eingeben"
         />
       </FormField>
 
-      <FormField name="description" title="Description">
+      <FormField name="description" title="Beschreibung">
         <Textarea
           {...register("description", {
             maxLength: {
               value: 900,
-              message: "Description must not exceed 900 characters.",
+              message: "Die Beschreibung darf höchstens 900 Zeichen enthalten.",
             },
           })}
           id="description"
           rows={6}
           maxLength={900}
-          placeholder="Enter task description"
+          placeholder="Aufgabenbeschreibung eingeben"
           aria-invalid={Boolean(errors.description)}
           error={errors.description?.message}
         />
       </FormField>
-      <FormField name="category" title="Category">
+      <FormField name="category" title="Kategorie">
         <Select
           value={formSelects.category}
           isOpen={openSelect === "category"}
@@ -117,7 +118,7 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
                 setOpenSelect(null);
               }}
             >
-              {category}
+              {getTodoLabel(category)}
             </SelectItem>
           ))}
         </Select>
@@ -143,13 +144,13 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
                 setOpenSelect(null);
               }}
             >
-              {status}
+              {getTodoLabel(status)}
             </SelectItem>
           ))}
         </Select>
       </FormField>
 
-      <FormField name="priority" title="Priority">
+      <FormField name="priority" title="Priorität">
         <Select
           value={formSelects.priority}
           isOpen={openSelect === "priority"}
@@ -170,7 +171,7 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
                 setOpenSelect(null);
               }}
             >
-              {priority}
+              {getTodoLabel(priority)}
             </SelectItem>
           ))}
         </Select>
@@ -181,7 +182,7 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
         disabled={!isChanged}
         className={!isChanged ? "bg-gray-dark/80" : ""}
       >
-        {loading ? <Loader /> : initialValues ? "Edit Todo" : "Add Todo"}
+        {loading ? <Loader /> : initialValues ? "Aufgabe bearbeiten" : "Aufgabe hinzufügen"}
       </Button>
     </form>
   );

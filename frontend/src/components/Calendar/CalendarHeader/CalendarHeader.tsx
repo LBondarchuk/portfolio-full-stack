@@ -23,7 +23,7 @@ const CalendarHeader = ({
 }: CalendarHeaderProps) => {
   const isPicker = variant === "picker";
 
-  const month = currentDate.toLocaleString("en-US", {
+  const month = currentDate.toLocaleString("de-DE", {
     month: "long",
   });
 
@@ -47,7 +47,7 @@ const CalendarHeader = ({
           <Button
             variant="ghost"
             onClick={onPreviousMonth}
-            aria-label="Previous month"
+            aria-label="Vorheriger Monat"
           >
             <ArrowDownIcon className="size-4 rotate-90" />
           </Button>
@@ -73,7 +73,7 @@ const CalendarHeader = ({
           <Button
             variant="ghost"
             onClick={onNextMonth}
-            aria-label="Next month"
+            aria-label="Nächster Monat"
           >
             <ArrowDownIcon className="size-4 -rotate-90" />
           </Button>
@@ -92,7 +92,7 @@ const CalendarHeader = ({
               onClick={onToday}
               className="h-9 px-3 text-xs sm:px-4 sm:text-sm rounded-md!"
             >
-              Today
+              Heute
             </Button>
           </div>
         )}

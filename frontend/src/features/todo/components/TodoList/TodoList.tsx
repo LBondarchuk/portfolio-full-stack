@@ -11,10 +11,10 @@ const TodoList = () => {
     return (
       <div className="grid  h-full place-items-center py-4 ">
         <div className="grid place-items-center ">
-          <h2 className="text-lg font-semibold text-text">No tasks yet</h2>
+          <h2 className="text-lg font-semibold text-text">Noch keine Aufgaben</h2>
 
           <p className="mt-1 text-sm text-text-secondary">
-            Create your first task to get started.
+            Erstelle deine erste Aufgabe, um loszulegen.
           </p>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 import CloseIcon from "../../Icons/Close";
 
 type Props = {
@@ -9,22 +10,23 @@ type Props = {
 const Modal = ({ isOpen, onClose, children }: Props) => {
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 grid place-items-center bg-black/50 z-20 overflow-scroll py-2"
+      className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/50 px-3 py-3"
       onClick={(event) => {
         event.stopPropagation();
         onClose();
       }}
     >
       <div
-        className="relative w-full max-w-lg rounded-xl bg-surface p-6 shadow-xl"
+        className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-lg overflow-y-auto overscroll-contain rounded-xl bg-surface p-6 shadow-xl"
         onClick={(event) => event.stopPropagation()}
       >
         <CloseIcon onClick={onClose} className="absolute top-2 right-2" />
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

@@ -5,35 +5,35 @@ import type {
 } from "../../../../types/todo.type";
 
 export const statusStyles: Record<Status, string> = {
-  todo: "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800",
+  todo: "bg-[var(--todo-status-todo-bg)] text-[var(--todo-status-todo-text)] hover:brightness-95 dark:hover:brightness-110",
 
   "in-progress":
-    "bg-blue-100 text-blue-600 hover:bg-blue-200 hover:text-blue-800",
+    "bg-[var(--todo-status-progress-bg)] text-[var(--todo-status-progress-text)] hover:brightness-95 dark:hover:brightness-110",
 
-  done: "bg-teal-50 text-teal-600 hover:bg-teal-50 hover:text-teal-800 hover:shadow-sm",
+  done: "bg-[var(--todo-status-done-bg)] text-[var(--todo-status-done-text)] hover:brightness-95 dark:hover:brightness-110",
 };
 
 export const priorityStyles: Record<Priority, string> = {
-  low: "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800",
+  low: "bg-[var(--todo-priority-low-bg)] text-[var(--todo-priority-low-text)] hover:brightness-95 dark:hover:brightness-110",
 
   medium:
-    "bg-orange-50 text-orange-600 hover:bg-orange-50 hover:text-orange-800 hover:shadow-sm",
+    "bg-[var(--todo-priority-medium-bg)] text-[var(--todo-priority-medium-text)] hover:brightness-95 dark:hover:brightness-110",
 
-  high: "bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-800",
+  high: "bg-[var(--todo-priority-high-bg)] text-[var(--todo-priority-high-text)] hover:brightness-95 dark:hover:brightness-110",
 };
 
 export const categoryStyles: Record<Category, string> = {
   study:
-    "bg-violet-100 text-violet-600 hover:bg-violet-200 hover:text-violet-800",
+    "bg-[var(--todo-category-study-bg)] text-[var(--todo-category-study-text)] hover:brightness-95 dark:hover:brightness-110",
 
   work:
-    "bg-indigo-100 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-800 hover:shadow-sm",
+    "bg-[var(--todo-category-work-bg)] text-[var(--todo-category-work-text)] hover:brightness-95 dark:hover:brightness-110",
 
   personal:
-    "bg-pink-100 text-pink-600 hover:bg-pink-200 hover:text-pink-800",
+    "bg-[var(--todo-category-personal-bg)] text-[var(--todo-category-personal-text)] hover:brightness-95 dark:hover:brightness-110",
 
   other:
-    "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800",
+    "bg-[var(--todo-category-other-bg)] text-[var(--todo-category-other-text)] hover:brightness-95 dark:hover:brightness-110",
 };
 
 export const MetaStyles = {

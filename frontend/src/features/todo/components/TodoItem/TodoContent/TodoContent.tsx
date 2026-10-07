@@ -35,6 +35,7 @@ const TodoContent = ({ todo }: Props) => {
         status={status}
         priority={priority}
         isDone={isDone}
+        compactOnMobile
       />
     </div>
   );

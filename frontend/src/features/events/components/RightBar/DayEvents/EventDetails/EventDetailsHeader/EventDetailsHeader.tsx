@@ -18,14 +18,14 @@ const EventDetailsHeader = ({ title, onClose }: Props) => {
       </div>
 
       <div className="flex items-center gap-1">
-        <Button aria-label="More options" variant="ghost" className="px-2!">
+        <Button aria-label="Weitere Optionen" variant="ghost" className="px-2!">
           <FiMoreHorizontal className="size-4.25" />
         </Button>
 
         <Button
           type="button"
           onClick={onClose}
-          aria-label="Close event details"
+          aria-label="Termindetails schließen"
           variant="ghost"
           className="px-2!"
         >
