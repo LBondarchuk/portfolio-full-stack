@@ -19,7 +19,8 @@ const THEME_STORAGE_KEY = "portfolio-theme";
 
 const getInitialTheme = (): Theme => {
   const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  return storedTheme === "dark" ? "dark" : "light";
+
+  return storedTheme === "light" ? "light" : "dark";
 };
 
 type Props = {
