@@ -22,6 +22,7 @@ const ProjectPreview = ({ video }: ProjectPreviewProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hasVideoError, setHasVideoError] = useState(false);
+  const [hasVideoLoaded, setHasVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(() =>
     window.matchMedia("(max-width: 767px)").matches,
   );
@@ -48,6 +49,7 @@ const ProjectPreview = ({ video }: ProjectPreviewProps) => {
 
   useEffect(() => {
     setHasVideoError(false);
+    setHasVideoLoaded(false);
     const element = videoRef.current;
     if (!element) return;
 
@@ -59,6 +61,24 @@ const ProjectPreview = ({ video }: ProjectPreviewProps) => {
 
   return (
     <div ref={previewRef} className="absolute inset-0 bg-gradient-to-br from-gray-light via-surface to-primary-light">
+      {isVisible && !hasVideoLoaded && !hasVideoError && (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 animate-pulse p-5 sm:p-8"
+        >
+          <div className="flex h-full flex-col justify-between rounded-xl border border-white/30 bg-surface/20 p-4 backdrop-blur-[2px] sm:p-6">
+            <div className="flex items-center justify-between">
+              <span className="h-7 w-7 rounded-md bg-text-muted/20" />
+              <span className="h-5 w-24 rounded-full bg-text-muted/20" />
+            </div>
+            <div className="space-y-3">
+              <span className="block h-3 w-2/3 rounded-full bg-text-muted/20" />
+              <span className="block h-3 w-1/2 rounded-full bg-text-muted/15" />
+              <span className="block h-24 rounded-lg bg-text-muted/15 sm:h-36" />
+            </div>
+          </div>
+        </div>
+      )}
       {showVideo && (
         <video
           key={`${theme}-${isMobile ? "mobile" : "desktop"}`}
@@ -73,8 +93,9 @@ const ProjectPreview = ({ video }: ProjectPreviewProps) => {
           onLoadedMetadata={(event) => {
             event.currentTarget.playbackRate = 1.2;
           }}
+          onLoadedData={() => setHasVideoLoaded(true)}
           onError={() => setHasVideoError(true)}
-          className="absolute inset-0 size-full object-cover"
+          className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${hasVideoLoaded ? "opacity-100" : "opacity-0"}`}
         />
       )}
     </div>
