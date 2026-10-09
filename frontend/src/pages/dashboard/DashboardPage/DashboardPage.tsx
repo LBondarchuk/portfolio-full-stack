@@ -1,4 +1,5 @@
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import {
   FiArrowUpRight,
@@ -7,9 +8,78 @@ import {
   FiTerminal,
 } from "react-icons/fi";
 
-import eventsImage from "../../../features/assets/events.png";
-import todoImage from "../../../features/assets/todo.png";
-import game2048Image from "../../../features/assets/2048.png";
+import { useTheme, type Theme } from "../../../features/theme/ThemeContext";
+
+type ThemeVideos = Record<Theme, { desktop: string; mobile: string }>;
+
+type ProjectPreviewProps = {
+  video: ThemeVideos;
+};
+
+const ProjectPreview = ({ video }: ProjectPreviewProps) => {
+  const { theme } = useTheme();
+  const previewRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasVideoError, setHasVideoError] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    window.matchMedia("(max-width: 767px)").matches,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateViewport = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+
+    mediaQuery.addEventListener("change", updateViewport);
+    return () => mediaQuery.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (!previewRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: "120px" },
+    );
+    observer.observe(previewRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    setHasVideoError(false);
+    const element = videoRef.current;
+    if (!element) return;
+
+    element.playbackRate = 1.2;
+    if (isVisible) void element.play().catch(() => {});
+  }, [isVisible, isMobile, theme]);
+
+  const showVideo = isVisible && !hasVideoError;
+
+  return (
+    <div ref={previewRef} className="absolute inset-0 bg-gradient-to-br from-gray-light via-surface to-primary-light">
+      {showVideo && (
+        <video
+          key={`${theme}-${isMobile ? "mobile" : "desktop"}`}
+          ref={videoRef}
+          src={video[theme][isMobile ? "mobile" : "desktop"]}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+          onLoadedMetadata={(event) => {
+            event.currentTarget.playbackRate = 1.2;
+          }}
+          onError={() => setHasVideoError(true)}
+          className="absolute inset-0 size-full object-cover"
+        />
+      )}
+    </div>
+  );
+};
 
 const projects = [
   {
@@ -27,7 +97,10 @@ const projects = [
     ],
     href: "/dashboard/events",
     icon: FiLayers,
-    image: eventsImage,
+    video: {
+      light: { desktop: "/events-light.mov", mobile: "/events-light-mobile.mov" },
+      dark: { desktop: "/events-dark.mov", mobile: "/events-dark-mobile.mov" },
+    },
     featured: true,
   },
   {
@@ -44,7 +117,10 @@ const projects = [
     ],
     href: "/dashboard/todo",
     icon: FiTerminal,
-    image: todoImage,
+    video: {
+      light: { desktop: "/todo-light.mov", mobile: "/todo-light-mobile.mov" },
+      dark: { desktop: "/todo-dark.mov", mobile: "/todo-dark-mobile.mov" },
+    },
     featured: false,
   },
   {
@@ -60,7 +136,10 @@ const projects = [
     ],
     href: "/dashboard/2048",
     icon: FiCode,
-    image: game2048Image,
+    video: {
+      light: { desktop: "/2048-light.mov", mobile: "/2048-light-mobile.mov" },
+      dark: { desktop: "/2048-dark.mov", mobile: "/2048-dark-mobile.mov" },
+    },
     featured: false,
   },
 ];
@@ -168,20 +247,18 @@ const DashboardPage = () => (
             >
               {/* IMAGE */}
               <div
-                className={`relative overflow-hidden bg-gray-light ${
+                className={`relative aspect-[9/16] min-h-0 overflow-hidden bg-gray-light md:aspect-auto ${
                   project.featured
-                    ? "min-h-[360px] lg:min-h-[440px]"
-                    : "min-h-[280px] lg:min-h-[360px]"
+                    ? "md:min-h-[360px] lg:min-h-[440px]"
+                    : "md:min-h-[280px] lg:min-h-[360px]"
                 } ${
                   !project.featured
                     ? "lg:order-2"
                     : ""
                 }`}
               >
-                <img
-                  src={project.image}
-                  alt={`Vorschau des Projekts ${project.title}`}
-                  className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                <ProjectPreview
+                  video={project.video}
                 />
 
                 {/* Image overlay */}

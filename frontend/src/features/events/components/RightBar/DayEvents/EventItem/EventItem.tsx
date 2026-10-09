@@ -23,18 +23,17 @@ const EventItem = ({
     isDragging,
     dragY,
     resizeHeight,
-    didDragRef,
     handleDragStart,
     handleResizeStart,
+    handleClick,
   } = useEventItemInteractions(event);
 
   const accent = accentClasses[
     event.priority ?? "medium"
   ];
 
-  const handleClickEvent = () => {
-    if (didDragRef.current) {
-      didDragRef.current = false;
+  const handleClickEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (handleClick(e)) {
       return;
     }
 

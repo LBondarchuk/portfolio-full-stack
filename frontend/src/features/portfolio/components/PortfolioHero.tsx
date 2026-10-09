@@ -18,7 +18,7 @@ const PortfolioHero = () => {
       >
         <p className="mb-6 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
           <span className="size-2 rounded-full bg-primary shadow-sm shadow-primary/40" />
-          Frontend-Entwickler · React
+          Frontend-Entwickler · React & TypeScript
         </p>
         <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
           Leonid<br />
@@ -32,8 +32,11 @@ const PortfolioHero = () => {
           </motion.span>
         </h1>
         <p className="mt-7 max-w-xl text-lg leading-8 text-text-secondary sm:text-xl">
-          Ich entwickle klare, benutzerfreundliche Webanwendungen und suche
-          eine Position als Frontend-Entwickler in Deutschland.
+          Seit 2022 entwickle ich Webanwendungen — von Weiterbildung und
+          eigenen Pet-Projekten bis zu einem Jahr kommerzieller Erfahrung.
+          Mein Schwerpunkt ist React und TypeScript; auch APIs und Backend
+          gehören zu meinen Projekten. Jetzt suche ich eine Frontend-Position
+          in Deutschland.
         </p>
         <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-text-secondary">
           <span className="inline-flex items-center gap-2">
@@ -86,17 +89,13 @@ const PortfolioHero = () => {
           </>
         )}
         <div className="absolute -inset-4 rotate-3 rounded-[2rem] border border-primary/20" />
-        <div className="relative aspect-[4/4.7] overflow-hidden rounded-[1.7rem] border border-border bg-gradient-to-br from-orange-100 via-orange-50 to-gray-light">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,rgba(249,115,22,0.18),transparent_53%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-900/10 to-transparent" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-serif text-[8rem] font-medium leading-none tracking-[-0.1em] text-text sm:text-[10rem]">
-              LB
-            </span>
-            <span className="mt-4 text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
-              Leonid Bondarchuk
-            </span>
-          </div>
+        <div className="relative aspect-[4/4.7] overflow-hidden rounded-[1.7rem] border border-border bg-slate-950">
+          <img
+            src="/leonid-bondarchuk.png"
+            alt="Leonid Bondarchuk, Frontend-Entwickler"
+            className="absolute inset-0 size-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/65 via-transparent to-slate-950/10" />
           <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-xl border border-border bg-surface/80 px-4 py-3 backdrop-blur-sm">
             <span className="text-xs text-text-secondary">
               Offen für Stellenangebote
@@ -104,9 +103,6 @@ const PortfolioHero = () => {
             <span className="size-2 rounded-full bg-success shadow-[0_0_10px_rgba(34,197,94,0.4)]" />
           </div>
         </div>
-        <p className="mt-4 text-center text-xs text-text-muted">
-          Ihr Porträtfoto kann hier ergänzt werden.
-        </p>
         {!shouldReduceMotion && (
           <>
             <motion.span

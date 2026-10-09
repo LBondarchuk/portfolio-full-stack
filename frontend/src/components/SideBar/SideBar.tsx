@@ -31,7 +31,7 @@ const SideBar = ({ isOpen, onClose }: Props) => {
         <div className="flex h-full flex-col overflow-y-auto pt-20 lg:pt-6">
           <SideBarHeader />
           <SideBarNavigation onClose={onClose} />
-          <SideBarFooter />
+          <SideBarFooter onClose={onClose} />
         </div>
       </aside>
     </>

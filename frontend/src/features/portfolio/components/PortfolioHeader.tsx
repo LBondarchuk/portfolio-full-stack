@@ -21,9 +21,11 @@ const PortfolioHeader = () => {
           aria-label="Leonid Bondarchuk — Startseite"
           className="group flex min-w-0 items-center gap-2.5 rounded-xl p-1 transition hover:bg-gray-light/70"
         >
-          <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary text-xs font-extrabold tracking-tight text-white shadow-sm shadow-primary/25 transition group-hover:rotate-[-5deg]">
-            LB<span className="text-orange-200">.</span>
-          </span>
+          <img
+            src="/lb-logo.png"
+            alt=""
+            className="size-9 shrink-0 rounded-xl object-cover shadow-sm transition group-hover:rotate-[-5deg]"
+          />
           <span className="hidden min-w-0 sm:block">
             <span className="block truncate text-sm font-bold leading-4 tracking-tight text-text">
               Leonid Bondarchuk
@@ -40,13 +42,7 @@ const PortfolioHeader = () => {
             className="rounded-xl px-2.5 py-2 text-text-secondary transition hover:bg-gray-light hover:text-text sm:px-3"
             href="#profil"
           >
-            Profil
-          </a>
-          <a
-            className="hidden rounded-xl px-3 py-2 text-text-secondary transition hover:bg-gray-light hover:text-text md:inline-flex"
-            href="#erfahrung"
-          >
-            Erfahrung
+            Lebenslauf
           </a>
           <a
             className="rounded-xl px-2.5 py-2 text-text-secondary transition hover:bg-gray-light hover:text-text sm:px-3"

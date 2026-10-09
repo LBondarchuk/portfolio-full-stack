@@ -42,6 +42,9 @@ export const useEventItemInteractions = (event: EventListItem) => {
     const handleUp = async (e: PointerEvent) => {
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("pointerup", handleUp);
+      window.setTimeout(() => {
+        didDragRef.current = false;
+      }, 0);
 
       const deltaY = e.clientY - startY;
 
@@ -88,9 +91,14 @@ export const useEventItemInteractions = (event: EventListItem) => {
     const durationMinutes = endMinutes - startMinutes;
 
     const initialHeight = (durationMinutes / TIME_STEP) * ROW_HEIGHT;
+    didDragRef.current = false;
 
     const handleMove = (e: PointerEvent) => {
       const deltaY = e.clientY - startY;
+
+      if (Math.abs(deltaY) > DRAG_THRESHOLD) {
+        didDragRef.current = true;
+      }
 
       const newHeight = Math.max(ROW_HEIGHT, initialHeight + deltaY);
 
@@ -100,6 +108,9 @@ export const useEventItemInteractions = (event: EventListItem) => {
     const handleUp = async (e: PointerEvent) => {
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("pointerup", handleUp);
+      window.setTimeout(() => {
+        didDragRef.current = false;
+      }, 0);
 
       const deltaY = e.clientY - startY;
 
@@ -130,15 +141,16 @@ export const useEventItemInteractions = (event: EventListItem) => {
     window.addEventListener("pointerup", handleUp);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!didDragRef.current) {
-      return;
+      return false;
     }
 
     e.preventDefault();
     e.stopPropagation();
 
     didDragRef.current = false;
+    return true;
   };
 
   return {

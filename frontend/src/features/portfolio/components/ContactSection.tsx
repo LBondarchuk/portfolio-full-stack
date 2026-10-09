@@ -37,7 +37,7 @@ const ContactSection = () => {
               href="https://github.com/LBondarchuk"
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-text-secondary transition-all duration-200 hover:border-[#181717] hover:text-[#181717]"
+              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-text-secondary transition-all duration-200 hover:border-primary hover:text-primary"
             >
               <FiGithub className="size-4" />
               GitHub

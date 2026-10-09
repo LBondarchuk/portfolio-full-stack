@@ -1,6 +1,6 @@
 # Leonid Bondarchuk — Portfolio
 
-Persönliches Entwicklerportfolio mit einer Profilseite und drei interaktiven Webprojekten. Das Repository enthält ein React-Frontend und eine Express-API mit MongoDB.
+Persönliches Entwicklerportfolio mit integriertem Online-Lebenslauf und drei interaktiven Webprojekten. Das Repository enthält ein React-Frontend und eine Express-API mit MongoDB.
 
 ## Projekte
 
@@ -11,6 +11,7 @@ Persönliches Entwicklerportfolio mit einer Profilseite und drei interaktiven We
 | 2048 | Spiel mit Tastatur- und Touch-Steuerung sowie gespeicherter Bestpunktzahl | `/dashboard/2048` |
 
 Die persönliche Profilseite ist unter `/` erreichbar. Die Projektübersicht befindet sich unter `/dashboard`; die Aufgabenanalysen unter `/dashboard/todo/analytics`.
+Profil, Berufserfahrung, Ausbildung und Fähigkeiten bilden gemeinsam den Online-Lebenslauf auf der Startseite. Das PDF kann dort direkt heruntergeladen werden.
 
 ## Technologien
 

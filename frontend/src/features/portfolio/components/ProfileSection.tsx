@@ -14,19 +14,22 @@ const ProfileSection = () => {
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">01 / Profil</p>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Mit Neugier lernen.<br />Mit Sorgfalt entwickeln.
+          Vom Analysieren zum Entwickeln.<br />Mit Blick fürs Ganze.
         </h2>
       </div>
       <div className="space-y-5 text-base leading-7 text-text-secondary">
         <p>
-          Ich suche aktuell eine Position als <strong className="font-medium text-text">Frontend-Entwickler mit Schwerpunkt React</strong>. In den letzten Jahren habe ich eigenständig Webanwendungen entwickelt und praktische Erfahrung mit React, TypeScript, State-Management, API-Integration und responsivem Design gesammelt.
+          Seit 2022 beschäftige ich mich intensiv mit Webentwicklung: Nach gezielter Weiterbildung habe ich eigene Pet-Projekte umgesetzt und ein Jahr kommerzielle Erfahrung als Entwickler gesammelt. Mein Schwerpunkt liegt auf <strong className="font-medium text-text">Frontend-Entwicklung mit React und TypeScript</strong>.
         </p>
         <p>
-          Besonders interessieren mich gut strukturierte Anwendungen und Benutzeroberflächen, die Menschen im Alltag wirklich helfen. Ich spreche Deutsch auf B2-Niveau und möchte meine Erfahrung in einem professionellen Entwicklungsteam einbringen und weiter ausbauen.
+          In eigenen Projekten habe ich mit Node.js, Express, MongoDB, Firebase und WebSockets gearbeitet. Die Grundlagen von Backend-Entwicklung und Tests kenne ich, habe in diesem Bereich aber noch keine umfangreiche Praxiserfahrung.
+        </p>
+        <p>
+          Vor knapp zwei Jahren bin ich mit meiner Familie nach Deutschland gezogen. Hier habe ich mich eingelebt und Deutsch bis zum Niveau B2 gelernt. Jetzt suche ich eine <strong className="font-medium text-text">Frontend-Position</strong>, in der ich meine Praxiserfahrung und mein Backend-Verständnis in ein Team einbringen kann.
         </p>
         <p className="flex items-center gap-2 text-sm text-text-muted">
           <FiBriefcase className="shrink-0 text-primary" />
-          Von operativer Verantwortung zur Softwareentwicklung — mit analytischem Blick und Freude am Problemlösen.
+          Analytischer Blick, Verantwortungsbewusstsein und Freude daran, Probleme in klare Lösungen zu verwandeln.
         </p>
       </div>
     </div>
