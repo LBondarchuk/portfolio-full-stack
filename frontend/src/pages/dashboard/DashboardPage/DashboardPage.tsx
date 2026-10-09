@@ -18,7 +18,9 @@ type ProjectPreviewProps = {
 
 const ProjectPreview = ({ video }: ProjectPreviewProps) => {
   const { theme } = useTheme();
+  const previewRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasEnteredView, setHasEnteredView] = useState(false);
   const [hasVideoError, setHasVideoError] = useState(false);
   const [hasVideoLoaded, setHasVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(() =>
@@ -34,6 +36,25 @@ const ProjectPreview = ({ video }: ProjectPreviewProps) => {
   }, []);
 
   useEffect(() => {
+    if (!previewRef.current || hasEnteredView) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setHasEnteredView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setHasEnteredView(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "120px" });
+
+    observer.observe(previewRef.current);
+    return () => observer.disconnect();
+  }, [hasEnteredView]);
+
+  useEffect(() => {
     setHasVideoError(false);
     setHasVideoLoaded(false);
     const element = videoRef.current;
@@ -41,13 +62,13 @@ const ProjectPreview = ({ video }: ProjectPreviewProps) => {
 
     element.playbackRate = 1.2;
     void element.play().catch(() => {});
-  }, [isMobile, theme]);
+  }, [hasEnteredView, isMobile, theme]);
 
-  const showVideo = !hasVideoError;
+  const showVideo = hasEnteredView && !hasVideoError;
 
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-gray-light via-surface to-primary-light">
-      {!hasVideoLoaded && !hasVideoError && (
+    <div ref={previewRef} className="absolute inset-0 bg-gradient-to-br from-gray-light via-surface to-primary-light">
+      {hasEnteredView && !hasVideoLoaded && !hasVideoError && (
         <div
           aria-hidden="true"
           className="absolute inset-0 animate-pulse p-5 sm:p-8"
