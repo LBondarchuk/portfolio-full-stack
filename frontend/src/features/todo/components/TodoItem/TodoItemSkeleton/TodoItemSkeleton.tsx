@@ -5,10 +5,9 @@ const TodoItemSkeleton = () => (
     aria-hidden="true"
     className="grid grid-cols-[auto_1fr_auto] gap-4 rounded-xl border border-border bg-surface p-4 shadow-sm"
   >
-    {/* Checkbox */}
+
     <Skeleton className="mt-0.5 size-5 rounded-md" />
 
-    {/* Title, description and metadata */}
     <div className="grid min-w-0 gap-3">
       <div className="grid gap-2">
         <Skeleton className="h-4 w-32 sm:w-48" />
@@ -22,7 +21,6 @@ const TodoItemSkeleton = () => (
       </div>
     </div>
 
-    {/* Edit and delete actions */}
     <div className="grid grid-cols-2 items-center gap-1 md:gap-2">
       <Skeleton className="size-10 rounded-xl md:w-20" />
       <Skeleton className="size-10 rounded-xl md:w-20" />

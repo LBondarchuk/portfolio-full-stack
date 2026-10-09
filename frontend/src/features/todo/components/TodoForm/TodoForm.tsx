@@ -91,7 +91,6 @@ const TodoForm = ({ closeModal, initialValues }: Props) => {
           })}
           id="description"
           rows={6}
-          maxLength={900}
           placeholder="Aufgabenbeschreibung eingeben"
           aria-invalid={Boolean(errors.description)}
           error={errors.description?.message}
