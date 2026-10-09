@@ -1,32 +1,50 @@
-# Leonid Bondarchuk — Portfolio
+# Leonid Bondarchuk · Portfolio
 
-Persönliches Entwicklerportfolio mit einer Profilseite und drei interaktiven Webprojekten. Das Repository enthält ein React-Frontend und eine Express-API mit MongoDB.
+### Ideen werden zu interaktiven Erlebnissen.
 
-## Projekte
+Ein persönliches Entwicklerportfolio mit drei eigenständigen Anwendungen: einem **maßgeschneiderten Kalender ohne fertige Kalenderbibliothek**, einem analytischen **To-do-Dashboard mit interaktiven Auswertungen** und einer modernen Interpretation von **2048**.
 
-| Projekt | Beschreibung | Route |
+Jede Anwendung verbindet durchdachte Funktionalität mit einer klaren Benutzeroberfläche und einem konsistenten Design.
+
+<p align="center">
+  <strong>React · TypeScript · Express · MongoDB</strong><br />
+  Light & Dark Mode · Responsive Design · Individuell entwickelte UI-Komponenten
+</p>
+
+---
+
+## Entdecken
+
+| Bereich | Das erwartet dich | Route |
 | --- | --- | --- |
-| Events | Kalender mit Tagesübersicht, Terminen, Detailansicht und Bearbeitung im Zeitplan | `/dashboard/events` |
-| To Do | Aufgabenverwaltung mit Suche, Filtern, Sortierung, Seitennavigation und Analysen | `/dashboard/todo` |
-| 2048 | Spiel mit Tastatur- und Touch-Steuerung sowie gespeicherter Bestpunktzahl | `/dashboard/2048` |
+| **Portfolio** | Profil, Berufserfahrung, Ausbildung, Fähigkeiten und Kontakt | `/` |
+| **Dashboard** | Zentraler Einstieg zu allen Anwendungen | `/dashboard` |
+| **Events & Kalender** | Eigenständig entwickelter Kalender mit Tagesansicht, Terminverwaltung und übersichtlichem Zeitplan | `/dashboard/events` |
+| **To-do** | Aufgabenverwaltung mit Suche, Filtern, Sortierung und Pagination | `/dashboard/todo` |
+| **To-do Analytics** | Visuelle Auswertungen zu Aufgabenfortschritt, Status, Prioritäten und Kategorien | `/dashboard/todo/analytics` |
+| **2048** | Interaktives Zahlenrätsel mit Tastatur- und Touch-Steuerung | `/dashboard/2048` |
 
-Die persönliche Profilseite ist unter `/` erreichbar. Die Projektübersicht befindet sich unter `/dashboard`; die Aufgabenanalysen unter `/dashboard/todo/analytics`.
+## Mit Liebe zum Detail
 
-## Technologien
+- **Kalender nach Maß:** Eigenständige Kalenderimplementierung mit Terminverwaltung, Tagesübersicht und Zeitplan – ohne Integration einer fertigen Kalenderbibliothek.
+- **Analysen, die Klarheit schaffen:** Kennzahlen und interaktive Diagramme machen Aufgabenfortschritt und Aufgabenverteilung anschaulich.
+- **Zwei stimmige Farbwelten:** Light und Dark Mode mit abgestimmten Farben für Oberfläche, Diagramme und Aufgabenstatus.
+- **Flüssige Bedienung:** Animationen, responsive Layouts, Suche, Filter und Touch-Steuerung sorgen für ein konsistentes Nutzungserlebnis auf verschiedenen Geräten.
+- **Durchdachte UI-Zustände:** Ladeanzeigen, Skeletons und verständliche Rückmeldungen unterstützen eine klare Bedienung auch bei dynamischen Daten.
 
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Zustand, React Router, Motion und Recharts
-- **Backend:** Node.js, Express, MongoDB und Mongoose
+## Technologie
 
-## Voraussetzungen
-
-- Node.js und npm
-- Eine lokal erreichbare MongoDB oder eine MongoDB-Atlas-Datenbank
+| Frontend | Backend und Daten | Qualität |
+| --- | --- | --- |
+| React, TypeScript, Vite | Node.js, Express 5 | Vitest |
+| Tailwind CSS, React Router | MongoDB, Mongoose | Testing Library |
+| Zustand, Motion, Recharts | REST API | ESLint |
 
 ## Lokal starten
 
-Frontend und API laufen in getrennten Terminals.
+Benötigt werden **Node.js**, **npm** und eine erreichbare MongoDB-Instanz oder MongoDB-Atlas-Datenbank. Frontend und Backend werden in separaten Terminals gestartet.
 
-### 1. API einrichten und starten
+### Backend
 
 ```bash
 cd server
@@ -34,21 +52,21 @@ npm ci
 cp .env.example .env
 ```
 
-Trage in `server/.env` deine MongoDB-Verbindungsadresse ein:
+Trage die MongoDB-Verbindung in `server/.env` ein:
 
 ```env
 MONGO=mongodb://127.0.0.1:27017/portfolio-full-stack
 ```
 
-Starte anschließend den Server:
+Starte die API:
 
 ```bash
 npm start
 ```
 
-Die API läuft standardmäßig unter `http://localhost:8800/api`.
+Die API ist unter `http://localhost:8800/api` erreichbar. Die verfügbaren Ressourcen sind `/api/todos` und `/api/events`.
 
-### 2. Frontend einrichten und starten
+### Frontend
 
 Öffne ein zweites Terminal:
 
@@ -56,27 +74,40 @@ Die API läuft standardmäßig unter `http://localhost:8800/api`.
 cd frontend
 npm ci
 cp .env.example .env
-npm run dev
 ```
 
-Die lokale Vite-Adresse wird im Terminal angezeigt; standardmäßig ist es `http://localhost:5173`.
-
-Die Frontend-API-Adresse wird über `VITE_API_URL` konfiguriert:
+Setze in `frontend/.env` die API-Basis-URL:
 
 ```env
 VITE_API_URL=http://localhost:8800/api
 ```
 
-## Weitere Frontend-Befehle
-
-Im Verzeichnis `frontend`:
+Starte den Entwicklungsserver:
 
 ```bash
-npm run build   # TypeScript-Prüfung und Produktionsbuild
-npm run lint    # ESLint
-npm run preview # Produktionsbuild lokal ansehen
+npm run dev
 ```
 
-## Konfiguration und Sicherheit
+Die lokale Adresse wird im Terminal angezeigt. Standardmäßig ist das Frontend unter `http://localhost:5173` erreichbar.
 
-Die Dateien `.env` enthalten lokale oder geheime Konfiguration und gehören nicht ins Repository. Verwende dafür die bereitgestellten `.env.example`-Dateien als Vorlage. Für einen produktiven Betrieb müssen API- und Datenbankadressen sowie die Serverkonfiguration an die Hosting-Umgebung angepasst werden.
+## Nützliche Befehle
+
+Führe diese Befehle im Verzeichnis `frontend` aus:
+
+| Befehl | Beschreibung |
+| --- | --- |
+| `npm run dev` | Startet den Entwicklungsserver |
+| `npm run build` | Prüft TypeScript und erstellt den Produktionsbuild |
+| `npm run preview` | Zeigt den Produktionsbuild lokal an |
+| `npm run lint` | Führt ESLint aus |
+| `npm test -- --run` | Führt die Tests einmalig aus |
+| `npm run test` | Startet Vitest im Watch-Modus |
+
+## Konfiguration
+
+| Datei | Variable | Beschreibung |
+| --- | --- | --- |
+| `frontend/.env` | `VITE_API_URL` | Basis-URL der Backend-API |
+| `server/.env` | `MONGO` | MongoDB-Verbindungsadresse |
+
+Lokale `.env`-Dateien enthalten umgebungsspezifische Konfiguration und gehören nicht ins Repository. Die `.env.example`-Dateien dienen als Vorlage.
